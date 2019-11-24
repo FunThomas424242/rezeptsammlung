@@ -128,11 +128,11 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-contract-verifier</artifactId>
-      <scope>test</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.cloud</groupId>-->
+<!--      <artifactId>spring-cloud-starter-contract-verifier</artifactId>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -145,44 +145,44 @@
       <version>${junit-jupiter-engine.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>nl.jqno.equalsverifier</groupId>
-      <artifactId>equalsverifier</artifactId>
-      <version>3.1.10</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.bval</groupId>
-      <artifactId>bval-jsr</artifactId>
-      <version>2.0.3</version>
-      <scope>test</scope>
-    </dependency>
-    <!-- REST Clients testen -->
-    <!-- https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock -->
-    <dependency>
-      <groupId>com.github.tomakehurst</groupId>
-      <artifactId>wiremock-standalone</artifactId>
-      <version>2.25.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <version>4.1.2</version>
-      <scope>test</scope>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>nl.jqno.equalsverifier</groupId>-->
+<!--      <artifactId>equalsverifier</artifactId>-->
+<!--      <version>3.1.10</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.bval</groupId>-->
+<!--      <artifactId>bval-jsr</artifactId>-->
+<!--      <version>2.0.3</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    &lt;!&ndash; REST Clients testen &ndash;&gt;-->
+<!--    &lt;!&ndash; https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>com.github.tomakehurst</groupId>-->
+<!--      <artifactId>wiremock-standalone</artifactId>-->
+<!--      <version>2.25.1</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>io.rest-assured</groupId>-->
+<!--      <artifactId>rest-assured</artifactId>-->
+<!--      <version>4.1.2</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
 	</dependencies>
 
 	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
+<!--		<dependencies>-->
+<!--			<dependency>-->
+<!--				<groupId>org.springframework.cloud</groupId>-->
+<!--				<artifactId>spring-cloud-dependencies</artifactId>-->
+<!--				<version>${spring-cloud.version}</version>-->
+<!--				<type>pom</type>-->
+<!--				<scope>import</scope>-->
+<!--			</dependency>-->
+<!--		</dependencies>-->
 	</dependencyManagement>
 
 
@@ -247,6 +247,7 @@
 				<version>2.2.0.RC2</version>
 				<extensions>true</extensions>
 				<configuration>
+          <skip>true</skip>
 					<testFramework>JUNIT5</testFramework>
 				</configuration>
 			</plugin>
@@ -519,37 +520,37 @@
 	</build>
 
   <profiles>
-    <profile>
-      <id>local</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-toolchains-plugin</artifactId>
-            <version>3.0.0</version>
-            <configuration>
-              <toolchains>
-                <jdk>
-                  <version>13</version>
-                  <vendor>openjdk</vendor>
-                </jdk>
-              </toolchains>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>toolchain</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-      <activation>
-        <!-- nur aktive wenn noch kein anderes aktiv ist -->
-        <activeByDefault>false</activeByDefault>
-      </activation>
-    </profile>
+<!--    <profile>-->
+<!--      <id>local</id>-->
+<!--      <build>-->
+<!--        <plugins>-->
+<!--          <plugin>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-toolchains-plugin</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--            <configuration>-->
+<!--              <toolchains>-->
+<!--                <jdk>-->
+<!--                  <version>13</version>-->
+<!--                  <vendor>openjdk</vendor>-->
+<!--                </jdk>-->
+<!--              </toolchains>-->
+<!--            </configuration>-->
+<!--            <executions>-->
+<!--              <execution>-->
+<!--                <goals>-->
+<!--                  <goal>toolchain</goal>-->
+<!--                </goals>-->
+<!--              </execution>-->
+<!--            </executions>-->
+<!--          </plugin>-->
+<!--        </plugins>-->
+<!--      </build>-->
+<!--      <activation>-->
+<!--        &lt;!&ndash; nur aktive wenn noch kein anderes aktiv ist &ndash;&gt;-->
+<!--        <activeByDefault>false</activeByDefault>-->
+<!--      </activation>-->
+<!--    </profile>-->
     <profile>
       <id>headless</id>
       <properties>

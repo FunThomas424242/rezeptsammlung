@@ -36,7 +36,7 @@ import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 //    namedQueriesLocation = "classpath:solr-named-queries.properties",
 //    multicoreSupport = true)
 @EnableSolrRepositories(
-    basePackages = "com.github.funthomas424242.rezeptsammlung",
+    basePackages = "com.github.funthomas424242.rezeptsammlung.rezept",
     namedQueriesLocation = "classpath:solr-named-queries.properties")
 @ComponentScan
 public class SolrConfig {
