@@ -1,0 +1,3 @@
+<core name="rezeptserver"
+      instanceDir="/home/huluvu/git/rezeptsammlung/solrhome/embedded"
+      dataDir="/home/huluvu/git/rezeptsammlung/solrhome/data"/>
