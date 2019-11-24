@@ -66,7 +66,7 @@
   <body>
     <menu name="RADES Universum">
       <item name="RADES" href="https://PIUGroup.github.io/rades/index.html"/>
-      <item name="~ Jenkins Monitor" href="index.html">
+      <item name="~ Rezeptsammlung" href="index.html">
         <item name="Quellen" href="https://github.com/FunThomas424242/rezeptsammlung"/>
         <item name="Changelog" href="changelog.html"/>
         <item name="Benutzer" href="benutzer.html"/>

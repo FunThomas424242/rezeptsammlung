@@ -1,4 +1,4 @@
-# Jenkins Monitor Projekt
+# Rezeptsammlung
 
 include::../../../ArchitekturEntscheidungen.adoc[tabsize=4]
 
