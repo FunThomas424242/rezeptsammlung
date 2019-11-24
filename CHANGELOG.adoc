@@ -9,11 +9,6 @@ Die Versionierung erfolgt nach http://semver.org/lang/de/[Semantic Versioning].
 == [undelivered]
 === Added
 
-* https://github.com/FunThomas424242/jenkinsmonitor/issues/32[issue #32] Datei mit Verhaltensregeln steht bereit
-* https://github.com/FunThomas424242/jenkinsmonitor/issues/25[issue #25] Basic Authentification wird unterstützt
-* https://github.com/FunThomas424242/jenkinsmonitor/issues/22[issue #22] Windows Skripte korrigiert
-* https://github.com/FunThomas424242/jenkinsmonitor/issues/19[issue #19] Umgestellt auf jdk11
-
 === Changed
 
 * n/a
@@ -22,17 +17,3 @@ Die Versionierung erfolgt nach http://semver.org/lang/de/[Semantic Versioning].
 
 * n/a
 
-== [0.0.1] fertiggestellt 2019-10-06
-=== Added
-
-* https://github.com/FunThomas424242/jenkinsmonitor/issues/11[issue #11] Kleines Logo ins JAR gepackt.
-* https://github.com/FunThomas424242/jenkinsmonitor/issues/3[issue #3] Dokumentation aktualisiert.
-* https://github.com/FunThomas424242/jenkinsmonitor/issues/1[issue #1] Projekt aufgesetzt.
-
-### Changed
-
-* n/a
-
-### Removed
-
-* n/a

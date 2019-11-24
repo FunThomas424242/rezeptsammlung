@@ -1,6 +1,6 @@
 <!--
   #%L
-  jenkinsmonitor
+  rezeptsammlung
   %%
   Copyright (C) 2018 PIUG
   %%
@@ -35,12 +35,12 @@
       <topBarContainerStyle>width: 80%;</topBarContainerStyle>
       <sideBarEnabled>false</sideBarEnabled>
       <gitHub>
-        <projectId>FunThomas424242/jenkinsmonitor</projectId>
+        <projectId>FunThomas424242/rezeptsammlung</projectId>
         <ribbonOrientation>left</ribbonOrientation>
         <ribbonColor>gray</ribbonColor>
       </gitHub>
       <ohloh>
-        <projectId>jenkinsmonitor</projectId>
+        <projectId>rezeptsammlung</projectId>
         <!--<projectId>735033</projectId>-->
         <widget>factoids</widget>
       </ohloh>
@@ -67,7 +67,7 @@
     <menu name="RADES Universum">
       <item name="RADES" href="https://PIUGroup.github.io/rades/index.html"/>
       <item name="~ Jenkins Monitor" href="index.html">
-        <item name="Quellen" href="https://github.com/FunThomas424242/jenkinsmonitor"/>
+        <item name="Quellen" href="https://github.com/FunThomas424242/rezeptsammlung"/>
         <item name="Changelog" href="changelog.html"/>
         <item name="Benutzer" href="benutzer.html"/>
         <item name="Entwickler" href="entwickler.html"/>
