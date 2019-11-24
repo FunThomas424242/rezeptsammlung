@@ -22,6 +22,14 @@
 [literatur]
 === Literatur und Quellen im Netz
 
+* https://www.baeldung.com/java-9-modularity
+* https://www.baeldung.com/java-9-logging-api
+* http://www.slf4j.org/codes.html#ignoredBindings
+* http://www.slf4j.org/faq.html#changesInVersion18
+* https://stackoverflow.com/questions/41299060/maven-can-not-resolve-dependencies
+* https://github.com/gatling/gatling/issues/3290
+* https://github.com/qos-ch/logback/blob/master/logback-classic/pom.xml
+* https://cwiki.apache.org/confluence/display/solr/Solrj#Solrj-EmbeddedSolrServer#
 * https://stackoverflow.com/questions/9986546/solr-i-know-solr-is-written-in-java-how-do-i-create-and-control-a-running-inst
 * https://examples.javacodegeeks.com/enterprise-java/apache-solr/apache-solr-tutorial-beginners/
 * https://www.baeldung.com/spring-data-solr
