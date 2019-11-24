@@ -51,10 +51,7 @@ public class RezeptsammlungApplication {
 
     @PostConstruct
     protected void startSolrServer() throws ParserConfigurationException, SAXException, IOException {
-//        System.setProperty("solr.solr.home", "/path-to-solr");
-//        CoreContainer.Initializer initializer = new CoreContainer.Initializer();
         coreContainer = CoreContainer.createAndLoad(Paths.get(".", "solrhome"));
-//        coreContainer = initializer.initialize();
         embeddedSolrServer = new EmbeddedSolrServer(coreContainer, "rezeptserver");
     }
 
