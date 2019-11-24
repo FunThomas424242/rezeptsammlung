@@ -22,6 +22,10 @@
 [literatur]
 === Literatur und Quellen im Netz
 
+* https://stackoverflow.com/questions/9986546/solr-i-know-solr-is-written-in-java-how-do-i-create-and-control-a-running-inst
+* https://examples.javacodegeeks.com/enterprise-java/apache-solr/apache-solr-tutorial-beginners/
+* https://www.baeldung.com/spring-data-solr
+* https://www.baeldung.com/apache-solrj
 * https://github.com/noffle/art-of-readme[Art of Readme] - Erlerne die Kunst gute READMEs zu schreiben.
 * https://github.com/davidbgk/open-source-template/[open-source-template] - A README template to encourage open-source contributions.
 * https://github.com/spring-cloud-samples/spring-cloud-contract-samples/blob/master/consumer_pact/src/main/resources/application.yml
