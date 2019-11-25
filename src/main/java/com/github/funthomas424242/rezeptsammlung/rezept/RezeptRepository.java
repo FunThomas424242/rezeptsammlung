@@ -29,7 +29,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface RezeptRepository extends MongoRepository<Rezept, String>, PagingAndSortingRepository<Rezept, String> {
+public interface RezeptRepository extends MongoRepository<Rezept, String> {
 
 
     List<Rezept> findByTitel(String titel);
