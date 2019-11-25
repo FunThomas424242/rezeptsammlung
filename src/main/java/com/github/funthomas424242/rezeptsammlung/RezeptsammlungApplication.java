@@ -23,64 +23,18 @@ package com.github.funthomas424242.rezeptsammlung;
  */
 
 
-import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
-import org.apache.solr.core.CoreContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.solr.server.support.EmbeddedSolrServerFactory;
-import org.springframework.data.solr.server.support.EmbeddedSolrServerFactoryBean;
-import org.xml.sax.SAXException;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @SpringBootApplication
 public class RezeptsammlungApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(RezeptsammlungApplication.class);
 
-    protected EmbeddedSolrServer embeddedSolrServer;
-    protected CoreContainer coreContainer;
-
     public static void main(String[] args) {
         SpringApplication.run(RezeptsammlungApplication.class, args);
-    }
-
-    @PostConstruct
-    protected void startSolrServer() throws ParserConfigurationException, SAXException, IOException {
-        LOG.info("### startSorlServer");
-        final Path path = Paths.get( "solrhome");
-//        System.out.println("###"+path.toAbsolutePath().toString());
-//        System.out.println("###>"+path.resolve("solr.xml").toAbsolutePath().toString());
-//        coreContainer = CoreContainer.createAndLoad(path);
-//        System.out.println("###"+path.toAbsolutePath().toString());
-//        embeddedSolrServer = new EmbeddedSolrServer(coreContainer, "rezeptserver");
-        System.out.println("### start");
-        final EmbeddedSolrServerFactory factory = new EmbeddedSolrServerFactory(path.toAbsolutePath().toString());
-        System.out.println("### start1");
-//        this.embeddedSolrServer = factory.createPathConfiguredSolrServer(path.toAbsolutePath().toString());
-        this.embeddedSolrServer = factory.getSolrClient();
-        System.out.println("### start2");
-        this.coreContainer = embeddedSolrServer.getCoreContainer();
-        System.out.println("### start ended");
-        LOG.info("### startSorlServer geschafft");
-    }
-
-    @PreDestroy
-    protected void shutdownSolrServer() {
-        LOG.info("### shutdownSorlServer");
-        embeddedSolrServer.getCoreContainer().shutdown();
-        if (!coreContainer.isShutDown()) {
-            // zoombie servers container
-            coreContainer.shutdown();
-        }
-        LOG.info("### shutdownSorlServer geschafft");
     }
 
 }

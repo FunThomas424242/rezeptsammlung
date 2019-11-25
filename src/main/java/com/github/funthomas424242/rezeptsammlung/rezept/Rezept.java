@@ -23,27 +23,28 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  */
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.solr.core.mapping.Indexed;
-import org.springframework.data.solr.core.mapping.SolrDocument;
 
-@SolrDocument(collection = "rezept")
 public class Rezept {
 
     @Id
-    @Indexed(name = "id", type = "string")
-    private String id;
+    protected String id;
 
-    @Indexed(name = "name", type = "string")
-    private String name;
+    protected String titel;
+
+    protected String tag;
 
 
-    public Rezept(String id, String name) {
+    public Rezept(final String id, final String titel) {
         this.id = id;
-        this.name = name;
+        this.titel = titel;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setTitel(final String titel) {
+        this.titel = titel;
+    }
+
+    public void setTag(final String tag) {
+        this.tag = tag;
     }
 
 

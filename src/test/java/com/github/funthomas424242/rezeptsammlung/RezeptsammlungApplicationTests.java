@@ -41,7 +41,7 @@ class RezeptsammlungApplicationTests {
         rezeptRepository.save(rezept);
 
         final Rezept retrievedProduct = rezeptRepository.findById("P0001").get();
-        retrievedProduct.setName("Smart Phone");
+        retrievedProduct.setTitel("Smart Phone");
         rezeptRepository.save(retrievedProduct);
     }
 
