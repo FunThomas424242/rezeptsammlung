@@ -38,5 +38,23 @@
 * https://github.com/davidbgk/open-source-template/[open-source-template] - A README template to encourage open-source contributions.
 * https://github.com/spring-cloud-samples/spring-cloud-contract-samples/blob/master/consumer_pact/src/main/resources/application.yml
 
-=== Tools
+=== Embedable Document Database
+* http://nosql-database.org/
+* https://blog.doubleslash.de/embedded-databases-weniger-ist-manchmal-mehr/
+* https://www.baeldung.com/java-in-memory-databases
+* https://dzone.com/articles/spring-boot-with-embedded-mongodb (scheint am einfachsten zu gehen)
+* https://www.computerweekly.com/de/tipp/Vergleich-von-NoSQL-Datenbanken-MongoDB-versus-Cassandra
+* https://dzone.com/articles/setting-up-embedded-cassandra-on-spring-project
+* https://lucene.apache.org/solr/  (scheinbar keine embedded Möglichkeit mehr in latest Version)
+* https://www.baeldung.com/lucene
+* https://www.dizitart.org/nitrite-database.html
+* https://github.com/strapdata/elassandra (eingebettet sehr gut für Unit Test - Mix aus Elasticsearch und Cassandra )
+* http://jsondb.io/
+* https://ejdb.org/
+* https://unqlite.org/
+* https://boilerbay.com/
+* http://armelnene.blogspot.com/2009/11/develop-your-own-google-with-apache.html
+*
+
+
 
