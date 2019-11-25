@@ -24,6 +24,7 @@ package com.github.funthomas424242.rezeptsammlung;
 
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import com.github.funthomas424242.rezeptsammlung.rezept.RezeptRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,13 +36,14 @@ class RezeptsammlungApplicationTests {
     RezeptRepository rezeptRepository;
 
     @Test
-    void contextLoads() {
+    @DisplayName("Prüfe ob geschriebene Werte wieder ausgelesen werden können.")
+    void pruefeSchreibenLesen() {
 
-        Rezept rezept = new Rezept("P0001", "Phone");
+        Rezept rezept = new Rezept("backen#apfelkuchen#1", "Apfelkuchen mit Hefeteig");
         rezeptRepository.save(rezept);
 
-        final Rezept retrievedProduct = rezeptRepository.findById("P0001").get();
-        retrievedProduct.setTitel("Smart Phone");
+        final Rezept retrievedProduct = rezeptRepository.findById("backen#apfelkuchen#1").get();
+        retrievedProduct.setTitel("Apfelkuchen mit Rührteig");
         rezeptRepository.save(retrievedProduct);
     }
 
