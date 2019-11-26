@@ -91,9 +91,6 @@ class RezeptsammlungApplicationTests {
     @DisplayName("Prüfe ob ein Wert aktualisiert werden kann.")
     void pruefeUpdate() {
 
-//        final NitriteRepository<Rezept, Long> repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
-//        Assumptions.assumeTrue(repository.find().size() == 0, "Vorbedingung size == 0 nicht erfüllt");
-
         final Rezept rezept = new Rezept(1L, "Testen in vertrauten Umgebungen");
         repository.insert(rezept);
 
