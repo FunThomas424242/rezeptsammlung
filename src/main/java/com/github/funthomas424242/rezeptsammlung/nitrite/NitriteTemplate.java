@@ -22,7 +22,6 @@ package com.github.funthomas424242.rezeptsammlung.nitrite;
  * #L%
  */
 
-import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import org.dizitart.no2.Document;
 import org.dizitart.no2.FindOptions;
 import org.dizitart.no2.Index;
@@ -44,26 +43,24 @@ import java.util.Collection;
 
 public class NitriteTemplate {
 
-    protected final Logger LOG = LoggerFactory.getLogger(NitriteTemplate.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(NitriteTemplate.class);
 
-    // TODO Das muss bestimmt ein Sigleton werden.
-    // Wenn es funktioniert, dann nur weil das Template eine Spring Bean ist und damit wohl nur 1x existent.
+    // TODO Korrektes Singleton implementieren
+    // Das funktioniert hier nur weil der Default Scope einer Spring Bean = Singleton ist.
+    // https://www.baeldung.com/spring-bean-scopes
     protected final Nitrite nitriteInstanz;
 
     public NitriteTemplate(final Nitrite nitrite) {
         nitriteInstanz = nitrite;
     }
 
-    public void init() {
-        LOG.debug("### init ###");
-        //        nitriteInstanz.
-        //        map.put("host", "mail.example.com");
-        //        map.put("port", "25");
-        //        map.put("from", "example@boraji.com");
-        //        System.out.println("Inside init method - "+map);
+    protected void init() {
+        LOG.debug("Starte die Nitrite Datenbank.");
+        // Properties werden über die NitriteConfig gesetzt
     }
 
-    public void destroy() {
+    protected void destroy() {
+        LOG.debug("Zerstöre die Nitrite Datenbank.");
         /**
          * Shutdown Hook
          *
@@ -74,7 +71,8 @@ public class NitriteTemplate {
         this.nitriteInstanz.close();
     }
 
-    public <ET,KT> NitriteRepository<ET, KT> getRepository(Class<ET> type, Class<KT> keyClass) {
+    public <ET, KT> NitriteRepository<ET, KT> getRepository(Class<ET> type, Class<KT> keyClass) {
+        LOG.debug("Erzeuge neues Nitrite Repository für: {}", type.getName());
         final ObjectRepository<ET> tmpRepository = this.nitriteInstanz.getRepository(type);
         return new NitriteRepository<ET, KT>() {
 
