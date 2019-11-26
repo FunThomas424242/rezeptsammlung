@@ -22,29 +22,42 @@ package com.github.funthomas424242.rezeptsammlung;
  * #L%
  */
 
+import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteRepository;
+import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteTemplate;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
-import com.github.funthomas424242.rezeptsammlung.rezept.RezeptRepository;
+import org.dizitart.no2.NitriteId;
+import org.dizitart.no2.objects.Cursor;
+import org.dizitart.no2.objects.filters.ObjectFilters;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 class RezeptsammlungApplicationTests {
 
     @Autowired
-    RezeptRepository rezeptRepository;
+    NitriteTemplate nitriteTemplate;
 
     @Test
     @DisplayName("Prüfe ob geschriebene Werte wieder ausgelesen werden können.")
     void pruefeSchreibenLesen() {
 
-        Rezept rezept = new Rezept("backen#apfelkuchen#1", "Apfelkuchen mit Hefeteig");
-        rezeptRepository.save(rezept);
+        final Rezept rezept = new Rezept(1L, "Apfelkuchen mit Hefeteig");
+        final NitriteRepository<Rezept,Long> repository = nitriteTemplate.getRepository(Rezept.class,Long.class);
+        repository.insert(rezept);
 
-        final Rezept retrievedProduct = rezeptRepository.findById("backen#apfelkuchen#1").get();
-        retrievedProduct.setTitel("Apfelkuchen mit Rührteig");
-        rezeptRepository.save(retrievedProduct);
+        final Cursor<Rezept> retrievedProduct = repository.find(ObjectFilters.eq("titel", "Apfelkuchen mit Hefeteig"));
+        assertEquals(1,retrievedProduct.size());
+        final Cursor<Rezept> retrievedProduct1 = repository.find(ObjectFilters.eq("id", 1L));
+        assertEquals(1,retrievedProduct1.size());
+
+
+
+//        retrievedProduct.setTitel("Apfelkuchen mit Rührteig");
+//        nitriteTemplate.save(retrievedProduct);
     }
 
 }

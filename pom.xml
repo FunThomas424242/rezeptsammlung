@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.github.funthomas424242</groupId>
-	<artifactId>rezeptsammlung</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>rezeptsammlung</name>
-	<description>Dezentrale Rezeptsammlung auf MongoDB Basis</description>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.2.1.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>com.github.funthomas424242</groupId>
+  <artifactId>rezeptsammlung</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>rezeptsammlung</name>
+  <description>Dezentrale Rezeptsammlung auf MongoDB Basis</description>
   <inceptionYear>2019</inceptionYear>
   <url>https://github.com/FunThomas424242/rezeptsammlung</url>
   <licenses>
@@ -52,45 +52,56 @@
   </distributionManagement>
 
 
-	<properties>
-		<java.version>11</java.version>
-		<spring-cloud.version>Hoxton.RC2</spring-cloud.version>
+  <properties>
+    <java.version>11</java.version>
+    <spring-cloud.version>Hoxton.RC2</spring-cloud.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     <maven.compiler.release>11</maven.compiler.release>
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
     <junit-excluded-groups/>
-	</properties>
+  </properties>
 
   <prerequisites>
     <maven>3.6.2</maven>
   </prerequisites>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.springframework.boot</groupId>-->
-<!--      <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-<!--    </dependency>-->
-    <!-- mongodb -->
+  <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-mongodb</artifactId>
+      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>de.flapdoodle.embed</groupId>
-      <artifactId>de.flapdoodle.embed.mongo</artifactId>
-      <version>2.2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>cz.jirutka.spring</groupId>
-      <artifactId>embedmongo-spring</artifactId>
-      <version>1.3.1</version>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.boot</groupId>-->
+<!--      <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+<!--    </dependency>-->
+<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.data</groupId>-->
+<!--      <artifactId>spring-data-commons</artifactId>-->
+<!--      <version>2.2.2.RELEASE</version>-->
+<!--    </dependency>-->
+
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.boot</groupId>-->
+    <!--      <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+    <!--    </dependency>-->
+    <!-- mongodb -->
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.boot</groupId>-->
+    <!--      <artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>de.flapdoodle.embed</groupId>-->
+    <!--      <artifactId>de.flapdoodle.embed.mongo</artifactId>-->
+    <!--      <version>2.2.0</version>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>cz.jirutka.spring</groupId>-->
+    <!--      <artifactId>embedmongo-spring</artifactId>-->
+    <!--      <version>1.3.1</version>-->
+    <!--    </dependency>-->
 
     <!-- nitrite db -->
     <dependency>
@@ -111,7 +122,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>2.0.0-alpha1</version>
+      <version>1.7.29</version>
       <scope>compile</scope>
     </dependency>
     <!-- APIs von denen die Generate abhängen -->
@@ -150,11 +161,11 @@
         </exclusion>
       </exclusions>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.springframework.cloud</groupId>-->
-<!--      <artifactId>spring-cloud-starter-contract-verifier</artifactId>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.springframework.cloud</groupId>-->
+    <!--      <artifactId>spring-cloud-starter-contract-verifier</artifactId>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -168,63 +179,61 @@
       <scope>test</scope>
     </dependency>
     <!-- bugfix weil diese abhängigkeit transitiv benötigt wird -->
-<!--    <dependency>-->
-<!--      <groupId>net.minidev</groupId>-->
-<!--      <artifactId>asm</artifactId>-->
-<!--      <version>1.0.2</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>net.minidev</groupId>-->
+    <!--      <artifactId>asm</artifactId>-->
+    <!--      <version>1.0.2</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
 
-<!--    <dependency>-->
-<!--      <groupId>net.minidev</groupId>-->
-<!--      <artifactId>json-smart</artifactId>-->
-<!--      <version>2.2.1</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>nl.jqno.equalsverifier</groupId>-->
-<!--      <artifactId>equalsverifier</artifactId>-->
-<!--      <version>3.1.10</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.apache.bval</groupId>-->
-<!--      <artifactId>bval-jsr</artifactId>-->
-<!--      <version>2.0.3</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    &lt;!&ndash; REST Clients testen &ndash;&gt;-->
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>com.github.tomakehurst</groupId>-->
-<!--      <artifactId>wiremock-standalone</artifactId>-->
-<!--      <version>2.25.1</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>io.rest-assured</groupId>-->
-<!--      <artifactId>rest-assured</artifactId>-->
-<!--      <version>4.1.2</version>-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-	</dependencies>
+    <!--    <dependency>-->
+    <!--      <groupId>net.minidev</groupId>-->
+    <!--      <artifactId>json-smart</artifactId>-->
+    <!--      <version>2.2.1</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>nl.jqno.equalsverifier</groupId>-->
+    <!--      <artifactId>equalsverifier</artifactId>-->
+    <!--      <version>3.1.10</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.apache.bval</groupId>-->
+    <!--      <artifactId>bval-jsr</artifactId>-->
+    <!--      <version>2.0.3</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
+    <!--    &lt;!&ndash; REST Clients testen &ndash;&gt;-->
+    <!--    &lt;!&ndash; https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock &ndash;&gt;-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.github.tomakehurst</groupId>-->
+    <!--      <artifactId>wiremock-standalone</artifactId>-->
+    <!--      <version>2.25.1</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>io.rest-assured</groupId>-->
+    <!--      <artifactId>rest-assured</artifactId>-->
+    <!--      <version>4.1.2</version>-->
+    <!--      <scope>test</scope>-->
+    <!--    </dependency>-->
+  </dependencies>
 
-	<dependencyManagement>
-<!--		<dependencies>-->
-<!--			<dependency>-->
-<!--				<groupId>org.springframework.cloud</groupId>-->
-<!--				<artifactId>spring-cloud-dependencies</artifactId>-->
-<!--				<version>${spring-cloud.version}</version>-->
-<!--				<type>pom</type>-->
-<!--				<scope>import</scope>-->
-<!--			</dependency>-->
-<!--		</dependencies>-->
-	</dependencyManagement>
-
-
+  <dependencyManagement>
+    <!--		<dependencies>-->
+    <!--			<dependency>-->
+    <!--				<groupId>org.springframework.cloud</groupId>-->
+    <!--				<artifactId>spring-cloud-dependencies</artifactId>-->
+    <!--				<version>${spring-cloud.version}</version>-->
+    <!--				<type>pom</type>-->
+    <!--				<scope>import</scope>-->
+    <!--			</dependency>-->
+    <!--		</dependencies>-->
+  </dependencyManagement>
 
 
-	<build>
+  <build>
     <pluginManagement>
       <plugins>
         <plugin>
@@ -276,21 +285,21 @@
       </plugins>
     </pluginManagement>
 
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
-				<version>2.2.0.RC2</version>
-				<extensions>true</extensions>
-				<configuration>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+        <version>2.2.0.RC2</version>
+        <extensions>true</extensions>
+        <configuration>
           <skip>true</skip>
-					<testFramework>JUNIT5</testFramework>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+          <testFramework>JUNIT5</testFramework>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
@@ -552,41 +561,41 @@
           </execution>
         </executions>
       </plugin>
-		</plugins>
-	</build>
+    </plugins>
+  </build>
 
   <profiles>
-<!--    <profile>-->
-<!--      <id>local</id>-->
-<!--      <build>-->
-<!--        <plugins>-->
-<!--          <plugin>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-toolchains-plugin</artifactId>-->
-<!--            <version>3.0.0</version>-->
-<!--            <configuration>-->
-<!--              <toolchains>-->
-<!--                <jdk>-->
-<!--                  <version>13</version>-->
-<!--                  <vendor>openjdk</vendor>-->
-<!--                </jdk>-->
-<!--              </toolchains>-->
-<!--            </configuration>-->
-<!--            <executions>-->
-<!--              <execution>-->
-<!--                <goals>-->
-<!--                  <goal>toolchain</goal>-->
-<!--                </goals>-->
-<!--              </execution>-->
-<!--            </executions>-->
-<!--          </plugin>-->
-<!--        </plugins>-->
-<!--      </build>-->
-<!--      <activation>-->
-<!--        &lt;!&ndash; nur aktive wenn noch kein anderes aktiv ist &ndash;&gt;-->
-<!--        <activeByDefault>false</activeByDefault>-->
-<!--      </activation>-->
-<!--    </profile>-->
+    <!--    <profile>-->
+    <!--      <id>local</id>-->
+    <!--      <build>-->
+    <!--        <plugins>-->
+    <!--          <plugin>-->
+    <!--            <groupId>org.apache.maven.plugins</groupId>-->
+    <!--            <artifactId>maven-toolchains-plugin</artifactId>-->
+    <!--            <version>3.0.0</version>-->
+    <!--            <configuration>-->
+    <!--              <toolchains>-->
+    <!--                <jdk>-->
+    <!--                  <version>13</version>-->
+    <!--                  <vendor>openjdk</vendor>-->
+    <!--                </jdk>-->
+    <!--              </toolchains>-->
+    <!--            </configuration>-->
+    <!--            <executions>-->
+    <!--              <execution>-->
+    <!--                <goals>-->
+    <!--                  <goal>toolchain</goal>-->
+    <!--                </goals>-->
+    <!--              </execution>-->
+    <!--            </executions>-->
+    <!--          </plugin>-->
+    <!--        </plugins>-->
+    <!--      </build>-->
+    <!--      <activation>-->
+    <!--        &lt;!&ndash; nur aktive wenn noch kein anderes aktiv ist &ndash;&gt;-->
+    <!--        <activeByDefault>false</activeByDefault>-->
+    <!--      </activation>-->
+    <!--    </profile>-->
     <profile>
       <id>headless</id>
       <properties>
@@ -664,22 +673,22 @@
 
 
   <repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>
     <repository>
-      <id>restlet-repo</id>
-      <url>http://maven.restlet.com/</url>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
     </repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</pluginRepository>
-	</pluginRepositories>
+    <!--    <repository>-->
+    <!--      <id>restlet-repo</id>-->
+    <!--      <url>http://maven.restlet.com/</url>-->
+    <!--    </repository>-->
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

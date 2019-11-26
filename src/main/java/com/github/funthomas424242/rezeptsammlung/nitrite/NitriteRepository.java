@@ -22,28 +22,8 @@ package com.github.funthomas424242.rezeptsammlung.nitrite;
  * #L%
  */
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
+import org.dizitart.no2.objects.ObjectRepository;
 
-import java.util.List;
-
-@NoRepositoryBean
-public interface NitriteRepository<T, ID> extends PagingAndSortingRepository<T, ID>, QueryByExampleExecutor<T> {
-    <S extends T> List<S> saveAll(Iterable<S> var1);
-
-    List<T> findAll();
-
-    List<T> findAll(Sort var1);
-
-    <S extends T> S insert(S var1);
-
-    <S extends T> List<S> insert(Iterable<S> var1);
-
-    <S extends T> List<S> findAll(Example<S> var1);
-
-    <S extends T> List<S> findAll(Example<S> var1, Sort var2);
+public interface NitriteRepository<T,ID> extends ObjectRepository<T> {
 
 }
