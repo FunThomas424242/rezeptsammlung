@@ -260,6 +260,9 @@
             </goals>
             <configuration>
               <rules>
+                <requireMavenVersion>
+                  <version>3.6.2</version>
+                </requireMavenVersion>
                 <requireJavaVersion>
                   <version>13</version>
                 </requireJavaVersion>
@@ -414,7 +417,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M2</version>
         <configuration>
-          <forkMode>never</forkMode>
+          <forkCount>0</forkCount>
+          <reuseForks>true</reuseForks>
           <argLine>
             --illegal-access=deny
           </argLine>
