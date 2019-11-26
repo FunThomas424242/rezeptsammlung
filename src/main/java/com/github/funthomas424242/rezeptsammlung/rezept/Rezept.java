@@ -28,6 +28,7 @@ import org.dizitart.no2.objects.Index;
 import org.dizitart.no2.objects.Indices;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 
 @Indices({
@@ -57,5 +58,18 @@ public class Rezept implements Serializable {
         this.tag = tag;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Rezept)) return false;
+        Rezept rezept = (Rezept) o;
+        return id == rezept.id &&
+            titel.equals(rezept.titel) &&
+            Objects.equals(tag, rezept.tag);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titel, tag);
+    }
 }

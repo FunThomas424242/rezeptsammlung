@@ -25,7 +25,7 @@ package com.github.funthomas424242.rezeptsammlung;
 import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteRepository;
 import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteTemplate;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
-import org.dizitart.no2.NitriteId;
+import org.dizitart.no2.RecordIterable;
 import org.dizitart.no2.objects.Cursor;
 import org.dizitart.no2.objects.filters.ObjectFilters;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 @SpringBootTest
 class RezeptsammlungApplicationTests {
@@ -46,14 +47,17 @@ class RezeptsammlungApplicationTests {
     void pruefeSchreibenLesen() {
 
         final Rezept rezept = new Rezept(1L, "Apfelkuchen mit Hefeteig");
-        final NitriteRepository<Rezept,Long> repository = nitriteTemplate.getRepository(Rezept.class,Long.class);
+        final NitriteRepository<Rezept, Long> repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
         repository.insert(rezept);
 
-        final Cursor<Rezept> retrievedProduct = repository.find(ObjectFilters.eq("titel", "Apfelkuchen mit Hefeteig"));
-        assertEquals(1,retrievedProduct.size());
-        final Cursor<Rezept> retrievedProduct1 = repository.find(ObjectFilters.eq("id", 1L));
-        assertEquals(1,retrievedProduct1.size());
+        final Cursor<Rezept> rezepts = repository.find(ObjectFilters.eq("titel", "Apfelkuchen mit Hefeteig"));
+        assertEquals(1, rezepts.size());
+        final Rezept firstRezept = rezepts.firstOrDefault();
+        assertNotSame(rezept,firstRezept);
+        assertEquals(rezept,firstRezept);
 
+        final Cursor<Rezept> rezepts1 = repository.find(ObjectFilters.eq("id", 1L));
+        assertEquals(1, rezepts1.size());
 
 
 //        retrievedProduct.setTitel("Apfelkuchen mit Rührteig");
