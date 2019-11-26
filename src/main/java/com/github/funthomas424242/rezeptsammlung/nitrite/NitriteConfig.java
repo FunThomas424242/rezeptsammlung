@@ -1,4 +1,4 @@
-package com.github.funthomas424242.rezeptsammlung;
+package com.github.funthomas424242.rezeptsammlung.nitrite;
 
 /*-
  * #%L
@@ -22,26 +22,34 @@ package com.github.funthomas424242.rezeptsammlung;
  * #L%
  */
 
-import com.mongodb.MongoClient;
-import cz.jirutka.spring.embedmongo.EmbeddedMongoFactoryBean;
+import org.dizitart.no2.Nitrite;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.io.IOException;
 
 @Configuration
 //@EnableMongoRepositories(basePackages="com.github.funthomas424242.rezeptsammlung.rezept")
-public class MongoConfig {
-    private static final String MONGO_DB_URL = "localhost";
-    private static final String MONGO_DB_NAME = "embeded_db";
+public class NitriteConfig {
+//    private static final String MONGO_DB_URL = "localhost";
+//    private static final String MONGO_DB_NAME = "embeded_db";
+//
+//    @Bean
+//    public MongoTemplate mongoTemplate() throws IOException {
+//        EmbeddedMongoFactoryBean mongo = new EmbeddedMongoFactoryBean();
+//        mongo.setBindIp(MONGO_DB_URL);
+//        MongoClient mongoClient = mongo.getObject();
+//        MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, MONGO_DB_NAME);
+//        return mongoTemplate;
+//    }
 
-    @Bean
-    public MongoTemplate mongoTemplate() throws IOException {
-        EmbeddedMongoFactoryBean mongo = new EmbeddedMongoFactoryBean();
-        mongo.setBindIp(MONGO_DB_URL);
-        MongoClient mongoClient = mongo.getObject();
-        MongoTemplate mongoTemplate = new MongoTemplate(mongoClient, MONGO_DB_NAME);
-        return mongoTemplate;
+    @Bean(initMethod = "init", destroyMethod = "destroy")
+    public NitriteTemplate nitriteTemplate() throws IOException {
+        final Nitrite nitrite = Nitrite.builder()
+            .compressed()
+            .filePath("/tmp/test.db")
+            .openOrCreate();
+//            .openOrCreate("user", "password");
+        return new NitriteTemplate(nitrite);
     }
 }

@@ -22,14 +22,13 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
+import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface RezeptRepository extends MongoRepository<Rezept, String> {
+public interface RezeptRepository extends NitriteRepository<Rezept, String> {
 
 
     List<Rezept> findByTitel(String titel);

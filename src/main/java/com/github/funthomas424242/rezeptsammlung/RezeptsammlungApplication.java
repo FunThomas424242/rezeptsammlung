@@ -23,15 +23,11 @@ package com.github.funthomas424242.rezeptsammlung;
  */
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class RezeptsammlungApplication {
-
-    private static final Logger LOG = LoggerFactory.getLogger(RezeptsammlungApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(RezeptsammlungApplication.class, args);
