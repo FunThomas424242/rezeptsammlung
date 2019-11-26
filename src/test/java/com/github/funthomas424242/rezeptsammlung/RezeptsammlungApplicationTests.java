@@ -48,7 +48,7 @@ class RezeptsammlungApplicationTests {
 
         final Rezept rezept = new Rezept(1L, "Apfelkuchen mit Hefeteig");
         final NitriteRepository<Rezept, Long> repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
-        Assumptions.assumeTrue(repository.find().size() == 0);
+        Assumptions.assumeTrue(repository.find().size() == 0,"Vorbedingung size == 0 nicht erfüllt");
 
         // Schreiben
         repository.insert(rezept);
@@ -70,9 +70,6 @@ class RezeptsammlungApplicationTests {
         final Cursor<Rezept> rezepts1 = repository.find(ObjectFilters.eq("id", 1L));
         assertEquals(1, rezepts1.size());
 
-
-//        retrievedProduct.setTitel("Apfelkuchen mit Rührteig");
-//        nitriteTemplate.save(retrievedProduct);
     }
 
 }
