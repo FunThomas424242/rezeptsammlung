@@ -65,6 +65,8 @@
 * https://dzone.com/articles/nitrite-how-to-create-an-embedded-database-for-jav
 * https://dzone.com/articles/nitrite-an-embedded-nosql-database-for-javaandroid
 
-
+Korrekte Spring Repos bauen
+https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
+https://www.baeldung.com/spring-boot-access-h2-database-multiple-apps
 
 
