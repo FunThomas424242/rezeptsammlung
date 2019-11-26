@@ -58,6 +58,18 @@ public class Rezept implements Serializable {
         this.tag = tag;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getTitel() {
+        return titel;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

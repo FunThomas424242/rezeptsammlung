@@ -27,7 +27,9 @@ import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteTemplate;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import org.dizitart.no2.objects.Cursor;
 import org.dizitart.no2.objects.filters.ObjectFilters;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +41,29 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 @SpringBootTest
 class RezeptsammlungApplicationTests {
 
+    public static final String TEXT_DAS_IST_MAL_EINE_ÄNDERUNG = "Das ist mal eine Änderung!!!";
+
     @Autowired
     NitriteTemplate nitriteTemplate;
+
+    protected NitriteRepository<Rezept, Long> repository;
+
+    @BeforeEach
+    public void setUp() {
+        repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
+        Assumptions.assumeTrue(repository.find().size() == 0, "Vorbedingung size == 0 nicht erfüllt");
+    }
+
+    @AfterEach
+    public void tearDown(){
+        repository.drop();
+    }
 
     @Test
     @DisplayName("Prüfe ob geschriebene Werte wieder ausgelesen werden können.")
     void pruefeSchreibenLesen() {
 
         final Rezept rezept = new Rezept(1L, "Apfelkuchen mit Hefeteig");
-        final NitriteRepository<Rezept, Long> repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
-        Assumptions.assumeTrue(repository.find().size() == 0,"Vorbedingung size == 0 nicht erfüllt");
 
         // Schreiben
         repository.insert(rezept);
@@ -71,5 +86,29 @@ class RezeptsammlungApplicationTests {
         assertEquals(1, rezepts1.size());
 
     }
+
+    @Test
+    @DisplayName("Prüfe ob ein Wert aktualisiert werden kann.")
+    void pruefeUpdate() {
+
+//        final NitriteRepository<Rezept, Long> repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
+//        Assumptions.assumeTrue(repository.find().size() == 0, "Vorbedingung size == 0 nicht erfüllt");
+
+        final Rezept rezept = new Rezept(1L, "Testen in vertrauten Umgebungen");
+        repository.insert(rezept);
+
+
+        final Cursor<Rezept> rezepts = repository.find(ObjectFilters.eq("id", 1L));
+        assertEquals(1, rezepts.size());
+        final Rezept zuaenderndesRezept = rezepts.firstOrDefault();
+        zuaenderndesRezept.setTitel(TEXT_DAS_IST_MAL_EINE_ÄNDERUNG);
+        repository.update(zuaenderndesRezept);
+
+        final Cursor<Rezept> rezepts1 = repository.find(ObjectFilters.eq("id", 1L));
+        assertEquals(1, rezepts1.size());
+        assertEquals(TEXT_DAS_IST_MAL_EINE_ÄNDERUNG, rezepts1.firstOrDefault().getTitel());
+
+    }
+
 
 }

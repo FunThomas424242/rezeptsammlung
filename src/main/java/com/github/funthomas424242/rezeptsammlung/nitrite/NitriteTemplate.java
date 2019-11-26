@@ -46,6 +46,8 @@ public class NitriteTemplate {
 
     protected final Logger LOG = LoggerFactory.getLogger(NitriteTemplate.class);
 
+    // TODO Das muss bestimmt ein Sigleton werden.
+    // Wenn es funktioniert, dann nur weil das Template eine Spring Bean ist und damit wohl nur 1x existent.
     protected final Nitrite nitriteInstanz;
 
     public NitriteTemplate(final Nitrite nitrite) {
