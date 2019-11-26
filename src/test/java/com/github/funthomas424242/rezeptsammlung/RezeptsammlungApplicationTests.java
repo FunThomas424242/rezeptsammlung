@@ -25,9 +25,9 @@ package com.github.funthomas424242.rezeptsammlung;
 import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteRepository;
 import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteTemplate;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
-import org.dizitart.no2.RecordIterable;
 import org.dizitart.no2.objects.Cursor;
 import org.dizitart.no2.objects.filters.ObjectFilters;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +48,24 @@ class RezeptsammlungApplicationTests {
 
         final Rezept rezept = new Rezept(1L, "Apfelkuchen mit Hefeteig");
         final NitriteRepository<Rezept, Long> repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
+        Assumptions.assumeTrue(repository.find().size() == 0);
+
+        // Schreiben
         repository.insert(rezept);
 
+        // Lesen
         final Cursor<Rezept> rezepts = repository.find(ObjectFilters.eq("titel", "Apfelkuchen mit Hefeteig"));
         assertEquals(1, rezepts.size());
         final Rezept firstRezept = rezepts.firstOrDefault();
-        assertNotSame(rezept,firstRezept);
-        assertEquals(rezept,firstRezept);
+        assertNotSame(rezept, firstRezept);
+        assertEquals(rezept, firstRezept);
+        final Rezept firstRezeptAgain = rezepts.firstOrDefault();
+
+        assertNotSame(rezept, firstRezeptAgain);
+        assertEquals(rezept, firstRezeptAgain);
+        // Es wird jedes mal beim Lesen ein neues Objekt erstellt
+        assertNotSame(firstRezept, firstRezeptAgain);
+        assertEquals(firstRezept, firstRezeptAgain);
 
         final Cursor<Rezept> rezepts1 = repository.find(ObjectFilters.eq("id", 1L));
         assertEquals(1, rezepts1.size());
