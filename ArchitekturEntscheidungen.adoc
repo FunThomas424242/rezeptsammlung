@@ -38,12 +38,21 @@
 * https://github.com/davidbgk/open-source-template/[open-source-template] - A README template to encourage open-source contributions.
 * https://github.com/spring-cloud-samples/spring-cloud-contract-samples/blob/master/consumer_pact/src/main/resources/application.yml
 
+=== Guter Stil
+* https://tuhrig.de/using-configurationproperties-to-separate-service-and-configuration
+
+=== Auslieferung / Paketierung
+* https://dzone.com/articles/packaging-springboot-application-with-external-dep
+* https://crunchify.com/how-to-create-build-java-project-including-all-dependencies-using-maven-maven-resources-maven-dependency-maven-jar-plugin-tutorial/
+
+
 === Embedable Document Database
 * http://nosql-database.org/
 * https://blog.doubleslash.de/embedded-databases-weniger-ist-manchmal-mehr/
 * https://www.baeldung.com/java-in-memory-databases
 * https://dzone.com/articles/spring-boot-with-embedded-mongodb (scheint am einfachsten zu gehen)
 * https://www.computerweekly.com/de/tipp/Vergleich-von-NoSQL-Datenbanken-MongoDB-versus-Cassandra
+* https://docs.spring.io/spring-data/mongodb/docs/1.2.0.RELEASE/reference/html/mongo.repositories.html
 * https://dzone.com/articles/setting-up-embedded-cassandra-on-spring-project
 * https://lucene.apache.org/solr/  (scheinbar keine embedded Möglichkeit mehr in latest Version)
 * https://www.baeldung.com/lucene
@@ -54,7 +63,18 @@
 * https://unqlite.org/
 * https://boilerbay.com/
 * http://armelnene.blogspot.com/2009/11/develop-your-own-google-with-apache.html
-*
 
+
+* Integrate Nitrite into spring boot
+* https://www.baeldung.com/spring-boot-access-h2-database-multiple-apps
+* https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
+* https://www.baeldung.com/spring-bean
+* https://www.dizitart.org/nitrite-database/
+* https://dzone.com/articles/nitrite-how-to-create-an-embedded-database-for-jav
+* https://dzone.com/articles/nitrite-an-embedded-nosql-database-for-javaandroid
+
+=== Korrekte Spring Repos bauen
+https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
+https://www.baeldung.com/spring-boot-access-h2-database-multiple-apps
 
 

@@ -22,19 +22,30 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
-import org.springframework.data.annotation.Id;
+import org.dizitart.no2.IndexType;
+import org.dizitart.no2.objects.Id;
+import org.dizitart.no2.objects.Index;
+import org.dizitart.no2.objects.Indices;
 
-public class Rezept {
+import java.io.Serializable;
+import java.util.Objects;
+
+
+@Indices({
+    @Index(value = "titel", type = IndexType.NonUnique),
+    @Index(value = "id", type = IndexType.Unique)
+})
+public class Rezept implements Serializable {
 
     @Id
-    protected String id;
+    protected long id;
 
     protected String titel;
 
     protected String tag;
 
 
-    public Rezept(final String id, final String titel) {
+    public Rezept(final Long id, final String titel) {
         this.id = id;
         this.titel = titel;
     }
@@ -47,5 +58,30 @@ public class Rezept {
         this.tag = tag;
     }
 
+    public long getId() {
+        return id;
+    }
 
+    public String getTitel() {
+        return titel;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Rezept)) return false;
+        Rezept rezept = (Rezept) o;
+        return id == rezept.id &&
+            titel.equals(rezept.titel) &&
+            Objects.equals(tag, rezept.tag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titel, tag);
+    }
 }
