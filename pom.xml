@@ -424,6 +424,17 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>com.github.funthomas424242.rezeptsammlung.RezeptsammlungApplication</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
@@ -445,17 +456,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>com.github.funthomas424242.rezeptsammlung.RezeptsammlungApplication</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
-      </plugin>
+
       <!--      <plugin>-->
       <!--        <artifactId>maven-jlink-plugin</artifactId>-->
       <!--        <version>3.0.0-alpha-1</version>-->
