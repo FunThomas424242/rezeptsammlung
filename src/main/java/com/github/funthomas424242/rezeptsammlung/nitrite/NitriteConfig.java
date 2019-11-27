@@ -22,22 +22,21 @@ package com.github.funthomas424242.rezeptsammlung.nitrite;
  * #L%
  */
 
-import org.dizitart.no2.Nitrite;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
-
 @Configuration
+@EnableConfigurationProperties
+@ConfigurationProperties(prefix = "nitrite")
 public class NitriteConfig {
 
-    @Bean(initMethod = "init", destroyMethod = "destroy")
-    public NitriteTemplate nitriteTemplate() throws IOException {
-        final Nitrite nitrite = Nitrite.builder()
-//            .compressed()
-//            .filePath("/tmp/test.db")
-            .openOrCreate();
-//            .openOrCreate("user", "password");
-        return new NitriteTemplate(nitrite);
-    }
+    // Ab hier folgen die Config Properties nitrite.xxx
+    protected String dbfilePath;
+    protected String username;
+    protected String password;
+    protected boolean disableautocommit;
+    protected boolean compressed;
+
+
 }

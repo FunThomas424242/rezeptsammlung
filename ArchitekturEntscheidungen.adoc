@@ -38,6 +38,9 @@
 * https://github.com/davidbgk/open-source-template/[open-source-template] - A README template to encourage open-source contributions.
 * https://github.com/spring-cloud-samples/spring-cloud-contract-samples/blob/master/consumer_pact/src/main/resources/application.yml
 
+=== Guter Stil
+* https://tuhrig.de/using-configurationproperties-to-separate-service-and-configuration
+
 === Embedable Document Database
 * http://nosql-database.org/
 * https://blog.doubleslash.de/embedded-databases-weniger-ist-manchmal-mehr/
@@ -65,7 +68,7 @@
 * https://dzone.com/articles/nitrite-how-to-create-an-embedded-database-for-jav
 * https://dzone.com/articles/nitrite-an-embedded-nosql-database-for-javaandroid
 
-Korrekte Spring Repos bauen
+=== Korrekte Spring Repos bauen
 https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
 https://www.baeldung.com/spring-boot-access-h2-database-multiple-apps
 

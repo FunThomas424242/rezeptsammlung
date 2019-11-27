@@ -451,7 +451,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.github.funthomas424242.jenkinsmonitor.JenkinsMonitor</mainClass>
+              <mainClass>com.github.funthomas424242.rezeptsammlung.RezeptsammlungApplication</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -510,7 +510,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>com.github.funthomas424242.jenkinsmonitor.JenkinsMonitor</mainClass>
+                  <mainClass>com.github.funthomas424242.rezeptsammlung.RezeptsammlungApplication</mainClass>
                 </manifest>
               </archive>
               <tarLongFileMode>posix</tarLongFileMode>

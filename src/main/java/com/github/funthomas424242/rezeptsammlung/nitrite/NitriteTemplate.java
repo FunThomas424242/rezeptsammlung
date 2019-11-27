@@ -27,6 +27,7 @@ import org.dizitart.no2.FindOptions;
 import org.dizitart.no2.Index;
 import org.dizitart.no2.IndexOptions;
 import org.dizitart.no2.Nitrite;
+import org.dizitart.no2.NitriteBuilder;
 import org.dizitart.no2.NitriteCollection;
 import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.RemoveOptions;
@@ -38,6 +39,10 @@ import org.dizitart.no2.objects.ObjectFilter;
 import org.dizitart.no2.objects.ObjectRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
@@ -45,18 +50,40 @@ public class NitriteTemplate {
 
     protected static final Logger LOG = LoggerFactory.getLogger(NitriteTemplate.class);
 
+    @Autowired
+    NitriteConfig nitriteConfig;
+
     // TODO Korrektes Singleton implementieren
     // Das funktioniert hier nur weil der Default Scope einer Spring Bean = Singleton ist.
     // https://www.baeldung.com/spring-bean-scopes
-    protected final Nitrite nitriteInstanz;
-
-    public NitriteTemplate(final Nitrite nitrite) {
-        nitriteInstanz = nitrite;
-    }
+    protected Nitrite nitriteInstanz;
 
     protected void init() {
         LOG.debug("Starte die Nitrite Datenbank.");
-        // Properties werden über die NitriteConfig gesetzt
+        final NitriteBuilder builder = Nitrite.builder();
+
+        if (nitriteConfig.dbfilePath != null && !nitriteConfig.dbfilePath.isEmpty()) {
+            LOG.debug("[Nitrite] used dbFile: {}", nitriteConfig.dbfilePath);
+            builder.filePath(nitriteConfig.dbfilePath);
+        }
+
+        if (nitriteConfig.compressed) {
+            LOG.debug("[Nitrite] will be compressed automatically.");
+            builder.compressed();
+        }
+
+        if (nitriteConfig.disableautocommit) {
+            LOG.debug("[Nitrite] has autocommit disabled.");
+            builder.disableAutoCommit();
+        }
+
+        if ((nitriteConfig.username == null || nitriteConfig.username.isEmpty()) && (nitriteConfig.password == null || nitriteConfig.password.isEmpty())) {
+            LOG.debug("[Nitrite] openOrCreate without Credentials.");
+            this.nitriteInstanz = builder.openOrCreate();
+        } else {
+            LOG.debug("[Nitrite] openOrCreate with Credentials.");
+            this.nitriteInstanz = builder.openOrCreate(nitriteConfig.username, nitriteConfig.password);
+        }
     }
 
     protected void destroy() {
@@ -256,4 +283,13 @@ public class NitriteTemplate {
         };
     }
 
+}
+
+@Service
+class NitritService {
+
+    @Bean(initMethod = "init", destroyMethod = "destroy")
+    public NitriteTemplate nitriteTemplate() {
+        return new NitriteTemplate();
+    }
 }

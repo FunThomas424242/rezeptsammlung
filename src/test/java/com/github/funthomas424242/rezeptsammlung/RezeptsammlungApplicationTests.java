@@ -39,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 @SpringBootTest
+//@ActiveProfiles("test")
 class RezeptsammlungApplicationTests {
 
     public static final String TEXT_DAS_IST_MAL_EINE_ÄNDERUNG = "Das ist mal eine Änderung!!!";
@@ -55,7 +56,7 @@ class RezeptsammlungApplicationTests {
     }
 
     @AfterEach
-    public void tearDown(){
+    public void tearDown() {
         repository.drop();
     }
 
