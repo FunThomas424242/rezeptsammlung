@@ -41,6 +41,11 @@
 === Guter Stil
 * https://tuhrig.de/using-configurationproperties-to-separate-service-and-configuration
 
+=== Auslieferung / Paketierung
+* https://dzone.com/articles/packaging-springboot-application-with-external-dep
+* https://crunchify.com/how-to-create-build-java-project-including-all-dependencies-using-maven-maven-resources-maven-dependency-maven-jar-plugin-tutorial/
+
+
 === Embedable Document Database
 * http://nosql-database.org/
 * https://blog.doubleslash.de/embedded-databases-weniger-ist-manchmal-mehr/
