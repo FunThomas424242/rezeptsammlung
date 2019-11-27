@@ -497,31 +497,31 @@
           </dependency>
         </dependencies>
       </plugin>
-      <plugin>
-        <!-- NOTE: We don't need a groupId specification because the group is
-            org.apache.maven.plugins ...which is assumed by default. -->
-        <artifactId>maven-assembly-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>package-assemblies</id>
-            <phase>package</phase>
-            <goals>
-              <goal>single</goal>
-            </goals>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>com.github.funthomas424242.rezeptsammlung.RezeptsammlungApplication</mainClass>
-                </manifest>
-              </archive>
-              <tarLongFileMode>posix</tarLongFileMode>
-              <descriptorRefs>
-                <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+<!--      <plugin>-->
+<!--        &lt;!&ndash; NOTE: We don't need a groupId specification because the group is-->
+<!--            org.apache.maven.plugins ...which is assumed by default. &ndash;&gt;-->
+<!--        <artifactId>maven-assembly-plugin</artifactId>-->
+<!--        <executions>-->
+<!--          <execution>-->
+<!--            <id>package-assemblies</id>-->
+<!--            <phase>package</phase>-->
+<!--            <goals>-->
+<!--              <goal>single</goal>-->
+<!--            </goals>-->
+<!--            <configuration>-->
+<!--              <archive>-->
+<!--                <manifest>-->
+<!--                  <mainClass>com.github.funthomas424242.rezeptsammlung.RezeptsammlungApplication</mainClass>-->
+<!--                </manifest>-->
+<!--              </archive>-->
+<!--              <tarLongFileMode>posix</tarLongFileMode>-->
+<!--              <descriptorRefs>-->
+<!--                <descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--              </descriptorRefs>-->
+<!--            </configuration>-->
+<!--          </execution>-->
+<!--        </executions>-->
+<!--      </plugin>-->
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <executions>
