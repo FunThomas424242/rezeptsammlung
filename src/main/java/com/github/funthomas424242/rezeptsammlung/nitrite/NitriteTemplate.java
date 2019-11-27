@@ -41,7 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -53,8 +53,10 @@ public class NitriteTemplate {
     @Autowired
     NitriteConfig nitriteConfig;
 
-    // TODO Korrektes Singleton implementieren
-    // Das funktioniert hier nur weil der Default Scope einer Spring Bean = Singleton ist.
+    protected NitriteTemplate() {
+    }
+
+    // Das funktioniert hier nur, weil der Scope vom NitriteTemplate auf Singleton gesetzt ist.
     // https://www.baeldung.com/spring-bean-scopes
     protected Nitrite nitriteInstanz;
 
@@ -62,26 +64,37 @@ public class NitriteTemplate {
         LOG.debug("Starte die Nitrite Datenbank.");
         final NitriteBuilder builder = Nitrite.builder();
 
+        LOG.debug("[Nitrite Config]\n dbFile: {} \n compressed {} \n disableautocommit {} \n username {} \n password {}\n"
+            , nitriteConfig.dbfilePath
+            , nitriteConfig.compressed
+            , nitriteConfig.disableautocommit
+            , nitriteConfig.username
+            , nitriteConfig.password
+        );
+
+
         if (nitriteConfig.dbfilePath != null && !nitriteConfig.dbfilePath.isEmpty()) {
-            LOG.debug("[Nitrite] used dbFile: {}", nitriteConfig.dbfilePath);
+            LOG.info("[Nitrite] used dbFile: {}", nitriteConfig.dbfilePath);
             builder.filePath(nitriteConfig.dbfilePath);
+        } else {
+            LOG.info("[Nitrite] used as in-memory database.");
         }
 
-        if (nitriteConfig.compressed) {
-            LOG.debug("[Nitrite] will be compressed automatically.");
+        if (nitriteConfig.compressed != null && nitriteConfig.compressed) {
+            LOG.info("[Nitrite] will be compressed automatically.");
             builder.compressed();
         }
 
-        if (nitriteConfig.disableautocommit) {
-            LOG.debug("[Nitrite] has autocommit disabled.");
+        if (nitriteConfig.disableautocommit != null && nitriteConfig.disableautocommit) {
+            LOG.info("[Nitrite] has autocommit disabled.");
             builder.disableAutoCommit();
         }
 
-        if ((nitriteConfig.username == null || nitriteConfig.username.isEmpty()) && (nitriteConfig.password == null || nitriteConfig.password.isEmpty())) {
-            LOG.debug("[Nitrite] openOrCreate without Credentials.");
+        if (nitriteConfig.username == null || nitriteConfig.username.isEmpty() || nitriteConfig.password == null || nitriteConfig.password.isEmpty()) {
+            LOG.info("[Nitrite] openOrCreate without Credentials.");
             this.nitriteInstanz = builder.openOrCreate();
         } else {
-            LOG.debug("[Nitrite] openOrCreate with Credentials.");
+            LOG.info("[Nitrite] openOrCreate with Credentials.");
             this.nitriteInstanz = builder.openOrCreate(nitriteConfig.username, nitriteConfig.password);
         }
     }
@@ -289,6 +302,7 @@ public class NitriteTemplate {
 class NitritService {
 
     @Bean(initMethod = "init", destroyMethod = "destroy")
+    @Scope("singleton") // Trotz default, hier soll sichergestellt werden, dass beim upgrade alles so bleibt
     public NitriteTemplate nitriteTemplate() {
         return new NitriteTemplate();
     }

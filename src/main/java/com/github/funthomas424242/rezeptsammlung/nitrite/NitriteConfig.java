@@ -22,21 +22,25 @@ package com.github.funthomas424242.rezeptsammlung.nitrite;
  * #L%
  */
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties(prefix = "nitrite")
 public class NitriteConfig {
 
-    // Ab hier folgen die Config Properties nitrite.xxx
+    @Value("${nitrite.dbfilePath}")
     protected String dbfilePath;
-    protected String username;
-    protected String password;
-    protected boolean disableautocommit;
-    protected boolean compressed;
 
+    @Value("${nitrite.username:}")
+    protected String username;
+
+    @Value("${nitrite.password:}")
+    protected String password;
+
+    @Value("${nitrite.disableautocommit:false}")
+    protected Boolean disableautocommit;
+
+    @Value("${nitrite.compressed:false}")
+    protected Boolean compressed;
 
 }

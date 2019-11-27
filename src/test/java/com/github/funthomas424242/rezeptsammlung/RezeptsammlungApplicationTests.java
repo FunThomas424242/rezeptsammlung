@@ -34,12 +34,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 @SpringBootTest
-//@ActiveProfiles("test")
+@ActiveProfiles("test")
 class RezeptsammlungApplicationTests {
 
     public static final String TEXT_DAS_IST_MAL_EINE_ÄNDERUNG = "Das ist mal eine Änderung!!!";
