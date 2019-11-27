@@ -272,20 +272,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-contract-maven-plugin</artifactId>
-        <version>2.1.4.RELEASE</version>
-        <extensions>true</extensions>
-        <configuration>
-          <skip>true</skip>
-          <testFramework>JUNIT5</testFramework>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>license-maven-plugin</artifactId>
         <configuration>
@@ -417,8 +403,8 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M2</version>
         <configuration>
-<!--          <forkCount>0</forkCount>-->
-<!--          <reuseForks>true</reuseForks>-->
+          <!--          <forkCount>0</forkCount>-->
+          <!--          <reuseForks>true</reuseForks>-->
           <argLine>
             --illegal-access=deny
           </argLine>
@@ -426,6 +412,20 @@
             ${junit-excluded-groups}
           </excludedGroups>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+        <version>2.1.4.RELEASE</version>
+        <extensions>true</extensions>
+        <configuration>
+          <skip>true</skip>
+          <testFramework>JUNIT5</testFramework>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
