@@ -79,9 +79,9 @@
 
     <!-- nitrite db -->
     <dependency>
-      <groupId>org.dizitart</groupId>
-      <artifactId>nitrite</artifactId>
-      <version>3.3.0</version>
+      <groupId>com.github.funthomas424242</groupId>
+      <artifactId>nitrite-spring-boot-starter</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->

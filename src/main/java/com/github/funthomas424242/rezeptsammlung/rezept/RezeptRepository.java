@@ -22,11 +22,12 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
-import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteRepository;
+
+import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 
 import java.util.List;
 
-public interface RezeptRepository extends NitriteRepository<Rezept, String> {
+public interface RezeptRepository extends NitriteRepository<Rezept> {
 
 
     List<Rezept> findByTitel(String titel);
