@@ -22,19 +22,11 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
-import org.dizitart.no2.IndexType;
 import org.dizitart.no2.objects.Id;
-import org.dizitart.no2.objects.Index;
-import org.dizitart.no2.objects.Indices;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-
-@Indices({
-    @Index(value = "titel", type = IndexType.NonUnique),
-    @Index(value = "id", type = IndexType.Unique)
-})
 public class Rezept implements Serializable {
 
     @Id
@@ -44,8 +36,6 @@ public class Rezept implements Serializable {
 
     protected String tag;
 
-    public Rezept() {
-    }
 
     public Rezept(final long id, final String titel) {
         this.id = id;
@@ -75,24 +65,6 @@ public class Rezept implements Serializable {
     public String getTag() {
         return tag;
     }
-
-//    @Override
-//    public Document write(NitriteMapper mapper) {
-//        Document document = new Document();
-//        document.put("id", getId());
-//        document.put("titel", getTitel());
-//        document.put("tag", getTag());
-//        return document;
-//    }
-//
-//    @Override
-//    public void read(NitriteMapper mapper, Document document) {
-//        if (document != null) {
-//            setId((long) document.get("id"));
-//            setTitel((String) document.get("titel"));
-//            setTag((String) document.get("tag"));
-//        }
-//    }
 
 
     @Override
