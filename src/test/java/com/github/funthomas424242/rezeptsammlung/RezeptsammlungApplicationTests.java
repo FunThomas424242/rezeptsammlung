@@ -22,9 +22,9 @@ package com.github.funthomas424242.rezeptsammlung;
  * #L%
  */
 
-import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteRepository;
-import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteTemplate;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
+import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
+import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.dizitart.no2.objects.Cursor;
 import org.dizitart.no2.objects.filters.ObjectFilters;
 import org.junit.jupiter.api.AfterEach;
@@ -48,11 +48,11 @@ class RezeptsammlungApplicationTests {
     @Autowired
     NitriteTemplate nitriteTemplate;
 
-    protected NitriteRepository<Rezept, Long> repository;
+    protected NitriteRepository<Rezept> repository;
 
     @BeforeEach
     public void setUp() {
-        repository = nitriteTemplate.getRepository(Rezept.class, Long.class);
+        repository = nitriteTemplate.getRepository(Rezept.class);
         Assumptions.assumeTrue(repository.find().size() == 0, "Vorbedingung size == 0 nicht erfüllt");
     }
 

@@ -1,4 +1,4 @@
-package com.github.funthomas424242.rezeptsammlung.nitrite;
+package com.github.funthomas424242.rezeptsammlung.rezept;
 
 /*-
  * #%L
@@ -22,25 +22,17 @@ package com.github.funthomas424242.rezeptsammlung.nitrite;
  * #L%
  */
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
-public class NitriteConfig {
+import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 
-    @Value("${nitrite.dbfilePath}")
-    protected String dbfilePath;
+import java.util.List;
 
-    @Value("${nitrite.username:}")
-    protected String username;
+public interface RezeptRepository extends NitriteRepository<Rezept> {
 
-    @Value("${nitrite.password:}")
-    protected String password;
 
-    @Value("${nitrite.disableautocommit:false}")
-    protected Boolean disableautocommit;
+    List<Rezept> findByTitel(String titel);
 
-    @Value("${nitrite.compressed:false}")
-    protected Boolean compressed;
+//    Page<Rezept> findByTag(String tag, Pageable pageable);
+
 
 }
