@@ -44,10 +44,16 @@ public class Rezept implements Serializable {
 
     protected String tag;
 
+    public Rezept() {
+    }
 
-    public Rezept(final Long id, final String titel) {
+    public Rezept(final long id, final String titel) {
         this.id = id;
         this.titel = titel;
+    }
+
+    public void setId(final long id) {
+        this.id = id;
     }
 
     public void setTitel(final String titel) {
@@ -69,6 +75,25 @@ public class Rezept implements Serializable {
     public String getTag() {
         return tag;
     }
+
+//    @Override
+//    public Document write(NitriteMapper mapper) {
+//        Document document = new Document();
+//        document.put("id", getId());
+//        document.put("titel", getTitel());
+//        document.put("tag", getTag());
+//        return document;
+//    }
+//
+//    @Override
+//    public void read(NitriteMapper mapper, Document document) {
+//        if (document != null) {
+//            setId((long) document.get("id"));
+//            setTitel((String) document.get("titel"));
+//            setTag((String) document.get("tag"));
+//        }
+//    }
+
 
     @Override
     public boolean equals(Object o) {
