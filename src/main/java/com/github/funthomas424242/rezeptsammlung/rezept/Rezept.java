@@ -27,6 +27,7 @@ import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.objects.Id;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @RadesAddBuilder
@@ -37,7 +38,8 @@ public class Rezept implements Serializable {
 
     protected String titel;
 
-    protected String tag;
+    protected List<String> tags
+        ;
 
 
     public NitriteId getId() {
@@ -48,8 +50,8 @@ public class Rezept implements Serializable {
         return titel;
     }
 
-    public String getTag() {
-        return tag;
+    public List<String> getTags() {
+        return tags;
     }
 
     @Override
@@ -59,11 +61,11 @@ public class Rezept implements Serializable {
         Rezept rezept = (Rezept) o;
         return id.equals(rezept.id) &&
             Objects.equals(titel, rezept.titel) &&
-            Objects.equals(tag, rezept.tag);
+            Objects.equals(tags, rezept.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, titel, tag);
+        return Objects.hash(id, titel, tags);
     }
 }
