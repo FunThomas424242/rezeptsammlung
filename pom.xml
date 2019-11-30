@@ -129,6 +129,10 @@
 <!--      <scope>compile</scope>-->
 <!--    </dependency>-->
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.github.funthomas424242</groupId>
       <artifactId>rades-annotations</artifactId>
       <version>3.1.1</version>
@@ -447,6 +451,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.2.1.RELEASE</version>
 <!--        <configuration>-->
 <!--          <jvmArguments>-->
 <!--            -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
