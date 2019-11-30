@@ -22,10 +22,12 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
+import com.github.funthomas424242.rades.annotations.builder.NoBuilder;
 import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
 import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.objects.Id;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -34,17 +36,18 @@ import java.util.Objects;
 public class Rezept implements Serializable {
 
     @Id
+    @NoBuilder
     protected NitriteId id;
 
+    @NotNull
     protected String titel;
 
-    protected List<String> tags
-        ;
+    protected List<String> tags;
 
-
-    public NitriteId getId() {
-        return id;
-    }
+//
+//    public NitriteId getId() {
+//        return id;
+//    }
 
     public String getTitel() {
         return titel;
@@ -54,6 +57,17 @@ public class Rezept implements Serializable {
         return tags;
     }
 
+    /**
+     *  Zwei Rezepte sollten fachlich gleich sein, wenn:
+     *  a) entweder die Id beider Rezepte gleich ist.
+     *  (Dann war es mal das gleiche Rezept welches inzwischen ggf. verändert wurde.)
+     *  Oder
+     *  b) alle Attribute außer der Id gleich sind.
+     *  (Dann ist es fachlich das gleiche Rezept, existiert aber evtl. bereits.)
+     *
+     *  Entsprechend muss dann auch der hashCode anders berechnet werden.
+     *
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
