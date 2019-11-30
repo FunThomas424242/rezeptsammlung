@@ -22,39 +22,25 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
+import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
+import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.objects.Id;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@RadesAddBuilder
 public class Rezept implements Serializable {
 
     @Id
-    protected long id;
+    protected NitriteId id;
 
     protected String titel;
 
     protected String tag;
 
 
-    public Rezept(final long id, final String titel) {
-        this.id = id;
-        this.titel = titel;
-    }
-
-    public void setId(final long id) {
-        this.id = id;
-    }
-
-    public void setTitel(final String titel) {
-        this.titel = titel;
-    }
-
-    public void setTag(final String tag) {
-        this.tag = tag;
-    }
-
-    public long getId() {
+    public NitriteId getId() {
         return id;
     }
 
@@ -66,14 +52,13 @@ public class Rezept implements Serializable {
         return tag;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Rezept)) return false;
         Rezept rezept = (Rezept) o;
-        return id == rezept.id &&
-            titel.equals(rezept.titel) &&
+        return id.equals(rezept.id) &&
+            Objects.equals(titel, rezept.titel) &&
             Objects.equals(tag, rezept.tag);
     }
 
