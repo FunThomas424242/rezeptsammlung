@@ -90,7 +90,7 @@ public class Rezeptsammlung {
     }
 
     protected NitriteRepository<Rezept> getRepository() {
-        final NitriteRepository repository = nitriteTemplate.getRepository(Rezept.class);
+        final NitriteRepository<Rezept> repository = nitriteTemplate.getRepository(Rezept.class);
         // Da Indizes permanent in der Datenbank gespeichert werden,
         // dürfen diese nur 1x angelegt werden.
         // können aber async erstellt werden, da nur mit geringen Datenmengen gerechnet wird.
