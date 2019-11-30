@@ -22,6 +22,7 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
 import com.github.funthomas424242.rades.annotations.builder.RadesNoBuilder;
 import org.dizitart.no2.NitriteId;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RadesAddBuilder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Rezept implements Serializable {
 
     @Id
