@@ -22,66 +22,65 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
-import org.dizitart.no2.IndexType;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
+import com.github.funthomas424242.rades.annotations.builder.RadesNoBuilder;
+import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.objects.Id;
-import org.dizitart.no2.objects.Index;
-import org.dizitart.no2.objects.Indices;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
-
-@Indices({
-    @Index(value = "titel", type = IndexType.NonUnique),
-    @Index(value = "id", type = IndexType.Unique)
-})
+@RadesAddBuilder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Rezept implements Serializable {
 
     @Id
-    protected long id;
+    @RadesNoBuilder
+    protected NitriteId id;
 
+    @NotNull
     protected String titel;
 
-    protected String tag;
+    protected List<String> tags;
 
-
-    public Rezept(final Long id, final String titel) {
-        this.id = id;
-        this.titel = titel;
-    }
-
-    public void setTitel(final String titel) {
-        this.titel = titel;
-    }
-
-    public void setTag(final String tag) {
-        this.tag = tag;
-    }
-
-    public long getId() {
-        return id;
-    }
+//
+//    public NitriteId getId() {
+//        return id;
+//    }
 
     public String getTitel() {
         return titel;
     }
 
-    public String getTag() {
-        return tag;
+    public List<String> getTags() {
+        return tags;
     }
 
+    /**
+     * Zwei Rezepte sollten fachlich gleich sein, wenn:
+     * a) entweder die Id beider Rezepte gleich ist.
+     * (Dann war es mal das gleiche Rezept welches inzwischen ggf. verändert wurde.)
+     * Oder
+     * b) alle Attribute außer der Id gleich sind.
+     * (Dann ist es fachlich das gleiche Rezept, existiert aber evtl. bereits.)
+     * <p>
+     * Entsprechend muss dann auch der hashCode anders berechnet werden.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Rezept)) return false;
         Rezept rezept = (Rezept) o;
-        return id == rezept.id &&
-            titel.equals(rezept.titel) &&
-            Objects.equals(tag, rezept.tag);
+        return id.equals(rezept.id) &&
+            Objects.equals(titel, rezept.titel) &&
+            Objects.equals(tags, rezept.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, titel, tag);
+        return Objects.hash(id, titel, tags);
     }
 }

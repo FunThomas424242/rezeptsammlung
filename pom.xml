@@ -115,20 +115,28 @@
     <!--    </dependency>-->
 
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.httpcomponents</groupId>-->
+<!--      <artifactId>httpclient</artifactId>-->
+<!--      <version>4.5.10</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.json/json &ndash;&gt;-->
+<!--    <dependency>-->
+<!--      <groupId>org.json</groupId>-->
+<!--      <artifactId>json</artifactId>-->
+<!--      <version>20190722</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
     <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.10</version>
-      <scope>compile</scope>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.json/json -->
     <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20190722</version>
-      <scope>compile</scope>
+      <groupId>com.github.funthomas424242</groupId>
+      <artifactId>rades-annotations</artifactId>
+      <version>3.1.1</version>
     </dependency>
-
 
     <!-- Test Abhängigkeiten -->
     <dependency>
@@ -435,7 +443,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.github.funthomas424242.rezeptsammlung.RezeptsammlungApplication</mainClass>
+              <mainClass>com.github.funthomas424242.rezeptsammlung.ApplicationLauncher</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -443,6 +451,12 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.2.1.RELEASE</version>
+<!--        <configuration>-->
+<!--          <jvmArguments>-->
+<!--            -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
+<!--          </jvmArguments>-->
+<!--        </configuration>-->
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -592,6 +606,22 @@
       <properties>
         <junit-excluded-groups>headfull</junit-excluded-groups>
       </properties>
+    </profile>
+    <profile>
+      <id>debug</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <jvmArguments>
+                -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+              </jvmArguments>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <!--    <profile>-->
     <!--      <id>jmod</id>-->
