@@ -1,4 +1,9 @@
-{
-    "titel": "Apfelkuchen aus Hefeteig",
-    "tags": ["hefe", "apfel"]
-}
+[
+    {
+        "titel": "Apfelkuchen aus Hefeteig",
+        "tags": [
+            "hefe",
+            "apfel"
+        ]
+    }
+]
