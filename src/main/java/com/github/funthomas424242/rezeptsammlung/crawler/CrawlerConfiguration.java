@@ -39,6 +39,7 @@ import org.springframework.batch.item.json.JacksonJsonObjectReader;
 import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
@@ -54,6 +55,9 @@ import static org.dizitart.no2.IndexOptions.indexOptions;
 //    }
 
 public class CrawlerConfiguration {
+
+    @Value("${rezept.batch.inputfile:}")
+    protected String batchInputFile;
 
     protected static final Logger LOG = LoggerFactory.getLogger(CrawlerConfiguration.class);
 
@@ -98,7 +102,7 @@ public class CrawlerConfiguration {
         return new JsonItemReaderBuilder<Rezept>()
             .name("rezeptItemReader")
             .jsonObjectReader(jsonObjectReader)
-            .resource(new FileSystemResource("docs/Apfelkuchen.rezept"))
+            .resource(new FileSystemResource(batchInputFile))
             .name("rezeptJsonItemReader")
             .build();
     }
