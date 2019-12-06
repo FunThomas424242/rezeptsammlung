@@ -58,7 +58,7 @@ public class CrawlerConfiguration {
     protected static final Logger LOG = LoggerFactory.getLogger(CrawlerConfiguration.class);
 
     @Autowired
-    NitriteTemplate nitriteTemplate;
+    protected NitriteTemplate nitriteTemplate;
 
     protected NitriteRepository<Rezept> repository;
 

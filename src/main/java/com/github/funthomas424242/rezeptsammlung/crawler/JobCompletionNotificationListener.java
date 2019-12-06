@@ -39,12 +39,10 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 
     private static final Logger log = LoggerFactory.getLogger(JobCompletionNotificationListener.class);
 
-    private final NitriteTemplate nitriteTemplate;
-    private final NitriteRepository<Rezept> nitriteRepository;
+    protected final NitriteRepository<Rezept> nitriteRepository;
 
     @Autowired
     public JobCompletionNotificationListener(NitriteTemplate nitriteTemplate) {
-        this.nitriteTemplate = nitriteTemplate;
         this.nitriteRepository = nitriteTemplate.getRepository(Rezept.class);
     }
 
