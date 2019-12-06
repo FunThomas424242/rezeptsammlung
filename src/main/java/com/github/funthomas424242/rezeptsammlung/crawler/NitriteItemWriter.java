@@ -41,10 +41,6 @@ public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
         LOG.debug("Nitrite Repository zugewiesen.");
     }
 
-//    public void setRepository(final NitriteRepository<T> repository) {
-//        this.repository = repository;
-//        LOG.debug("Nitrite Repository zugewiesen.");
-//    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -54,10 +50,8 @@ public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
     @Override
     public void write(List<? extends T> list) throws Exception {
         LOG.debug("Beginne mit dem Schreiben der Items ins repo:" + repository);
-        list.forEach(o -> {
-            LOG.info("### O: " + o);
-            final T t = o;
-            repository.insert(t);
-        });
+        list.forEach(o ->
+            repository.insert(o)
+        );
     }
 }
