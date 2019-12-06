@@ -1,4 +1,4 @@
-package com.github.funthomas424242.rezeptsammlung;
+package com.github.funthomas424242.rezeptsammlung.crawler;
 
 /*-
  * #%L
@@ -22,16 +22,20 @@ package com.github.funthomas424242.rezeptsammlung;
  * #L%
  */
 
+import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.batch.item.ItemProcessor;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+public class RezeptItemProcessor implements ItemProcessor<Rezept, Rezept> {
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class ApplicationLauncher {
+    protected static final Logger LOG = LoggerFactory.getLogger(RezeptItemProcessor.class);
 
-    public static void main(String[] args) {
-        SpringApplication.run(ApplicationLauncher.class, args);
+    @Override
+    public Rezept process(final Rezept rezept) throws Exception {
+        final Rezept rezeptNew = rezept;
+        LOG.info("Converting ({}) into ({})", rezept, rezeptNew);
+        return rezeptNew;
     }
 
 }
