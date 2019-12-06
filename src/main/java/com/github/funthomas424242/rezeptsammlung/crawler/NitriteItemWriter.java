@@ -10,12 +10,12 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Lesser Public
  * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
@@ -36,14 +36,15 @@ public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
 
     protected NitriteRepository<T> repository;
 
-    public NitriteItemWriter() {
-
-    }
-
-    public void setRepository(final NitriteRepository<T> repository) {
+    public NitriteItemWriter(final NitriteRepository<T> repository) {
         this.repository = repository;
         LOG.debug("Nitrite Repository zugewiesen.");
     }
+
+//    public void setRepository(final NitriteRepository<T> repository) {
+//        this.repository = repository;
+//        LOG.debug("Nitrite Repository zugewiesen.");
+//    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -52,7 +53,11 @@ public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
 
     @Override
     public void write(List<? extends T> list) throws Exception {
-        LOG.debug("Beginne mit dem Schreiben der Items.");
-
+        LOG.debug("Beginne mit dem Schreiben der Items ins repo:" + repository);
+        list.forEach(o -> {
+            LOG.info("### O: " + o);
+            final T t = o;
+            repository.insert(t);
+        });
     }
 }

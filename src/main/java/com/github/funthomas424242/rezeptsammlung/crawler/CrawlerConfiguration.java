@@ -22,25 +22,26 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
  * #L%
  */
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.dizitart.no2.IndexType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
+import org.springframework.batch.item.json.JacksonJsonObjectReader;
+import org.springframework.batch.item.json.JsonItemReader;
+import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
-
-import java.net.URI;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
@@ -53,6 +54,8 @@ import static org.dizitart.no2.IndexOptions.indexOptions;
 //    }
 
 public class CrawlerConfiguration {
+
+    protected static final Logger LOG = LoggerFactory.getLogger(CrawlerConfiguration.class);
 
     @Autowired
     NitriteTemplate nitriteTemplate;
@@ -84,17 +87,19 @@ public class CrawlerConfiguration {
     }
 
     @Bean
-    public FlatFileItemReader<Rezept> reader() {
+    public JsonItemReader<Rezept> reader() {
 
+        final ObjectMapper objectMapper = new ObjectMapper();
+        // configure the objectMapper as required
+        final JacksonJsonObjectReader<Rezept> jsonObjectReader =
+            new JacksonJsonObjectReader<>(Rezept.class);
+        jsonObjectReader.setMapper(objectMapper);
 
-        return new FlatFileItemReaderBuilder<Rezept>()
+        return new JsonItemReaderBuilder<Rezept>()
             .name("rezeptItemReader")
+            .jsonObjectReader(jsonObjectReader)
             .resource(new FileSystemResource("docs/Apfelkuchen.rezept"))
-            .delimited()
-            .names(new String[]{"titel", "tags"})
-            .fieldSetMapper(new BeanWrapperFieldSetMapper<Rezept>() {{
-                setTargetType(Rezept.class);
-            }})
+            .name("rezeptJsonItemReader")
             .build();
     }
 
@@ -106,21 +111,9 @@ public class CrawlerConfiguration {
     @Bean
     public NitriteItemWriter<Rezept> writer() {
         final NitriteRepository<Rezept> rezeptRepo = getRepository();
-
-        return new NitriteItemWriter<Rezept>();
+        LOG.debug("nitrite repository for writer is: {}", rezeptRepo);
+        return new NitriteItemWriter<Rezept>(rezeptRepo);
     }
-
-
-//    @Bean
-//    public JdbcBatchItemWriter<Rezept> writer(DataSource dataSource) {
-//       final NitriteRepository<Rezept> rezeptRepo = getRepository();
-//
-//        return new JdbcBatchItemWriterBuilder<Rezept>()
-//            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-//            .sql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)")
-//            .dataSource(dataSource)
-//            .build();
-//    }
 
     @Bean
     public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
