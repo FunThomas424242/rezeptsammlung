@@ -5,5 +5,11 @@
             "hefe",
             "apfel"
         ]
+    },
+    {
+        "titel": "Erdbeermarmelade mit Honig",
+        "tags": [
+            "honig"
+        ]
     }
 ]
