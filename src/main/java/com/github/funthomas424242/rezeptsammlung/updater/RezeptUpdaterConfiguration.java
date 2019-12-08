@@ -141,4 +141,18 @@ public class RezeptUpdaterConfiguration {
             .build();
     }
 
+//    @Scheduled(cron = "*/5 * * * * *")
+//    public void perform() throws Exception {
+//
+//        System.out.println("Job Started at :" + new Date());
+//
+//        JobParameters param = new JobParametersBuilder().addString("JobID", String.valueOf(System.currentTimeMillis()))
+//            .toJobParameters();
+//
+//        JobExecution execution = jobLauncher.run(readFiles(), param);
+//
+//        System.out.println("Job finished with status :" + execution.getStatus());
+//    }
+
+
 }

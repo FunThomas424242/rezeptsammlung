@@ -54,7 +54,7 @@ class RezeptsammlungApplicationTests {
     public static final String TEXT_DAS_IST_MAL_EINE_ÄNDERUNG = "Das ist mal eine Änderung!!!";
 
     @Autowired
-    NitriteTemplate nitriteTemplate;
+    protected NitriteTemplate nitriteTemplate;
 
     protected NitriteRepository<Rezept> repository;
 
