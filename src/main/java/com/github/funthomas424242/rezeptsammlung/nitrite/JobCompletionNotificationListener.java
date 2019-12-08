@@ -52,7 +52,7 @@ public class JobCompletionNotificationListener<T> extends JobExecutionListenerSu
 
             final Cursor<T> cursor = nitriteRepository.find();
             cursor.forEach(
-                item -> log.debug("Found <" + item + "> in the database.")
+                item -> log.info("Found <" + item + "> in the database.")
             );
         }
     }
