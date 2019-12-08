@@ -66,7 +66,7 @@ public class RezeptUpdaterConfiguration {
     @Autowired
     protected NitriteTemplate nitriteTemplate;
 
-    protected NitriteRepository<Rezept> repository;
+//    protected NitriteRepository<Rezept> repository;
 
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
@@ -102,7 +102,6 @@ public class RezeptUpdaterConfiguration {
         jsonObjectReader.setMapper(objectMapper);
 
         return new JsonItemReaderBuilder<Rezept>()
-            .name("rezeptItemReader")
             .jsonObjectReader(jsonObjectReader)
             .resource(new FileSystemResource(batchInputFile))
             .name("rezeptJsonItemReader")
@@ -122,11 +121,11 @@ public class RezeptUpdaterConfiguration {
     }
 
     @Bean
-    public Job importUserJob(Step step1) {
+    public Job importUserJob(Step step) {
         return jobBuilderFactory.get("importRezeptJob")
             .incrementer(new RunIdIncrementer())
-            .listener(new JobCompletionNotificationListener<Rezept>(getRepository()))
-            .flow(step1)
+            .listener(new JobCompletionNotificationListener<>(getRepository()))
+            .flow(step)
             .end()
             .build();
     }
