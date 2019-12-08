@@ -22,6 +22,7 @@
 [literatur]
 === Literatur und Quellen im Netz
 
+
 * https://www.baeldung.com/java-9-modularity
 * https://www.baeldung.com/java-9-logging-api
 * http://www.slf4j.org/codes.html#ignoredBindings
@@ -77,4 +78,5 @@
 https://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
 https://www.baeldung.com/spring-boot-access-h2-database-multiple-apps
 
-
+=== Batches in Spring Boot
+* https://www.javainuse.com/spring/springbootbatchtaskscheduler
