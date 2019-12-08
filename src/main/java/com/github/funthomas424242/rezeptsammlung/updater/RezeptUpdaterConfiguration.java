@@ -1,4 +1,4 @@
-package com.github.funthomas424242.rezeptsammlung.crawler;
+package com.github.funthomas424242.rezeptsammlung.updater;
 
 /*-
  * #%L
@@ -23,6 +23,8 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.funthomas424242.rezeptsammlung.nitrite.JobCompletionNotificationListener;
+import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteItemWriter;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
@@ -54,12 +56,12 @@ import static org.dizitart.no2.IndexOptions.indexOptions;
 // no data source used, so empty statement
 //    }
 
-public class CrawlerConfiguration {
+public class RezeptUpdaterConfiguration {
 
     @Value("${rezept.batch.inputfile:}")
     protected String batchInputFile;
 
-    protected static final Logger LOG = LoggerFactory.getLogger(CrawlerConfiguration.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(RezeptUpdaterConfiguration.class);
 
     @Autowired
     protected NitriteTemplate nitriteTemplate;
@@ -120,10 +122,10 @@ public class CrawlerConfiguration {
     }
 
     @Bean
-    public Job importUserJob(JobCompletionNotificationListener listener, Step step1) {
+    public Job importUserJob(Step step1) {
         return jobBuilderFactory.get("importRezeptJob")
             .incrementer(new RunIdIncrementer())
-            .listener(listener)
+            .listener(new JobCompletionNotificationListener<Rezept>(getRepository()))
             .flow(step1)
             .end()
             .build();

@@ -1,4 +1,4 @@
-package com.github.funthomas424242.rezeptsammlung.crawler;
+package com.github.funthomas424242.rezeptsammlung.updater;
 
 /*-
  * #%L
