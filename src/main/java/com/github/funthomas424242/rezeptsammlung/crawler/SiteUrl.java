@@ -41,8 +41,23 @@ public class SiteUrl implements Serializable {
 
     protected String url;
 
+    protected SiteType type;
+
+    public SiteType getType() {
+        return type;
+    }
+
     public String getUrl() {
         return url;
+    }
+
+    @Override
+    public String toString() {
+        return "SiteUrl{" +
+            "id=" + id +
+            ", url='" + url + '\'' +
+            ", type=" + type +
+            '}';
     }
 
     @Override
@@ -51,19 +66,14 @@ public class SiteUrl implements Serializable {
         if (!(o instanceof SiteUrl)) return false;
         SiteUrl siteUrl = (SiteUrl) o;
         return Objects.equals(id, siteUrl.id) &&
-            Objects.equals(url, siteUrl.url);
+            Objects.equals(url, siteUrl.url) &&
+            type == siteUrl.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, url);
+        return Objects.hash(id, url, type);
     }
 
-    @Override
-    public String toString() {
-        return "SiteUrl{" +
-            "id=" + id +
-            ", url='" + url + '\'' +
-            '}';
-    }
+
 }
