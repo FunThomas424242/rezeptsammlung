@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
-import org.springframework.stereotype.Component;
 
 //@Component
 public class JobCompletionNotificationListener<T> extends JobExecutionListenerSupport {
@@ -41,6 +40,7 @@ public class JobCompletionNotificationListener<T> extends JobExecutionListenerSu
     public JobCompletionNotificationListener() {
         this.nitriteRepository = null;
     }
+
     public JobCompletionNotificationListener(NitriteRepository<T> nitriteRepository) {
         this.nitriteRepository = nitriteRepository;
     }
@@ -52,7 +52,7 @@ public class JobCompletionNotificationListener<T> extends JobExecutionListenerSu
 
             final Cursor<T> cursor = nitriteRepository.find();
             cursor.forEach(
-                item -> log.info("Found <" + item + "> in the database.")
+                item -> log.debug("Found <" + item + "> in the database.")
             );
         }
     }

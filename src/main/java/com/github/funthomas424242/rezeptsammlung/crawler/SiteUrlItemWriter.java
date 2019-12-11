@@ -34,13 +34,7 @@ public class SiteUrlItemWriter extends NitriteItemWriter<SiteUrl> {
 
     public SiteUrlItemWriter(final NitriteRepository<SiteUrl> repository) {
         super(repository);
-        LOG.debug("Nitrite Repository zugewiesen.");
     }
-
-//    @Override
-//    public void afterPropertiesSet() throws Exception {
-//        LOG.debug("after properties set called.");
-//    }
 
     @Override
     public void write(List<? extends SiteUrl> list) throws Exception {
@@ -49,11 +43,11 @@ public class SiteUrlItemWriter extends NitriteItemWriter<SiteUrl> {
             o -> {
                 final SiteUrl siteUrl = (SiteUrl) o;
                 LOG.debug("### siteUrl: " + siteUrl);
-//                if (siteUrl.url.endsWith(".rezept")) {
-//                    siteUrl.siteType = SiteType.REZEPT_URL;
-//                } else {
-//                    siteUrl.siteType = SiteType.SITE_URL;
-//                }
+                if (siteUrl.url.endsWith(".rezept")) {
+                    siteUrl.type = SiteType.REZEPT_URL;
+                } else {
+                    siteUrl.type = SiteType.SITE_URL;
+                }
             });
         super.write(list);
     }
