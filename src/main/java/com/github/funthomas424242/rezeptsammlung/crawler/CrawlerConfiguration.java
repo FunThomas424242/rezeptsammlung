@@ -24,7 +24,6 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.funthomas424242.rezeptsammlung.nitrite.JobCompletionNotificationListener;
-import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteItemWriter;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.dizitart.no2.IndexType;
@@ -106,15 +105,15 @@ public class CrawlerConfiguration {
 
 
     @Bean
-    public NitriteItemWriter<SiteUrl> writer() {
+    public SiteUrlItemWriter<SiteUrl> writer() {
         final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
         LOG.debug("nitrite repository for writer is: {}", siteRepo);
-        return new NitriteItemWriter<>(siteRepo);
+        return new SiteUrlItemWriter<>(siteRepo);
     }
 
 
     @Bean
-    public Step step1(NitriteItemWriter<SiteUrl> writer) {
+    public Step step1(SiteUrlItemWriter<SiteUrl> writer) {
         return stepBuilderFactory.get("step1")
             .<SiteUrl, SiteUrl>chunk(10)
             .reader(reader())
