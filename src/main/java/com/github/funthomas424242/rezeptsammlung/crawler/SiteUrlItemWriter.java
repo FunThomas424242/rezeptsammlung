@@ -26,38 +26,35 @@ import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteItemWriter;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 
-public class SiteUrlItemWriter<T> implements ItemWriter<T>, InitializingBean {
+public class SiteUrlItemWriter extends NitriteItemWriter<SiteUrl> {
     protected static final Logger LOG = LoggerFactory.getLogger(SiteUrlItemWriter.class);
-    protected NitriteRepository<T> repository;
 
-    public SiteUrlItemWriter(final NitriteRepository<T> repository) {
-        this.repository = repository;
+    public SiteUrlItemWriter(final NitriteRepository<SiteUrl> repository) {
+        super(repository);
         LOG.debug("Nitrite Repository zugewiesen.");
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        LOG.debug("after properties set called.");
-    }
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
+//        LOG.debug("after properties set called.");
+//    }
 
     @Override
-    public void write(List<? extends T> list) throws Exception {
-        LOG.debug("### LIST: "+list);
+    public void write(List<? extends SiteUrl> list) throws Exception {
+        LOG.debug("### LIST: " + list);
         list.forEach(
             o -> {
                 final SiteUrl siteUrl = (SiteUrl) o;
-                LOG.debug("### siteUrl: "+siteUrl);
+                LOG.debug("### siteUrl: " + siteUrl);
 //                if (siteUrl.url.endsWith(".rezept")) {
 //                    siteUrl.siteType = SiteType.REZEPT_URL;
 //                } else {
 //                    siteUrl.siteType = SiteType.SITE_URL;
 //                }
-                repository.insert(o);
             });
+        super.write(list);
     }
 }

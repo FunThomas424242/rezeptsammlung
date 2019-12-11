@@ -105,15 +105,15 @@ public class CrawlerConfiguration {
 
 
     @Bean
-    public SiteUrlItemWriter<SiteUrl> writer() {
+    public SiteUrlItemWriter writer() {
         final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
         LOG.debug("nitrite repository for writer is: {}", siteRepo);
-        return new SiteUrlItemWriter<>(siteRepo);
+        return new SiteUrlItemWriter(siteRepo);
     }
 
 
     @Bean
-    public Step step1(SiteUrlItemWriter<SiteUrl> writer) {
+    public Step step1(SiteUrlItemWriter writer) {
         return stepBuilderFactory.get("step1")
             .<SiteUrl, SiteUrl>chunk(10)
             .reader(reader())
