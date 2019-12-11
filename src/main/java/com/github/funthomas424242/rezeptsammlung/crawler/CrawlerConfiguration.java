@@ -52,10 +52,9 @@ public class CrawlerConfiguration {
 
     protected static final Logger LOG = LoggerFactory.getLogger(CrawlerConfiguration.class);
 
-    @Value("${rezept.batch.inputfile:}")
+    @Value("${rezept.batch.crawler.inputfile:}")
     protected String batchInputFile;
 
-    @Autowired
     protected NitriteTemplate nitriteTemplate;
 
     @Autowired
@@ -63,6 +62,10 @@ public class CrawlerConfiguration {
 
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
+
+    public CrawlerConfiguration(NitriteTemplate nitriteTemplate) {
+        this.nitriteTemplate = nitriteTemplate;
+    }
 
 
     protected NitriteRepository<SiteUrl> getSiteUrlRepository() {
@@ -82,7 +85,7 @@ public class CrawlerConfiguration {
         return repository;
     }
 
-    @Bean
+//    @Bean
     public JsonItemReader<SiteUrl> reader() {
 
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -98,13 +101,13 @@ public class CrawlerConfiguration {
             .build();
     }
 
-    @Bean
+//    @Bean
     public SiteUrlItemProcessor processor() {
         return new SiteUrlItemProcessor();
     }
 
 
-    @Bean
+//    @Bean
     public SiteUrlItemWriter writer() {
         final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
         LOG.debug("nitrite repository for writer is: {}", siteRepo);
@@ -112,22 +115,22 @@ public class CrawlerConfiguration {
     }
 
 
-    @Bean
-    public Step step1(SiteUrlItemWriter writer) {
+//    @Bean
+    public Step step1() {
         return stepBuilderFactory.get("step1")
             .<SiteUrl, SiteUrl>chunk(10)
             .reader(reader())
             .processor(processor())
-            .writer(writer)
+            .writer(writer())
             .build();
     }
 
     @Bean
-    public Job importSiteJob(Step step) {
+    public Job importSiteJob() {
         return jobBuilderFactory.get("importSiteJob")
             .incrementer(new RunIdIncrementer())
             .listener(new JobCompletionNotificationListener<SiteUrl>(getSiteUrlRepository()))
-            .flow(step)
+            .flow(step1())
             .end()
             .build();
     }

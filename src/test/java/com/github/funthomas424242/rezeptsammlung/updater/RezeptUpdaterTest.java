@@ -26,18 +26,16 @@
 //import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 //import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 //import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.Assumptions;
 //import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Disabled;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.context.ActiveProfiles;
 //
-//import static org.junit.jupiter.api.Assertions.*;
+//import static org.junit.jupiter.api.Assertions.assertEquals;
 //
 //@SpringBootTest
-//@ActiveProfiles("batch")
+//@ActiveProfiles("updater")
 //class RezeptUpdaterTest {
 //
 //    @Autowired
@@ -57,8 +55,8 @@
 //
 //
 //    @Test
-//    public void pruefeImportierteItems(){
-//        assertEquals(2,repository.size());
+//    public void pruefeImportierteItems() {
+//        assertEquals(2, repository.size());
 //    }
 //
 //
