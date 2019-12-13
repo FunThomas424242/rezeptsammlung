@@ -107,19 +107,16 @@ public class RezeptUpdaterConfiguration {
             .build();
     }
 
-    //    @Bean
     public RezeptItemProcessor processorRezept() {
         return new RezeptItemProcessor();
     }
 
-    //    @Bean
     public NitriteItemWriter<Rezept> writerRezept() {
         final NitriteRepository<Rezept> rezeptRepo = getRepository();
         LOG.debug("nitrite repository for writer is: {}", rezeptRepo);
         return new NitriteItemWriter<Rezept>(rezeptRepo);
     }
 
-    //    @Bean
     public Step step() {
         return stepBuilderFactory.get("step")
             .<Rezept, Rezept>chunk(10)
