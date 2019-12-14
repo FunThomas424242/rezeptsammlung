@@ -80,3 +80,4 @@ https://www.baeldung.com/spring-boot-access-h2-database-multiple-apps
 
 === Batches in Spring Boot
 * https://www.javainuse.com/spring/springbootbatchtaskscheduler
+* https://aboullaite.me/spring-batch-tutorial-with-spring-boot/
