@@ -46,11 +46,6 @@ public class Rezept implements Serializable {
 
     protected List<String> tags;
 
-//
-//    public NitriteId getId() {
-//        return id;
-//    }
-
     public String getTitel() {
         return titel;
     }
@@ -82,5 +77,14 @@ public class Rezept implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, titel, tags);
+    }
+
+    @Override
+    public String toString() {
+        return "Rezept{" +
+            "id=" + id +
+            ", titel='" + titel + '\'' +
+            ", tags=" + tags +
+            '}';
     }
 }
