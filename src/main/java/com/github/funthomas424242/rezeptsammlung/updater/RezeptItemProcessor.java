@@ -22,19 +22,20 @@ package com.github.funthomas424242.rezeptsammlung.updater;
  * #L%
  */
 
+import com.github.funthomas424242.rezeptsammlung.crawler.SiteUrl;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
-public class RezeptItemProcessor implements ItemProcessor<Rezept, Rezept> {
+public class RezeptItemProcessor implements ItemProcessor<SiteUrl, Rezept> {
 
     protected static final Logger LOG = LoggerFactory.getLogger(RezeptItemProcessor.class);
 
     @Override
-    public Rezept process(final Rezept rezept) throws Exception {
-        final Rezept rezeptNew = rezept;
-        LOG.info("Converting ({}) into ({})", rezept, rezeptNew);
+    public Rezept process(final SiteUrl rezeptSite) throws Exception {
+        final Rezept rezeptNew = Rezept.of(rezeptSite.getUrl());
+        LOG.info("Converting ({}) into ({})", rezeptSite, rezeptNew);
         return rezeptNew;
     }
 

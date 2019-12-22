@@ -22,8 +22,9 @@ package com.github.funthomas424242.rezeptsammlung.updater;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.funthomas424242.rezeptsammlung.crawler.SiteUrl;
 import com.github.funthomas424242.rezeptsammlung.nitrite.JobCompletionNotificationListener;
+import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteItemReader;
 import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteItemWriter;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
@@ -37,14 +38,10 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.json.JacksonJsonObjectReader;
-import org.springframework.batch.item.json.JsonItemReader;
-import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.FileSystemResource;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
@@ -74,7 +71,7 @@ public class RezeptUpdaterConfiguration {
         this.nitriteTemplate = nitriteTemplate;
     }
 
-    protected NitriteRepository<Rezept> getRepository() {
+    protected NitriteRepository<Rezept> getRezeptRepository() {
         final NitriteRepository<Rezept> repository = nitriteTemplate.getRepository(Rezept.class);
         // Da Indizes permanent in der Datenbank gespeichert werden,
         // dürfen diese nur 1x angelegt werden.
@@ -91,20 +88,28 @@ public class RezeptUpdaterConfiguration {
         return repository;
     }
 
+    protected NitriteRepository<SiteUrl> getSiteUrlRepository() {
+        final NitriteRepository<SiteUrl> repository = nitriteTemplate.getRepository(SiteUrl.class);
+        // Da Indizes permanent in der Datenbank gespeichert werden,
+        // dürfen diese nur 1x angelegt werden.
+        // können aber async erstellt werden, da nur mit geringen Datenmengen gerechnet wird.
+        if (!repository.hasIndex("id")) {
+            repository.createIndex("id", indexOptions(IndexType.Unique, true));
+        }
+        if (!repository.hasIndex("url")) {
+            repository.createIndex("url", indexOptions(IndexType.Unique, true));
+        }
+        if (!repository.hasIndex("type")) {
+            repository.createIndex("type", indexOptions(IndexType.NonUnique, true));
+        }
+        return repository;
+    }
+
     //    @Bean
-    public JsonItemReader<Rezept> readerRezept() {
-
-        final ObjectMapper objectMapper = new ObjectMapper();
-        // configure the objectMapper as required
-        final JacksonJsonObjectReader<Rezept> jsonObjectReader =
-            new JacksonJsonObjectReader<>(Rezept.class);
-        jsonObjectReader.setMapper(objectMapper);
-
-        return new JsonItemReaderBuilder<Rezept>()
-            .jsonObjectReader(jsonObjectReader)
-            .resource(new FileSystemResource(batchInputFile))
-            .name("rezeptJsonItemReader")
-            .build();
+    public NitriteItemReader<SiteUrl> readerSiteUrl() {
+        final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
+        LOG.debug("nitrite repository for readerSiteUrl is: {}", siteRepo);
+        return new NitriteItemReader<SiteUrl>(siteRepo);
     }
 
     public RezeptItemProcessor processorRezept() {
@@ -112,15 +117,15 @@ public class RezeptUpdaterConfiguration {
     }
 
     public NitriteItemWriter<Rezept> writerRezept() {
-        final NitriteRepository<Rezept> rezeptRepo = getRepository();
+        final NitriteRepository<Rezept> rezeptRepo = getRezeptRepository();
         LOG.debug("nitrite repository for writer is: {}", rezeptRepo);
         return new NitriteItemWriter<Rezept>(rezeptRepo);
     }
 
     public Step step() {
         return stepBuilderFactory.get("step")
-            .<Rezept, Rezept>chunk(10)
-            .reader(readerRezept())
+            .<SiteUrl, Rezept>chunk(10)
+            .reader(readerSiteUrl())
             .processor(processorRezept())
             .writer(writerRezept())
             .build();
@@ -130,7 +135,7 @@ public class RezeptUpdaterConfiguration {
     public Job importUserJob() {
         return jobBuilderFactory.get("importRezeptJob")
             .incrementer(new RunIdIncrementer())
-            .listener(new JobCompletionNotificationListener<>(getRepository()))
+            .listener(new JobCompletionNotificationListener<>(getRezeptRepository()))
             .flow(step())
             .end()
             .build();
