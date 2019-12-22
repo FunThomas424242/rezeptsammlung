@@ -30,6 +30,7 @@ import org.dizitart.no2.objects.Id;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,6 +54,13 @@ public class Rezept implements Serializable {
     public List<String> getTags() {
         return tags;
     }
+
+
+    public static Rezept of(final URL url){
+        final RezeptLoader loader = new RezeptLoader(url);
+        return loader.getNewRezeptInstanz();
+    }
+
 
     /**
      * Zwei Rezepte sollten fachlich gleich sein, wenn:
