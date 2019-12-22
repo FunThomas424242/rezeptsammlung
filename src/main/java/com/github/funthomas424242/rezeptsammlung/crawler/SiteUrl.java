@@ -23,17 +23,25 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.github.funthomas424242.rades.annotations.builder.NoBuilder;
 import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
 import com.github.funthomas424242.rades.annotations.builder.RadesNoBuilder;
 import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.objects.Id;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 @RadesAddBuilder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SiteUrl implements Serializable {
+
+    @NoBuilder
+    transient protected static final Logger LOG = LoggerFactory.getLogger(SiteUrl.class);
 
     @Id
     @RadesNoBuilder
@@ -47,8 +55,16 @@ public class SiteUrl implements Serializable {
         return type;
     }
 
-    public String getUrl() {
+    public String getUrlAsString() {
         return url;
+    }
+
+    public URL getUrl() {
+        try {
+            return new URL(url);
+        } catch (MalformedURLException e) {
+           return null;
+        }
     }
 
     @Override
