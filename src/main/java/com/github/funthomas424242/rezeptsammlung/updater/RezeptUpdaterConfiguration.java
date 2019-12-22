@@ -1,4 +1,4 @@
-package com.github.funthomas424242.rezeptsammlung.crawler;
+package com.github.funthomas424242.rezeptsammlung.updater;
 
 /*-
  * #%L
@@ -24,6 +24,8 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.funthomas424242.rezeptsammlung.nitrite.JobCompletionNotificationListener;
+import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteItemWriter;
+import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.dizitart.no2.IndexType;
@@ -48,12 +50,17 @@ import static org.dizitart.no2.IndexOptions.indexOptions;
 
 @Configuration
 @EnableBatchProcessing
-public class CrawlerConfiguration {
+//public class CrawlerConfiguration extends DefaultBatchConfigurer {
+//@Override
+//public void setDataSource(DataSource dataSource) {
+// no data source used, so empty statement
+//    }
+public class RezeptUpdaterConfiguration {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(CrawlerConfiguration.class);
-
-    @Value("${rezept.batch.crawler.inputfile:}")
+    @Value("${rezept.batch.updater.inputfile:}")
     protected String batchInputFile;
+
+    protected static final Logger LOG = LoggerFactory.getLogger(RezeptUpdaterConfiguration.class);
 
     protected NitriteTemplate nitriteTemplate;
 
@@ -63,77 +70,84 @@ public class CrawlerConfiguration {
     @Autowired
     public StepBuilderFactory stepBuilderFactory;
 
-    public CrawlerConfiguration(NitriteTemplate nitriteTemplate) {
+    public RezeptUpdaterConfiguration(NitriteTemplate nitriteTemplate) {
         this.nitriteTemplate = nitriteTemplate;
     }
 
-
-    protected NitriteRepository<SiteUrl> getSiteUrlRepository() {
-        final NitriteRepository<SiteUrl> repository = nitriteTemplate.getRepository(SiteUrl.class);
+    protected NitriteRepository<Rezept> getRepository() {
+        final NitriteRepository<Rezept> repository = nitriteTemplate.getRepository(Rezept.class);
         // Da Indizes permanent in der Datenbank gespeichert werden,
         // dürfen diese nur 1x angelegt werden.
         // können aber async erstellt werden, da nur mit geringen Datenmengen gerechnet wird.
         if (!repository.hasIndex("id")) {
             repository.createIndex("id", indexOptions(IndexType.Unique, true));
         }
-        if (!repository.hasIndex("url")) {
-            repository.createIndex("url", indexOptions(IndexType.Unique, true));
+        if (!repository.hasIndex("titel")) {
+            repository.createIndex("titel", indexOptions(IndexType.Fulltext, true));
         }
-//        if (!repository.hasIndex("lastReadtime")) {
-//            repository.createIndex("lastReadtime", indexOptions(IndexType.NonUnique, true));
-//        }
+        if (!repository.hasIndex("tag")) {
+            repository.createIndex("tag", indexOptions(IndexType.NonUnique, true));
+        }
         return repository;
     }
 
-//    @Bean
-    public JsonItemReader<SiteUrl> reader() {
+    //    @Bean
+    public JsonItemReader<Rezept> readerRezept() {
 
         final ObjectMapper objectMapper = new ObjectMapper();
         // configure the objectMapper as required
-        final JacksonJsonObjectReader<SiteUrl> jsonObjectReader =
-            new JacksonJsonObjectReader<>(SiteUrl.class);
+        final JacksonJsonObjectReader<Rezept> jsonObjectReader =
+            new JacksonJsonObjectReader<>(Rezept.class);
         jsonObjectReader.setMapper(objectMapper);
 
-        return new JsonItemReaderBuilder<SiteUrl>()
+        return new JsonItemReaderBuilder<Rezept>()
             .jsonObjectReader(jsonObjectReader)
             .resource(new FileSystemResource(batchInputFile))
-            .name("siteJsonItemReader")
+            .name("rezeptJsonItemReader")
             .build();
     }
 
-//    @Bean
-    public SiteUrlItemProcessor processor() {
-        return new SiteUrlItemProcessor();
+    public RezeptItemProcessor processorRezept() {
+        return new RezeptItemProcessor();
     }
 
-
-//    @Bean
-    public SiteUrlItemWriter writer() {
-        final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
-        LOG.debug("nitrite repository for writer is: {}", siteRepo);
-        return new SiteUrlItemWriter(siteRepo);
+    public NitriteItemWriter<Rezept> writerRezept() {
+        final NitriteRepository<Rezept> rezeptRepo = getRepository();
+        LOG.debug("nitrite repository for writer is: {}", rezeptRepo);
+        return new NitriteItemWriter<Rezept>(rezeptRepo);
     }
 
-
-//    @Bean
-    public Step step1() {
-        return stepBuilderFactory.get("step1")
-            .<SiteUrl, SiteUrl>chunk(10)
-            .reader(reader())
-            .processor(processor())
-            .writer(writer())
+    public Step step() {
+        return stepBuilderFactory.get("step")
+            .<Rezept, Rezept>chunk(10)
+            .reader(readerRezept())
+            .processor(processorRezept())
+            .writer(writerRezept())
             .build();
     }
 
     @Bean
-    public Job importSiteJob() {
-        return jobBuilderFactory.get("importSiteJob")
+    public Job importUserJob() {
+        return jobBuilderFactory.get("importRezeptJob")
             .incrementer(new RunIdIncrementer())
-            .listener(new JobCompletionNotificationListener<SiteUrl>(getSiteUrlRepository()))
-            .flow(step1())
+            .listener(new JobCompletionNotificationListener<>(getRepository()))
+            .flow(step())
             .end()
             .build();
     }
+
+//    @Scheduled(cron = "*/5 * * * * *")
+//    public void perform() throws Exception {
+//
+//        System.out.println("Job Started at :" + new Date());
+//
+//        JobParameters param = new JobParametersBuilder().addString("JobID", String.valueOf(System.currentTimeMillis()))
+//            .toJobParameters();
+//
+//        JobExecution execution = jobLauncher.run(readFiles(), param);
+//
+//        System.out.println("Job finished with status :" + execution.getStatus());
+//    }
 
 
 }

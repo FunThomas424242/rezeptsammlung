@@ -22,36 +22,33 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
  * #L%
  */
 
+import com.github.funthomas424242.rezeptsammlung.nitrite.NitriteItemWriter;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.beans.factory.InitializingBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+public class SiteUrlItemWriter extends NitriteItemWriter<SiteUrl> {
+    protected static final Logger LOG = LoggerFactory.getLogger(SiteUrlItemWriter.class);
 
-public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
-    protected static final Log LOG = LogFactory.getLog(NitriteItemWriter.class);
-
-    protected NitriteRepository<T> repository;
-
-    public NitriteItemWriter(final NitriteRepository<T> repository) {
-        this.repository = repository;
-        LOG.debug("Nitrite Repository zugewiesen.");
-    }
-
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        LOG.debug("after properties set called.");
+    public SiteUrlItemWriter(final NitriteRepository<SiteUrl> repository) {
+        super(repository);
     }
 
     @Override
-    public void write(List<? extends T> list) throws Exception {
-        LOG.debug("Beginne mit dem Schreiben der Items ins repo:" + repository);
-        list.forEach(o ->
-            repository.insert(o)
-        );
+    public void write(List<? extends SiteUrl> list) throws Exception {
+        LOG.debug("### LIST: " + list);
+        list.forEach(
+            o -> {
+                final SiteUrl siteUrl = (SiteUrl) o;
+                LOG.debug("### siteUrl: " + siteUrl);
+                if (siteUrl.url.endsWith(".rezept")) {
+                    siteUrl.type = SiteType.REZEPT_URL;
+                } else {
+                    siteUrl.type = SiteType.SITE_URL;
+                }
+            });
+        super.write(list);
     }
 }

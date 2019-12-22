@@ -1,4 +1,4 @@
-package com.github.funthomas424242.rezeptsammlung.crawler;
+package com.github.funthomas424242.rezeptsammlung.nitrite;
 
 /*-
  * #%L
@@ -22,38 +22,38 @@ package com.github.funthomas424242.rezeptsammlung.crawler;
  * #L%
  */
 
-import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
-import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.dizitart.no2.objects.Cursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
+public class JobCompletionNotificationListener<T> extends JobExecutionListenerSupport {
 
     private static final Logger log = LoggerFactory.getLogger(JobCompletionNotificationListener.class);
 
-    protected final NitriteRepository<Rezept> nitriteRepository;
+    protected final NitriteRepository<T> nitriteRepository;
 
-    @Autowired
-    public JobCompletionNotificationListener(NitriteTemplate nitriteTemplate) {
-        this.nitriteRepository = nitriteTemplate.getRepository(Rezept.class);
+    public JobCompletionNotificationListener() {
+        this.nitriteRepository = null;
+    }
+
+    public JobCompletionNotificationListener(NitriteRepository<T> nitriteRepository) {
+        this.nitriteRepository = nitriteRepository;
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
-        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
+        if (this.nitriteRepository != null && jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
 
-            final Cursor<Rezept> cursor = nitriteRepository.find();
+            final Cursor<T> cursor = nitriteRepository.find();
             cursor.forEach(
-                rezept -> log.info("Found <" + rezept + "> in the database.")
+                item -> log.info("Found <" + item + "> in the database.")
             );
         }
     }

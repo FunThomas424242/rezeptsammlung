@@ -85,7 +85,7 @@
     <dependency>
       <groupId>com.github.funthomas424242</groupId>
       <artifactId>nitrite-spring-boot-starter</artifactId>
-      <version>0.0.1</version>
+      <version>0.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.dizitart</groupId>

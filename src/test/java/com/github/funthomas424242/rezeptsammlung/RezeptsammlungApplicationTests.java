@@ -54,7 +54,7 @@ class RezeptsammlungApplicationTests {
     public static final String TEXT_DAS_IST_MAL_EINE_ÄNDERUNG = "Das ist mal eine Änderung!!!";
 
     @Autowired
-    NitriteTemplate nitriteTemplate;
+    protected NitriteTemplate nitriteTemplate;
 
     protected NitriteRepository<Rezept> repository;
 
@@ -112,18 +112,16 @@ class RezeptsammlungApplicationTests {
         final Cursor<Rezept> rezepts = repository.find(eq("id", id));
         assertEquals(1, rezepts.size());
         final Rezept zuaenderndesRezept = rezepts.firstOrDefault();
-//        zuaenderndesRezept.setTitel(TEXT_DAS_IST_MAL_EINE_ÄNDERUNG);
+        // simuliere setTitel(TEXT_DAS_IST_MAL_EINE_ÄNDERUNG);
         final Rezept geaendertesRezept
             = new RezeptBuilder(zuaenderndesRezept).withTitel(TEXT_DAS_IST_MAL_EINE_ÄNDERUNG).build();
         final WriteResult writeResult = repository.update(zuaenderndesRezept);
         final NitriteId nitriteId = Iterables.firstOrDefault(writeResult);
         LOG.debug("### updated id: {}", nitriteId);
 
-
         final Cursor<Rezept> rezepts1 = repository.find(eq("id", nitriteId));
         assertEquals(1, rezepts1.size());
         assertEquals(TEXT_DAS_IST_MAL_EINE_ÄNDERUNG, rezepts1.firstOrDefault().getTitel());
-
     }
 
 
