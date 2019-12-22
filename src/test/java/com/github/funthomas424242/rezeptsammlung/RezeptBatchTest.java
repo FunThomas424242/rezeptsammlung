@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class RezeptBatchTest {
 
     @Autowired
-    NitriteTemplate nitriteTemplate;
+    protected NitriteTemplate nitriteTemplate;
 
     protected NitriteRepository<SiteUrl> siteurlRepo;
     protected NitriteRepository<Rezept> rezeptRepo;
