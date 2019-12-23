@@ -105,15 +105,14 @@ public class RezeptUpdaterConfiguration {
         return repository;
     }
 
-    //    @Bean
     public NitriteItemReader<SiteUrl> readerSiteUrl() {
         final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
         LOG.debug("nitrite repository for readerSiteUrl is: {}", siteRepo);
         return new NitriteItemReader<SiteUrl>(siteRepo);
     }
 
-    public RezeptItemProcessor processorRezept() {
-        return new RezeptItemProcessor();
+    public SiteUrl2RezeptItemProcessor processorRezept() {
+        return new SiteUrl2RezeptItemProcessor();
     }
 
     public NitriteItemWriter<Rezept> writerRezept() {
