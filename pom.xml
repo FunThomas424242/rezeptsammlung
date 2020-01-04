@@ -553,6 +553,36 @@
       <!--        </executions>-->
       <!--      </plugin>-->
       <plugin>
+        <groupId>com.github.funthomas424242</groupId>
+        <artifactId>plantuml-maven-plugin</artifactId>
+        <version>1.5.1</version>
+        <configuration>
+          <truncatePattern>src/main/*</truncatePattern>
+          <sourceFiles>
+            <directory>${basedir}</directory>
+            <includes>
+              <include>src/main/**/*.txt</include>
+            </includes>
+          </sourceFiles>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>net.sourceforge.plantuml</groupId>
+            <artifactId>plantuml</artifactId>
+            <version>1.2019.13</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>plantuml</id>
+            <phase>pre-site</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <executions>
           <execution>
@@ -702,5 +732,13 @@
       </plugin>
     </plugins>
   </reporting>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>mulesoft</id>
+      <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+      <layout>default</layout>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>
