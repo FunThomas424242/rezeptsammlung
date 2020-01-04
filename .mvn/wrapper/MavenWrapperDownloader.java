@@ -32,13 +32,13 @@ public class MavenWrapperDownloader {
      * use instead of the default one.
      */
     private static final String MAVEN_WRAPPER_PROPERTIES_PATH =
-            ".mvn/wrapper/maven-wrapper.properties";
+        ".mvn/wrapper/maven-wrapper.properties";
 
     /**
      * Path where the maven-wrapper.jar will be saved to.
      */
     private static final String MAVEN_WRAPPER_JAR_PATH =
-            ".mvn/wrapper/maven-wrapper.jar";
+        ".mvn/wrapper/maven-wrapper.jar";
 
     /**
      * Name of the property which should be used to override the default download url for the wrapper.
@@ -54,7 +54,7 @@ public class MavenWrapperDownloader {
         // wrapperUrl parameter.
         File mavenWrapperPropertyFile = new File(baseDirectory, MAVEN_WRAPPER_PROPERTIES_PATH);
         String url = DEFAULT_DOWNLOAD_URL;
-        if(mavenWrapperPropertyFile.exists()) {
+        if (mavenWrapperPropertyFile.exists()) {
             FileInputStream mavenWrapperPropertyFileInputStream = null;
             try {
                 mavenWrapperPropertyFileInputStream = new FileInputStream(mavenWrapperPropertyFile);
@@ -65,7 +65,7 @@ public class MavenWrapperDownloader {
                 System.out.println("- ERROR loading '" + MAVEN_WRAPPER_PROPERTIES_PATH + "'");
             } finally {
                 try {
-                    if(mavenWrapperPropertyFileInputStream != null) {
+                    if (mavenWrapperPropertyFileInputStream != null) {
                         mavenWrapperPropertyFileInputStream.close();
                     }
                 } catch (IOException e) {
@@ -76,21 +76,25 @@ public class MavenWrapperDownloader {
         System.out.println("- Downloading from: " + url);
 
         File outputFile = new File(baseDirectory.getAbsolutePath(), MAVEN_WRAPPER_JAR_PATH);
-        if(!outputFile.getParentFile().exists()) {
-            if(!outputFile.getParentFile().mkdirs()) {
-                System.out.println(
-                        "- ERROR creating output directory '" + outputFile.getParentFile().getAbsolutePath() + "'");
-            }
+        final File parentFile = outputFile.getParentFile();
+        if (!parentFile.exists()) {
+            createFile(parentFile);
         }
         System.out.println("- Downloading to: " + outputFile.getAbsolutePath());
         try {
             downloadFileFromURL(url, outputFile);
             System.out.println("Done");
-            System.exit(0);
         } catch (Throwable e) {
             System.out.println("- Error downloading");
             e.printStackTrace();
-            System.exit(1);
+            throw RuntimeException(e);
+        }
+    }
+
+    protected static void createFile(File parentFile) {
+        if(!parentFile.mkdirs()) {
+            System.out.println(
+                "- ERROR creating output directory '" + parentFile.getAbsolutePath() + "'");
         }
     }
 
