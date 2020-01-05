@@ -15,6 +15,11 @@
         <ignoreVersion type="regex">^\d+\.?\d*$</ignoreVersion>
       </ignoreVersions>
     </rule>
+    <rule groupId="antlr" artifactId="antlr">
+      <ignoreVersions>
+        <ignoreVersion type="regex">^[^\.]+$</ignoreVersion>
+      </ignoreVersions>
+    </rule>
   </rules>
 
 </ruleset>
