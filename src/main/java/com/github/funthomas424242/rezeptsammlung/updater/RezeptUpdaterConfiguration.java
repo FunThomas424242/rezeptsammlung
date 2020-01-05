@@ -89,6 +89,7 @@ public class RezeptUpdaterConfiguration {
     }
 
     protected NitriteRepository<SiteUrl> getSiteUrlRepository() {
+        LOG.debug("### hole Repo für site url");
         final NitriteRepository<SiteUrl> repository = nitriteTemplate.getRepository(SiteUrl.class);
         // Da Indizes permanent in der Datenbank gespeichert werden,
         // dürfen diese nur 1x angelegt werden.
@@ -102,12 +103,13 @@ public class RezeptUpdaterConfiguration {
         if (!repository.hasIndex("type")) {
             repository.createIndex("type", indexOptions(IndexType.NonUnique, true));
         }
+        LOG.debug("### Repo für site url geholt");
         return repository;
     }
 
     public NitriteItemReader<SiteUrl> readerSiteUrl() {
         final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
-        LOG.debug("nitrite repository for readerSiteUrl is: {}", siteRepo);
+        LOG.debug("nitrite repository for readerSiteUrl is: {}", siteRepo.getName());
         return new NitriteItemReader<SiteUrl>(siteRepo);
     }
 
@@ -117,7 +119,7 @@ public class RezeptUpdaterConfiguration {
 
     public NitriteItemWriter<Rezept> writerRezept() {
         final NitriteRepository<Rezept> rezeptRepo = getRezeptRepository();
-        LOG.debug("nitrite repository for writer is: {}", rezeptRepo);
+        LOG.debug("nitrite repository for writer is: {}", rezeptRepo.getName());
         return new NitriteItemWriter<Rezept>(rezeptRepo);
     }
 
