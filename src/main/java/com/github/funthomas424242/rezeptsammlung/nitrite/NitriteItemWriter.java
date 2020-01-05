@@ -38,18 +38,18 @@ public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
 
     public NitriteItemWriter(final NitriteRepository<T> repository) {
         this.repository = repository;
-        LOG.debug("Nitrite Repository zugewiesen.");
+        LOG.debug("### Nitrite Repository zugewiesen.");
     }
 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        LOG.debug("after properties set called.");
+        LOG.debug("### after properties set called.");
     }
 
     @Override
     public void write(List<? extends T> list) throws Exception {
-        LOG.debug("Beginne mit dem Schreiben der Items ins repo:" + repository);
+        LOG.debug("### Beginne mit dem Schreiben der Items ins repo:" + repository.getName());
         list.forEach(o ->
             repository.insert(o)
         );
