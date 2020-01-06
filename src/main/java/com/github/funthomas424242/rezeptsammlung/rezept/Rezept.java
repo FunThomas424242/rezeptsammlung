@@ -66,7 +66,7 @@ public class Rezept implements Serializable {
     }
 
 
-    public static Rezept of(final URL url) throws IOException, JSONException {
+    public static Rezept of(final URL url) throws IOException {
         final String jsonText = IOUtils.toString(url, StandardCharsets.UTF_8);
         ObjectMapper om = new ObjectMapper();
         Rezept rezept = om.readValue(jsonText, Rezept.class);
