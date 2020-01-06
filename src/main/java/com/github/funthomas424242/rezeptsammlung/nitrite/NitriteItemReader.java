@@ -24,7 +24,6 @@ package com.github.funthomas424242.rezeptsammlung.nitrite;
 
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import org.dizitart.no2.FindOptions;
-import org.dizitart.no2.SortOrder;
 import org.dizitart.no2.objects.Cursor;
 import org.dizitart.no2.objects.ObjectFilter;
 import org.slf4j.Logger;
@@ -36,34 +35,51 @@ import org.springframework.batch.item.UnexpectedInputException;
 
 import java.util.Iterator;
 
-import static org.dizitart.no2.FindOptions.sort;
-import static org.dizitart.no2.objects.filters.ObjectFilters.and;
-import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
-import static org.dizitart.no2.objects.filters.ObjectFilters.gt;
-
 public class NitriteItemReader<T> implements ItemReader<T> {
 
     protected final Logger LOG = LoggerFactory.getLogger(NitriteItemReader.class);
 
     protected final NitriteRepository<T> repo;
     protected final ObjectFilter filter;
-    protected final FindOptions option;
+    protected final FindOptions options;
 
     protected Iterator<T> resultIterator;
 
-    public NitriteItemReader(NitriteRepository<T> repo) {
+    public NitriteItemReader(final NitriteRepository<T> repo) {
+        this(repo, null, null);
+    }
+
+    public NitriteItemReader(final NitriteRepository<T> repo, final ObjectFilter filter) {
+        this(repo, filter, null);
+    }
+
+    public NitriteItemReader(final NitriteRepository<T> repo, final FindOptions options) {
+        this(repo, null, options);
+    }
+
+    public NitriteItemReader(final NitriteRepository<T> repo, final ObjectFilter filter, final FindOptions options) {
         this.repo = repo;
-        this.filter = and(gt("age", 30), eq("blha", "blup"));
-        this.option = sort("age", SortOrder.Ascending);
+        this.filter = filter;
+        this.options = options;
         this.resultIterator = null;
         LOG.debug("### Reader initialized for repo type: " + repo.getName());
     }
 
 
+    protected Cursor<T> getQuery(){
+        if(this.filter == null && this.options == null){
+            return repo.find();
+        }else if( this.options == null){
+            return repo.find(this.filter);
+        }else{
+            return repo.find(this.options);
+        }
+    }
+
     @Override
     public T read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
         if (resultIterator == null) {
-            final Cursor<T> resultCusor = repo.find();
+            final Cursor<T> resultCusor = getQuery();
             LOG.debug("### ResultCursor initialiced with size "
                 + resultCusor.size()
                 + " from "
@@ -72,7 +88,7 @@ public class NitriteItemReader<T> implements ItemReader<T> {
         }
         if (resultIterator.hasNext()) {
             final T element = resultIterator.next();
-            LOG.debug("### GELESEN: " + element);
+            LOG.debug("### Gelesen: " + element);
             return element;
         } else {
             LOG.debug("### Lesen beendet für repo typ: " + repo.getName());
