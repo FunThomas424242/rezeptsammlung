@@ -25,12 +25,19 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
 import com.github.funthomas424242.rades.annotations.builder.RadesNoBuilder;
+import org.apache.commons.io.IOUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.objects.Id;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,11 +63,22 @@ public class Rezept implements Serializable {
     }
 
 
-    public static Rezept of(final URL url){
-        final RezeptLoader loader = new RezeptLoader(url);
-        return loader.getNewRezeptInstanz();
+    public static Rezept of(final URL url) throws IOException, JSONException {
+        final String jsonText = IOUtils.toString(url, StandardCharsets.UTF_8);
+        final JSONObject json = new JSONObject(jsonText);
+        return Rezept.of(json);
     }
 
+    public static Rezept of(final JSONObject jsonObject) throws JSONException {
+        final RezeptBuilder builder = new RezeptBuilder()
+            .withTitel(jsonObject.getString("titel"));
+        final JSONArray rawtags = jsonObject.getJSONArray("tags");
+        final List<String> tags = new ArrayList<>(rawtags.length());
+        for (int i = 0; i < rawtags.length(); i++) {
+            tags.add(rawtags.getString(i));
+        }
+        return builder.build();
+    }
 
     /**
      * Zwei Rezepte sollten fachlich gleich sein, wenn:
