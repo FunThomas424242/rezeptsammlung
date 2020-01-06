@@ -28,15 +28,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
+import java.io.IOException;
+
 public class SiteUrl2RezeptItemProcessor implements ItemProcessor<SiteUrl, Rezept> {
 
     protected static final Logger LOG = LoggerFactory.getLogger(SiteUrl2RezeptItemProcessor.class);
 
     @Override
-    public Rezept process(final SiteUrl rezeptSite) throws Exception {
-        final Rezept rezeptNew = Rezept.of(rezeptSite.getUrl());
-        LOG.info("Converting ({}) into ({})", rezeptSite, rezeptNew);
-        return rezeptNew;
+    public Rezept process(final SiteUrl rezeptSite)throws Exception{
+        try {
+            final Rezept rezeptNew = Rezept.of(rezeptSite.getUrl());
+            LOG.info("Converting ({}) into ({})", rezeptSite, rezeptNew);
+            return rezeptNew;
+        }catch (IllegalArgumentException | IOException ex){
+            LOG.error("Converting failed with ({})", rezeptSite);
+        }
+        return null;
     }
 
 }
