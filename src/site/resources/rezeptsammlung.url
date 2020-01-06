@@ -1,6 +1,6 @@
 [
-    {"url":"file:src/site/resources/Apfelkuchen.rezept"},
+    {"url":"file:src/site/resources/Weihnachtsplaetzchen.rezept"},
     {"url":"file:./Neu.rezept"},
-    {"url":"./ExistiertNicht.rezept"},
+    {"url":"https://funthomas424242.github.io/rezeptsammlung/Apfelkuchen.rezept"},
     {"url":"./OnlineRezepte.url"}
 ]
