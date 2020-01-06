@@ -37,9 +37,9 @@ public class SiteUrl2RezeptItemProcessor implements ItemProcessor<SiteUrl, Rezep
     @Override
     public Rezept process(final SiteUrl rezeptSite)throws Exception{
         try {
-            final Rezept rezeptNew = Rezept.of(rezeptSite.getUrl());
+            final Rezept[] rezeptNew = Rezept.of(rezeptSite.getUrl());
             LOG.info("Converting ({}) into ({})", rezeptSite, rezeptNew);
-            return rezeptNew;
+            return rezeptNew[0];
         }catch (IllegalArgumentException | IOException ex){
             LOG.error("Converting failed with ({})", rezeptSite);
         }

@@ -66,14 +66,13 @@ public class Rezept implements Serializable {
     }
 
 
-    public static Rezept of(final URL url) throws IOException {
+    public static Rezept[] of(final URL url) throws IOException {
         if(url == null){
             throw new IllegalArgumentException("url darf nicht null sein");
         }
         final String jsonText = IOUtils.toString(url, StandardCharsets.UTF_8);
-        ObjectMapper om = new ObjectMapper();
-        Rezept rezept = om.readValue(jsonText, Rezept.class);
-        return rezept;
+        final ObjectMapper om = new ObjectMapper();
+        return om.readValue(jsonText, Rezept[].class);
     }
 
     public static Rezept of(final JSONObject jsonObject) throws JSONException {
