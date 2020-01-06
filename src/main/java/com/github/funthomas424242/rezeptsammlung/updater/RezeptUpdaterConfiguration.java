@@ -136,7 +136,7 @@ public class RezeptUpdaterConfiguration {
     public Job importUserJob() {
         return jobBuilderFactory.get("importRezeptJob")
             .incrementer(new RunIdIncrementer())
-            .listener(new JobCompletionNotificationListener<>(getRezeptRepository()))
+            .listener(new JobCompletionNotificationListener<>("importRezeptBatch", getRezeptRepository()))
             .flow(step())
             .end()
             .build();
