@@ -39,9 +39,10 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
@@ -114,15 +115,15 @@ public class RezeptUpdaterConfiguration {
         return new SiteUrl2RezeptItemProcessor();
     }
 
-    public NitriteItemWriter<Rezept> writerRezept() {
+    public NitriteItemWriter writerRezept() {
         final NitriteRepository<Rezept> rezeptRepo = getRezeptRepository();
         LOG.debug("nitrite repository for writer is: {}", rezeptRepo.getName());
-        return new NitriteItemWriter<Rezept>(rezeptRepo);
+        return new NitriteItemWriter<>(rezeptRepo);
     }
 
     public Step step() {
         return stepBuilderFactory.get("step")
-            .<SiteUrl, Rezept>chunk(10)
+            .<SiteUrl, List<Rezept>>chunk(10)
             .reader(readerSiteUrl())
             .processor(processorRezept())
             .writer(writerRezept())

@@ -50,8 +50,18 @@ public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
     @Override
     public void write(List<? extends T> list) throws Exception {
         LOG.debug("### Beginne mit dem Schreiben der Items ins repo:" + repository.getName());
-        list.forEach(o ->
-            repository.insert(o)
-        );
+
+        list.forEach(rawItem -> {
+            LOG.debug("### Schreibe mit item type " + rawItem.getClass());
+            if (rawItem instanceof List) {
+                ((List) rawItem).stream().forEach(elem -> {
+                    repository.insert((T) elem);
+                    LOG.debug("### Geschriebenes Item: " + elem);
+                });
+            } else {
+                repository.insert(rawItem);
+                LOG.debug("### Geschriebenes Item: " + rawItem);
+            }
+        });
     }
 }

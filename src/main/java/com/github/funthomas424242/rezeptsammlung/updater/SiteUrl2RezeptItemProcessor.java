@@ -29,18 +29,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-public class SiteUrl2RezeptItemProcessor implements ItemProcessor<SiteUrl, Rezept> {
+public class SiteUrl2RezeptItemProcessor implements ItemProcessor<SiteUrl, List<Rezept>> {
 
     protected static final Logger LOG = LoggerFactory.getLogger(SiteUrl2RezeptItemProcessor.class);
 
     @Override
-    public Rezept process(final SiteUrl rezeptSite)throws Exception{
+    public List<Rezept> process(final SiteUrl rezeptSite) throws Exception {
         try {
             final Rezept[] rezeptNew = Rezept.of(rezeptSite.getUrl());
             LOG.info("Converting ({}) into ({})", rezeptSite, rezeptNew);
-            return rezeptNew[0];
-        }catch (IllegalArgumentException | IOException ex){
+            return Arrays.asList(rezeptNew);
+        } catch (IllegalArgumentException | IOException ex) {
             LOG.error("Converting failed with ({})", rezeptSite);
         }
         return null;
