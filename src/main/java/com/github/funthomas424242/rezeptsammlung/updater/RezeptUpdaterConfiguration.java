@@ -41,11 +41,13 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
+@Profile("!disableBatch")
 @Configuration
 @EnableBatchProcessing
 //public class CrawlerConfiguration extends DefaultBatchConfigurer {
