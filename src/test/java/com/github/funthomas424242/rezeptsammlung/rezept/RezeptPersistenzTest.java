@@ -44,9 +44,9 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 @SpringBootTest
 @ActiveProfiles({"test", "disableBatch"})
-class RezeptsammlungApplicationTests {
+class RezeptPersistenzTest {
 
-    protected static final Logger LOG = LoggerFactory.getLogger(RezeptsammlungApplicationTests.class);
+    protected static final Logger LOG = LoggerFactory.getLogger(RezeptPersistenzTest.class);
 
     public static final String TEXT_DAS_IST_MAL_EINE_ÄNDERUNG = "Das ist mal eine Änderung!!!";
 
