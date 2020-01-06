@@ -23,6 +23,8 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
 import com.github.funthomas424242.rades.annotations.builder.RadesNoBuilder;
 import org.apache.commons.io.IOUtils;
@@ -42,6 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 @RadesAddBuilder
+@JsonDeserialize(builder = RezeptBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Rezept implements Serializable {
 
@@ -65,8 +68,9 @@ public class Rezept implements Serializable {
 
     public static Rezept of(final URL url) throws IOException, JSONException {
         final String jsonText = IOUtils.toString(url, StandardCharsets.UTF_8);
-        final JSONObject json = new JSONObject(jsonText);
-        return Rezept.of(json);
+        ObjectMapper om = new ObjectMapper();
+        Rezept rezept = om.readValue(jsonText, Rezept.class);
+        return rezept;
     }
 
     public static Rezept of(final JSONObject jsonObject) throws JSONException {
@@ -114,3 +118,4 @@ public class Rezept implements Serializable {
             '}';
     }
 }
+
