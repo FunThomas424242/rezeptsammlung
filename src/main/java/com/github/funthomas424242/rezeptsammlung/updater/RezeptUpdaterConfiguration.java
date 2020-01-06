@@ -54,9 +54,6 @@ import static org.dizitart.no2.IndexOptions.indexOptions;
 //    }
 public class RezeptUpdaterConfiguration {
 
-    @Value("${rezept.batch.updater.inputfile:}")
-    protected String batchInputFile;
-
     protected static final Logger LOG = LoggerFactory.getLogger(RezeptUpdaterConfiguration.class);
 
     protected NitriteTemplate nitriteTemplate;
