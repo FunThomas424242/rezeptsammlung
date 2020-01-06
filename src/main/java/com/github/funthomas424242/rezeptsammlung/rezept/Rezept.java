@@ -49,7 +49,6 @@ import java.util.Objects;
 public class Rezept implements Serializable {
 
     @Id
-    @RadesNoBuilder
     protected NitriteId id;
 
     @NotNull
