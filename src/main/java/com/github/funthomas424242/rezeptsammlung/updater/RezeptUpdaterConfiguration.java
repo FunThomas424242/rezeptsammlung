@@ -117,15 +117,15 @@ public class RezeptUpdaterConfiguration {
         return new SiteUrl2RezeptItemProcessor();
     }
 
-    public NitriteItemWriter writerRezept() {
+    public NitriteItemWriter<List<? extends Rezept>>writerRezept() {
         final NitriteRepository<Rezept> rezeptRepo = getRezeptRepository();
         LOG.debug("nitrite repository for writer is: {}", rezeptRepo.getName());
-        return new NitriteItemWriter<>(rezeptRepo);
+        return new NitriteItemWriter(rezeptRepo);
     }
 
     public Step step() {
         return stepBuilderFactory.get("step")
-            .<SiteUrl, List<Rezept>>chunk(10)
+            .<SiteUrl, List<? extends Rezept>>chunk(10)
             .reader(readerSiteUrl())
             .processor(processorRezept())
             .writer(writerRezept())
