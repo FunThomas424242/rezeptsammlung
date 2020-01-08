@@ -48,4 +48,10 @@ public class SiteController {
         return ROUTE_REZEPTLISTE;
     }
 
+    @GetMapping(value = {"/clearRezeptsammlung"})
+    public String clearRezeptsammlung(Model model) {
+        rezeptService.clearRezeptsammlung();
+        return ROUTE_REZEPTLISTE;
+    }
+
 }
