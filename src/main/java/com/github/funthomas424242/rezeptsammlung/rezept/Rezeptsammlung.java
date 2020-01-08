@@ -42,19 +42,20 @@ import static org.dizitart.no2.IndexOptions.indexOptions;
 import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
 
 @RestController
-@RequestMapping(path = "/rezepte")
+@RequestMapping(path = "/api/rezepte")
 public class Rezeptsammlung {
 
     @Autowired
     protected NitriteTemplate nitriteTemplate;
 
+    @Autowired
+    protected RezeptService rezeptService;
+
 
     @GetMapping(path = "/all", produces = "application/json")
     public ResponseEntity<List<Rezept>> getAll() {
-        final NitriteRepository<Rezept> repository = getRepository();
-        final List<Rezept> rezepte = repository.find().toList();
-        repository.close();
-        return new ResponseEntity<List<Rezept>>(rezepte, HttpStatus.OK);
+        final List<Rezept> rezepte = rezeptService.getAll();
+        return new ResponseEntity<>(rezepte, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")

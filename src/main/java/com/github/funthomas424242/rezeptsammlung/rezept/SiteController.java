@@ -22,15 +22,31 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class SiteController {
 
+    public static final String ROUTE_INDEX = "index";
+    public static final String ROUTE_REZEPTLISTE = "rezeptliste";
+
+    @Autowired
+    protected RezeptService rezeptService;
+
+
     @RequestMapping(value = "/index")
     public String index() {
-        return "index";
+        return ROUTE_INDEX;
+    }
+
+    @GetMapping(value = { "/rezeptliste" })
+    public String rezepte(Model model) {
+        model.addAttribute("rezepte", rezeptService.getAll());
+        return ROUTE_REZEPTLISTE;
     }
 
 }
