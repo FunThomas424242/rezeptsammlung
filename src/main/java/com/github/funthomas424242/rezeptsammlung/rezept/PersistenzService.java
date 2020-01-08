@@ -63,6 +63,7 @@ public class PersistenzService {
     }
 
     public List<Rezept> clearRezeptsammlung() {
+        getRepository().drop();
         return getAll();
     }
 }
