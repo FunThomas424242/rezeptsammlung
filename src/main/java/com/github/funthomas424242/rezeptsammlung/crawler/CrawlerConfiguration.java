@@ -42,10 +42,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.FileSystemResource;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
+@Profile("!disableBatch")
 @Configuration
 @EnableBatchProcessing
 public class CrawlerConfiguration {
@@ -85,7 +87,7 @@ public class CrawlerConfiguration {
         return repository;
     }
 
-//    @Bean
+    //    @Bean
     public JsonItemReader<SiteUrl> reader() {
 
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -101,13 +103,13 @@ public class CrawlerConfiguration {
             .build();
     }
 
-//    @Bean
+    //    @Bean
     public SiteUrlItemProcessor processor() {
         return new SiteUrlItemProcessor();
     }
 
 
-//    @Bean
+    //    @Bean
     public SiteUrlItemWriter writer() {
         final NitriteRepository<SiteUrl> siteRepo = getSiteUrlRepository();
         LOG.debug("nitrite repository for writer is: {}", siteRepo);
@@ -115,7 +117,7 @@ public class CrawlerConfiguration {
     }
 
 
-//    @Bean
+    //    @Bean
     public Step step1() {
         return stepBuilderFactory.get("step1")
             .<SiteUrl, SiteUrl>chunk(10)
@@ -129,7 +131,7 @@ public class CrawlerConfiguration {
     public Job importSiteJob() {
         return jobBuilderFactory.get("importSiteJob")
             .incrementer(new RunIdIncrementer())
-            .listener(new JobCompletionNotificationListener<SiteUrl>(getSiteUrlRepository()))
+            .listener(new JobCompletionNotificationListener<SiteUrl>("importSiteBatch", getSiteUrlRepository()))
             .flow(step1())
             .end()
             .build();

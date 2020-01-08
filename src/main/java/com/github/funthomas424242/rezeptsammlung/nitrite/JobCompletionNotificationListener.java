@@ -38,18 +38,30 @@ public class JobCompletionNotificationListener<T> extends JobExecutionListenerSu
 
     protected final NitriteRepository<T> nitriteRepository;
 
+    protected final String batchName;
+
     public JobCompletionNotificationListener() {
-        this.nitriteRepository = null;
+        this(null);
     }
 
     public JobCompletionNotificationListener(NitriteRepository<T> nitriteRepository) {
+        this(null, nitriteRepository);
+    }
+    public JobCompletionNotificationListener(final String batchName, NitriteRepository<T> nitriteRepository) {
         this.nitriteRepository = nitriteRepository;
+        this.batchName=batchName;
+    }
+
+    @Override
+    public void beforeJob(JobExecution jobExecution) {
+        super.beforeJob(jobExecution);
+        log.info("!!! JOB PREPARED! für batch: " + batchName);
     }
 
     @Override
     public void afterJob(JobExecution jobExecution) {
         if (this.nitriteRepository != null && jobExecution.getStatus() == BatchStatus.COMPLETED) {
-            log.info("!!! JOB FINISHED! Time to verify the results");
+            log.info("!!! JOB FINISHED! Time to verify the results für batch " + batchName);
 
             final Cursor<T> cursor = nitriteRepository.find();
             cursor.forEach(

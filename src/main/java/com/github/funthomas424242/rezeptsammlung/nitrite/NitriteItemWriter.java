@@ -29,6 +29,8 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 
 public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
@@ -38,20 +40,51 @@ public class NitriteItemWriter<T> implements ItemWriter<T>, InitializingBean {
 
     public NitriteItemWriter(final NitriteRepository<T> repository) {
         this.repository = repository;
-        LOG.debug("Nitrite Repository zugewiesen.");
+        LOG.debug("### Nitrite Repository zugewiesen.");
     }
 
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        LOG.debug("after properties set called.");
+        LOG.debug("### after properties set called.");
     }
 
     @Override
     public void write(List<? extends T> list) throws Exception {
-        LOG.debug("Beginne mit dem Schreiben der Items ins repo:" + repository);
-        list.forEach(o ->
-            repository.insert(o)
-        );
+        LOG.debug("### Beginne mit dem Schreiben der Items ins repo:" + repository.getName());
+
+        final Consumer<T> itemConsumer = getItemConsumer();
+        final Consumer<T> itemClassLogger = getItemClassLogger("### write with item type: ");
+        final Consumer<T> itemSingleLogger = getItemLogger("### write single item with data: ");
+        final Consumer<T> itemListLogger = getItemLogger("### write list item with data: ");
+
+        list.stream()
+            .filter(rawItem -> rawItem instanceof List)
+            .peek(itemClassLogger)
+            .flatMap(items -> castList(items).stream())
+            .peek(itemListLogger)
+            .forEach(itemConsumer);
+        list.stream()
+            .filter(rawItem -> !(rawItem instanceof List))
+            .peek(itemSingleLogger)
+            .forEach(itemConsumer);
+    }
+
+    protected Consumer<T> getItemConsumer(){
+        return  item -> repository.insert(item);
+    }
+
+    protected Consumer<T> getItemLogger(final String message){
+        return  item -> LOG.debug(message + item);
+    }
+
+    protected Consumer<T> getItemClassLogger(final String message){
+        return  item -> LOG.debug(message + item.getClass());
+    }
+
+    protected List<? extends T> castList(final T  item){
+        // TODO no idea to fix the type cast
+        final List<T> list = (List) item;
+        return list.stream().filter(i->true).collect(Collectors.toList());
     }
 }

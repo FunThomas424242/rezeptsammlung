@@ -22,20 +22,30 @@ package com.github.funthomas424242.rezeptsammlung.updater;
  * #L%
  */
 
+import com.github.funthomas424242.rezeptsammlung.crawler.SiteUrl;
 import com.github.funthomas424242.rezeptsammlung.rezept.Rezept;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
-public class RezeptItemProcessor implements ItemProcessor<Rezept, Rezept> {
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-    protected static final Logger LOG = LoggerFactory.getLogger(RezeptItemProcessor.class);
+public class SiteUrl2RezeptItemProcessor implements ItemProcessor<SiteUrl, List<Rezept>> {
+
+    protected static final Logger LOG = LoggerFactory.getLogger(SiteUrl2RezeptItemProcessor.class);
 
     @Override
-    public Rezept process(final Rezept rezept) throws Exception {
-        final Rezept rezeptNew = rezept;
-        LOG.info("Converting ({}) into ({})", rezept, rezeptNew);
-        return rezeptNew;
+    public List<Rezept> process(final SiteUrl rezeptSite) throws Exception {
+        try {
+            final Rezept[] rezeptNew = Rezept.of(rezeptSite.getUrl());
+            LOG.info("Converting ({}) into ({})", rezeptSite, rezeptNew);
+            return Arrays.asList(rezeptNew);
+        } catch (IllegalArgumentException | IOException ex) {
+            LOG.error("Converting failed with ({})", rezeptSite);
+        }
+        return null;
     }
 
 }

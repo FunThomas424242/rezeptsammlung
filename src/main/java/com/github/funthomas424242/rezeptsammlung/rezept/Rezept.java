@@ -23,22 +23,32 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  */
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.github.funthomas424242.rades.annotations.builder.RadesAddBuilder;
 import com.github.funthomas424242.rades.annotations.builder.RadesNoBuilder;
+import org.apache.commons.io.IOUtils;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.dizitart.no2.NitriteId;
 import org.dizitart.no2.objects.Id;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @RadesAddBuilder
+@JsonDeserialize(builder = RezeptBuilder.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Rezept implements Serializable {
 
     @Id
-    @RadesNoBuilder
     protected NitriteId id;
 
     @NotNull
@@ -52,6 +62,27 @@ public class Rezept implements Serializable {
 
     public List<String> getTags() {
         return tags;
+    }
+
+
+    public static Rezept[] of(final URL url) throws IOException {
+        if(url == null){
+            throw new IllegalArgumentException("url darf nicht null sein");
+        }
+        final String jsonText = IOUtils.toString(url, StandardCharsets.UTF_8);
+        final ObjectMapper om = new ObjectMapper();
+        return om.readValue(jsonText, Rezept[].class);
+    }
+
+    public static Rezept of(final JSONObject jsonObject) throws JSONException {
+        final RezeptBuilder builder = new RezeptBuilder()
+            .withTitel(jsonObject.getString("titel"));
+        final JSONArray rawtags = jsonObject.getJSONArray("tags");
+        final List<String> tags = new ArrayList<>(rawtags.length());
+        for (int i = 0; i < rawtags.length(); i++) {
+            tags.add(rawtags.getString(i));
+        }
+        return builder.build();
     }
 
     /**
@@ -88,3 +119,4 @@ public class Rezept implements Serializable {
             '}';
     }
 }
+

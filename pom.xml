@@ -38,16 +38,10 @@
     <url>https://travis-ci.org/FunThomas424242/rezeptsammlung</url>
   </ciManagement>
   <distributionManagement>
-    <snapshotRepository>
-      <id>bintray-funthomas424242-funthomas424242-libs</id>
-      <name>oss-jfrog-artifactory-snapshots</name>
-      <url>https://oss.jfrog.org/artifactory/oss-snapshot-local</url>
-    </snapshotRepository>
     <repository>
-      <id>bintray-funthomas424242-funthomas424242-libs</id>
-      <name>funthomas424242-funthomas424242-libs</name>
-      <url>https://api.bintray.com/maven/funthomas424242/funthomas424242-libs/${project.artifactId}/;publish=1
-      </url>
+      <id>github</id>
+      <name>GitHub FunThomas424242 Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/FunThomas424242/${project.artifactId}</url>
     </repository>
   </distributionManagement>
 
@@ -111,6 +105,13 @@
       <!-- weil wir keine Lib sondern eine echte Enduser App sind -->
       <scope>compile</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.6</version>
+    </dependency>
+
     <!-- APIs von denen die Generate abhängen -->
     <!--    <dependency>-->
     <!--      <groupId>javax.validation</groupId>-->
