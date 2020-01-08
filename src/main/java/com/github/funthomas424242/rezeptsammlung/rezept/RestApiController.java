@@ -43,13 +43,13 @@ import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
 
 @RestController
 @RequestMapping(path = "/api/rezepte")
-public class Rezeptsammlung {
+public class RestApiController {
 
     @Autowired
     protected NitriteTemplate nitriteTemplate;
 
     @Autowired
-    protected RezeptService rezeptService;
+    protected PersistenzService rezeptService;
 
 
     @GetMapping(path = "/all", produces = "application/json")

@@ -33,7 +33,7 @@ import java.util.List;
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
 @Service
-public class RezeptService {
+public class PersistenzService {
 
     @Autowired
     protected NitriteTemplate nitriteTemplate;
