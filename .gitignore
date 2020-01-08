@@ -2,6 +2,7 @@ target/
 generated/
 !**/src/main/**
 !**/src/test/**
+*.jar
 
 # lokale Speicherfiles
 *.nitrite
