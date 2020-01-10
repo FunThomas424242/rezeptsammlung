@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
@@ -48,9 +49,10 @@ public class RestApiController {
 
 
     @GetMapping(path = "/tags", produces = "application/json")
-    public ResponseEntity<Set<String>> getAllTags() {
+    public ResponseEntity<Map<String, String>> getAllTags() {
         final Set<String> tags = persistenzService.allTags();
-        return new ResponseEntity<>(tags, HttpStatus.OK);
+        final Map<String, String> selectionMap = TagView.toSelectionMap(tags);
+        return new ResponseEntity<>(selectionMap, HttpStatus.OK);
     }
 
     @GetMapping(path = "/all", produces = "application/json")
