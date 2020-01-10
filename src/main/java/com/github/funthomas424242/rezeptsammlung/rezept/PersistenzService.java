@@ -24,10 +24,14 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
 
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.search.suggest.analyzing.AnalyzingInfixSuggester;
+import org.apache.lucene.store.RAMDirectory;
 import org.dizitart.no2.IndexType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -57,10 +61,14 @@ public class PersistenzService {
     }
 
     public Set<String> matchingTags(final Set<String> suchTags) {
-//        RAMDirectory index_dir = new RAMDirectory();
-//        StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
-//        AnalyzingInfixSuggester suggester = new AnalyzingInfixSuggester(
-//            Version.LUCENE_48, index_dir, analyzer);
+        try {
+            RAMDirectory index_dir = new RAMDirectory();
+            StandardAnalyzer analyzer = new StandardAnalyzer();
+            AnalyzingInfixSuggester suggester = new AnalyzingInfixSuggester(
+                index_dir, analyzer);
+        } catch (IOException ex) {
+            System.out.println("Das hätte nicht passieren sollen ;) " + ex);
+        }
 
         final NitriteRepository<Rezept> repository = getRezeptRepository();
         final List<TagView> tags = repository.find().project(TagView.class).toList();
