@@ -44,7 +44,7 @@ public class SiteController {
 
     @GetMapping(value = {"/rezeptliste"})
     public String rezepte(Model model) {
-        model.addAttribute("rezepte", rezeptService.alleRezepte());
+        model.addAttribute("rezepte", rezeptService.allRezepte());
         return ROUTE_REZEPTLISTE;
     }
 

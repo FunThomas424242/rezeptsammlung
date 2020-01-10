@@ -23,6 +23,8 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  */
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TagView {
 
@@ -30,6 +32,12 @@ public class TagView {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    protected static Set<String> distinct(List<TagView> tags) {
+        return tags.stream()
+            .flatMap(item -> item.getTags().stream())
+            .collect(Collectors.toSet());
     }
 
 }

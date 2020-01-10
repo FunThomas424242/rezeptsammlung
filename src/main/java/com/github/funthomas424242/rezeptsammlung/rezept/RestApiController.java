@@ -23,7 +23,6 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  */
 
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
-import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,27 +44,24 @@ import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
 public class RestApiController {
 
     @Autowired
-    protected NitriteTemplate nitriteTemplate;
-
-    @Autowired
-    protected PersistenzService rezeptService;
+    protected PersistenzService persistenzService;
 
 
     @GetMapping(path = "/tags", produces = "application/json")
     public ResponseEntity<Set<String>> getAllTags() {
-        final Set<String> tags = rezeptService.alleTags();
+        final Set<String> tags = persistenzService.allTags();
         return new ResponseEntity<>(tags, HttpStatus.OK);
     }
 
     @GetMapping(path = "/all", produces = "application/json")
     public ResponseEntity<List<Rezept>> getAllRezepte() {
-        final List<Rezept> rezepte = rezeptService.alleRezepte();
+        final List<Rezept> rezepte = persistenzService.allRezepte();
         return new ResponseEntity<>(rezepte, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Rezept> getRezept(@PathVariable final long id) {
-        final NitriteRepository<Rezept> repository = rezeptService.getRezeptRepository();
+        final NitriteRepository<Rezept> repository = persistenzService.getRezeptRepository();
         final Rezept rezept = repository.find(eq("id", id)).firstOrDefault();
         repository.close();
         return new ResponseEntity<Rezept>(rezept, HttpStatus.OK);
@@ -73,7 +69,7 @@ public class RestApiController {
 
     @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Rezept> addRezept(@RequestBody final Rezept rezept) {
-        final NitriteRepository<Rezept> repository = rezeptService.getRezeptRepository();
+        final NitriteRepository<Rezept> repository = persistenzService.getRezeptRepository();
         repository.insert(rezept);
         repository.close();
         return new ResponseEntity<Rezept>(rezept, HttpStatus.CREATED);
@@ -81,7 +77,7 @@ public class RestApiController {
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Rezept> deleteRezept(@PathVariable final long id) {
-        final NitriteRepository<Rezept> repository = rezeptService.getRezeptRepository();
+        final NitriteRepository<Rezept> repository = persistenzService.getRezeptRepository();
         final int geloeschteAnzahl = repository.remove(eq("id", id)).getAffectedCount();
         repository.close();
         if (geloeschteAnzahl == 0) {

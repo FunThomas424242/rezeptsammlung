@@ -30,7 +30,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
@@ -57,16 +56,14 @@ public class PersistenzService {
         return repository;
     }
 
-    public Set<String> alleTags() {
+    public Set<String> allTags() {
         final NitriteRepository<Rezept> repository = getRezeptRepository();
         final List<TagView> tags = repository.find().project(TagView.class).toList();
         repository.close();
-        return tags.stream()
-            .flatMap(item -> item.getTags().stream())
-            .collect(Collectors.toSet());
+        return TagView.distinct(tags);
     }
 
-    public List<Rezept> alleRezepte() {
+    public List<Rezept> allRezepte() {
         final NitriteRepository<Rezept> repository = getRezeptRepository();
         final List<Rezept> rezepte = repository.find().toList();
         repository.close();
@@ -75,6 +72,6 @@ public class PersistenzService {
 
     public List<Rezept> clearRezeptsammlung() {
         getRezeptRepository().drop();
-        return alleRezepte();
+        return allRezepte();
     }
 }
