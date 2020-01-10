@@ -56,6 +56,18 @@ public class PersistenzService {
         return repository;
     }
 
+    public Set<String> matchingTags(final Set<String> suchTags) {
+//        RAMDirectory index_dir = new RAMDirectory();
+//        StandardAnalyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
+//        AnalyzingInfixSuggester suggester = new AnalyzingInfixSuggester(
+//            Version.LUCENE_48, index_dir, analyzer);
+
+        final NitriteRepository<Rezept> repository = getRezeptRepository();
+        final List<TagView> tags = repository.find().project(TagView.class).toList();
+        repository.close();
+        return TagView.distinct(tags);
+    }
+
     public Set<String> allTags() {
         final NitriteRepository<Rezept> repository = getRezeptRepository();
         final List<TagView> tags = repository.find().project(TagView.class).toList();
