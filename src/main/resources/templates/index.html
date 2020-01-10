@@ -11,9 +11,15 @@
 <a th:href="@{/rezeptliste}">Rezeptliste</a>
 
 <label>
-    <input id='eingabe' type="text">
+    <input id='eingabe' type="text" list="tags">
 </label>
 <button onclick="sendInput();">Vorschläge ermitteln</button>
+
+<datalist id="tags">
+    <option value="Geben Sie eine Liste zu suchender Tags ein.">
+</datalist>
+
+
 
 <script>
     function sendInput(){
