@@ -32,11 +32,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Null;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
 
@@ -49,8 +54,16 @@ public class RestApiController {
 
 
     @GetMapping(path = "/tags", produces = "application/json")
-    public ResponseEntity<Map<String, String>> getAllTags() {
-        final Set<String> tags = persistenzService.allTags();
+    public ResponseEntity<Map<String, String>> getAllTags(@Null @RequestParam Optional<String> taglist) {
+        final Set<String> tags;
+        if (taglist.isPresent()) {
+            final Set<String> suchTags = Arrays
+                .stream(taglist.orElseGet(String::new).split("\\s"))
+                .collect(Collectors.toSet());
+            tags = persistenzService.matchingTags(suchTags);
+        } else {
+            tags = persistenzService.allTags();
+        }
         final Map<String, String> selectionMap = TagView.toSelectionMap(tags);
         return new ResponseEntity<>(selectionMap, HttpStatus.OK);
     }
