@@ -29,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
@@ -38,7 +40,7 @@ public class PersistenzService {
     @Autowired
     protected NitriteTemplate nitriteTemplate;
 
-    protected NitriteRepository<Rezept> getRepository() {
+    protected NitriteRepository<Rezept> getRezeptRepository() {
         final NitriteRepository<Rezept> repository = nitriteTemplate.getRepository(Rezept.class);
         // Da Indizes permanent in der Datenbank gespeichert werden,
         // dürfen diese nur 1x angelegt werden.
@@ -55,15 +57,24 @@ public class PersistenzService {
         return repository;
     }
 
-    public List<Rezept> getAll() {
-        final NitriteRepository<Rezept> repository = getRepository();
+    public Set<String> alleTags() {
+        final NitriteRepository<Rezept> repository = getRezeptRepository();
+        final List<TagView> tags = repository.find().project(TagView.class).toList();
+        repository.close();
+        return tags.stream()
+            .flatMap(item -> item.getTags().stream())
+            .collect(Collectors.toSet());
+    }
+
+    public List<Rezept> alleRezepte() {
+        final NitriteRepository<Rezept> repository = getRezeptRepository();
         final List<Rezept> rezepte = repository.find().toList();
         repository.close();
         return rezepte;
     }
 
     public List<Rezept> clearRezeptsammlung() {
-        getRepository().drop();
-        return getAll();
+        getRezeptRepository().drop();
+        return alleRezepte();
     }
 }
