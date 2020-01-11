@@ -57,10 +57,11 @@ public class RestApiController {
     public ResponseEntity<Map<String, String>> getAllTags(@Null @RequestParam Optional<String> taglist) {
         final Set<String> tags;
         if (taglist.isPresent()) {
-            final Set<String> suchTags = Arrays
-                .stream(taglist.orElseGet(String::new).split("\\s"))
-                .collect(Collectors.toSet());
-            tags = persistenzService.matchingTags(suchTags);
+//            final Set<String> suchTags = Arrays
+//                .stream(taglist.orElseGet(String::new).split("\\s"))
+//                .collect(Collectors.toSet());
+//            tags = persistenzService.matchingTags(suchTags);
+            tags = persistenzService.matchingTags(taglist.orElseGet(String::new));
         } else {
             tags = persistenzService.allTags();
         }

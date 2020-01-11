@@ -36,7 +36,7 @@
     // because its type is javascript/worker.
     self.onmessage = function(e) {
       self.postMessage('msg from worker '+e.data);
-      var jsonPromise = self.sendRequest('http:localhost:8080/api/rezepte/tags');
+      var jsonPromise = self.sendRequest('http:localhost:8080/api/rezepte/tags?taglist='+e.data);
       jsonPromise.then( (response)=>{
         var promise = response.json();
         promise.then( (jsonObject) =>{

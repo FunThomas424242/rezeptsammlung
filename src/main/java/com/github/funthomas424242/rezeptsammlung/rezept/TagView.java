@@ -22,6 +22,7 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  * #L%
  */
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +34,23 @@ public class TagView {
 
     public List<String> getTags() {
         return tags;
+    }
+
+
+    protected static Map<String, Long> ratedMap(List<TagView> tags) {
+        final Map<String, Long> ratedMap = new HashMap<>();
+        tags.stream()
+            // TagView -> List<String>
+            .flatMap(item -> item.getTags().stream())
+            // String  (Tagwert)
+            .forEach(tagText -> {
+                if (ratedMap.containsKey(tagText)) {
+                    ratedMap.put(tagText, (ratedMap.get(tagText) + 1L));
+                } else {
+                    ratedMap.put(tagText, 1L);
+                }
+            });
+        return ratedMap;
     }
 
     protected static Set<String> distinct(List<TagView> tags) {

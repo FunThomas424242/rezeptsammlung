@@ -25,15 +25,20 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
 import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.search.suggest.Lookup;
 import org.apache.lucene.search.suggest.analyzing.AnalyzingInfixSuggester;
 import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.util.BytesRef;
 import org.dizitart.no2.IndexType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.dizitart.no2.IndexOptions.indexOptions;
 
@@ -60,20 +65,34 @@ public class PersistenzService {
         return repository;
     }
 
-    public Set<String> matchingTags(final Set<String> suchTags) {
+    /**
+     * https://stackoverflow.com/questions/24968697/how-to-implement-auto-suggest-using-lucenes-new-analyzinginfixsuggester-api
+     *
+     * @param suchTags
+     * @return
+     */
+    public Set<String> matchingTags(final String suchTags) {
+        final NitriteRepository<Rezept> repository = getRezeptRepository();
+        final List<TagView> tags = repository.find().project(TagView.class).toList();
+        final Map<String, Long> ratedTagMap = TagView.ratedMap(tags);
+        repository.close();
         try {
             RAMDirectory index_dir = new RAMDirectory();
             StandardAnalyzer analyzer = new StandardAnalyzer();
             AnalyzingInfixSuggester suggester = new AnalyzingInfixSuggester(
                 index_dir, analyzer);
+            suggester.build(new TagsInputIterator(ratedTagMap));
+            final Set<BytesRef> tmpSet = new HashSet<BytesRef>();
+            final List<Lookup.LookupResult> results = suggester.lookup(suchTags, tmpSet, true, 10);
+
+            return results.stream()
+                .map(result -> result.key.toString())
+                .collect(Collectors.toSet());
+
         } catch (IOException ex) {
             System.out.println("Das hätte nicht passieren sollen ;) " + ex);
         }
-
-        final NitriteRepository<Rezept> repository = getRezeptRepository();
-        final List<TagView> tags = repository.find().project(TagView.class).toList();
-        repository.close();
-        return TagView.distinct(tags);
+        return new HashSet<>();
     }
 
     public Set<String> allTags() {
