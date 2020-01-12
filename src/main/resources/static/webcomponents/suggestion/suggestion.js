@@ -33,8 +33,10 @@ template.innerHTML = `
           jsonPromise.then( (response)=>{
             var promise = response.json();
             promise.then( (jsonObject) =>{
-                var text = JSON.stringify( jsonObject );
-                self.postMessage('Response: '+text);
+                var selectionContent = createSelectionContent(jsonObject);
+                self.postMessage({'cmd':'replace-taglist', 'data': selectionContent});
+                var text = 'Response:' + JSON.stringify( jsonObject );
+                self.postMessage({'cmd':'log','msg': text});
             });
           });
         };
@@ -50,6 +52,14 @@ template.innerHTML = `
               })
             );
         });
+
+        function createSelectionContent( json ){
+            var content = '';
+            for (const key of Object.keys(json)) {
+                content += '<option value="'+key+'">';
+            }
+           return content;
+        }
 
         function sendRequest ( request ){
             return fetch( request ).then(
@@ -103,6 +113,32 @@ class SuggestionInput extends HTMLElement {
         Logger.logMessage(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
     }
 
+    ersetzeVorschlagslisteMit ( content ){
+        this.shadowRoot.getElementById('vorschlaege').innerHTML=content
+    }
+
+    handleMessage(e){
+        var msgObject = e.data;
+        if( msgObject.cmd === 'log'){
+            var msg = msgObject.msg;
+            // Use a fragment: browser will only render/reflow once.
+            var fragment = document.createDocumentFragment();
+            fragment.appendChild(document.createTextNode(msg));
+            fragment.appendChild(document.createElement('br'));
+            document.querySelector("#log").appendChild(fragment);
+        }else if( msgObject.cmd === 'replace-taglist'){
+           this.ersetzeVorschlagslisteMit(msgObject.data)
+        }else{
+            var msg = msgObject;
+            // Use a fragment: browser will only render/reflow once.
+            var fragment = document.createDocumentFragment();
+            fragment.appendChild(document.createTextNode(msg));
+            fragment.appendChild(document.createElement('br'));
+            document.querySelector("#log").appendChild(fragment);
+        }
+    }
+
+
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
             Logger.logMessage('creating shadow dom');
@@ -113,16 +149,12 @@ class SuggestionInput extends HTMLElement {
         // Worker starten
         var blob = new Blob([this.shadowRoot.getElementById('worker1').textContent]);
         var worker = new Worker(window.URL.createObjectURL(blob));
-        worker.onmessage = function(e) {
-            var msg = e.data;
-            // Use a fragment: browser will only render/reflow once.
-            var fragment = document.createDocumentFragment();
-            fragment.appendChild(document.createTextNode(msg));
-            fragment.appendChild(document.createElement('br'));
 
-            document.querySelector("#log").appendChild(fragment);
+        worker.onmessage = (e) => {
+            this.handleMessage(e);
         }
-        worker.postMessage(''); // Start the worker.
+
+
 
         // onClick auf Vorschlagen Button definieren
         this.suggestButton = this.shadowRoot.getElementById('vorschlagen-button');
@@ -131,6 +163,7 @@ class SuggestionInput extends HTMLElement {
              worker.postMessage(text);
         });
 
+        worker.postMessage(''); // Start the worker.
     }
 
 
