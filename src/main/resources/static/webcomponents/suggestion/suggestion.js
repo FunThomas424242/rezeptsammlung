@@ -1,8 +1,8 @@
 "use strict";
 
-import {Logger} from './logger.js';
+import {Logger} from "./logger.js";
 
-const template = document.createElement('template');
+const template = document.createElement("template");
 template.innerHTML = `
     <style>
 
@@ -95,17 +95,17 @@ class SuggestionInput extends HTMLElement {
         super();  // immer zuerst aufrufen
         // for init attribut defaults
         // e.g. this.src = '';
-        Logger.logMessage('constructor called');
+        Logger.logMessage("constructor called");
     }
 
     connectedCallback() {
-        Logger.logMessage('custom element in Seite eingehängt');
+        Logger.logMessage("custom element in Seite eingehängt");
         this.erzeugeShadowDOMIfNotExists();
-        Logger.logMessage('ShadowDom befüllt');
+        Logger.logMessage("ShadowDom befüllt");
     }
 
     disconnectedCallback() {
-        Logger.logMessage('element has been removed');
+        Logger.logMessage("element has been removed");
     }
 
     attributeChangedCallback(name, oldval, newval) {
@@ -114,20 +114,20 @@ class SuggestionInput extends HTMLElement {
     }
 
     ersetzeVorschlagslisteMit ( content ){
-        this.shadowRoot.getElementById('vorschlaege').innerHTML=content
+        this.shadowRoot.getElementById("vorschlaege").innerHTML=content;
     }
 
     handleMessage(e){
         var msgObject = e.data;
-        if( msgObject.cmd === 'log'){
+        if( msgObject.cmd === "log"){
             var msg = msgObject.msg;
             // Use a fragment: browser will only render/reflow once.
             var fragment = document.createDocumentFragment();
             fragment.appendChild(document.createTextNode(msg));
             fragment.appendChild(document.createElement('br'));
             document.querySelector("#log").appendChild(fragment);
-        }else if( msgObject.cmd === 'replace-taglist'){
-           this.ersetzeVorschlagslisteMit(msgObject.data)
+        }else if( msgObject.cmd === "replace-taglist"){
+           this.ersetzeVorschlagslisteMit(msgObject.data);
         }else{
             var msg = msgObject;
             // Use a fragment: browser will only render/reflow once.
@@ -141,29 +141,29 @@ class SuggestionInput extends HTMLElement {
 
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
-            Logger.logMessage('creating shadow dom');
-            this.attachShadow({mode: 'open'});
+            Logger.logMessage("creating shadow dom");
+            this.attachShadow({mode: "open"});
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         // Worker starten
-        var blob = new Blob([this.shadowRoot.getElementById('worker1').textContent]);
+        var blob = new Blob([this.shadowRoot.getElementById("worker1").textContent]);
         var worker = new Worker(window.URL.createObjectURL(blob));
 
         worker.onmessage = (e) => {
             this.handleMessage(e);
-        }
+        };
 
 
 
         // onClick auf Vorschlagen Button definieren
-        this.suggestButton = this.shadowRoot.getElementById('vorschlagen-button');
-        this.suggestButton.addEventListener('click', () => {
-             var text = this.shadowRoot.getElementById('eingabe').value;
+        this.suggestButton = this.shadowRoot.getElementById("vorschlagen-button");
+        this.suggestButton.addEventListener("click", () => {
+             var text = this.shadowRoot.getElementById("eingabe").value;
              worker.postMessage(text);
         });
 
-        worker.postMessage(''); // Start the worker.
+        worker.postMessage(""); // Start the worker.
     }
 
 
@@ -188,9 +188,9 @@ class SuggestionInput extends HTMLElement {
 
 }
 
-export {SuggestionInput}
+export {SuggestionInput};
 
-window.customElements.define('suggestion-input', SuggestionInput);
+window.customElements.define("suggestion-input", SuggestionInput);
 
 
 
