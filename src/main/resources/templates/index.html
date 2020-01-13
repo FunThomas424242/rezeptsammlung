@@ -6,102 +6,15 @@
     <title>Spring Boot Application</title>
 </head>
 <body>
+<script src="webcomponents/suggestion/suggestion.js" type="module"> </script>
+
 <h1>Welcome to Thymeleaf Spring Boot web application</h1>
 
 <a th:href="@{/rezeptliste}">Rezeptliste</a>
 
-<label>
-    <input id='eingabe' type="text" list="tags">
-</label>
-<button onclick="sendInput();">Vorschläge ermitteln</button>
-
-<datalist id="tags">
-    <option value="Geben Sie eine Liste zu suchender Tags ein.">
-</datalist>
-
-
-
-<script>
-    function sendInput(){
-        var text = document.querySelector('#eingabe').value;
-        worker.postMessage(text);
-    }
-</script>
+<suggestion-input></suggestion-input>
 
 <div id="log"></div>
-
-<script id="worker1" type="javascript/worker">
-    var CACHE_NAME = 'my-site-cache-v1';
-    // This script won't be parsed by JS engines
-    // because its type is javascript/worker.
-    self.onmessage = function(e) {
-      self.postMessage('msg from worker '+e.data);
-      var jsonPromise = self.sendRequest('http:localhost:8080/api/rezepte/tags?taglist='+e.data);
-      jsonPromise.then( (response)=>{
-        var promise = response.json();
-        promise.then( (jsonObject) =>{
-            var text = JSON.stringify( jsonObject );
-            self.postMessage('Response: '+text);
-        });
-      });
-    };
-    self.addEventListener('fetch', function(event) {
-      event.respondWith(
-        caches.match(event.request)
-          .then(function(response) {
-            // Cache hit - return response
-            if (response) {
-              return response;
-            }
-            return getRequest(request);
-          })
-        );
-    });
-
-    function sendRequest ( request ){
-        return fetch( request ).then(
-            function(response) {
-            // Check if we received a valid response
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // IMPORTANT: Clone the response. A response is a stream
-            // and because we want the browser to consume the response
-            // as well as the cache consuming the response, we need
-            // to clone it so we have two streams.
-            var responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                cache.put( request, responseToCache);
-              });
-
-            return response;
-            }
-        );
-    }
-  </script>
-
-<script>
-    function log(msg) {
-      // Use a fragment: browser will only render/reflow once.
-      var fragment = document.createDocumentFragment();
-      fragment.appendChild(document.createTextNode(msg));
-      fragment.appendChild(document.createElement('br'));
-
-      document.querySelector("#log").appendChild(fragment);
-    }
-
-    var blob = new Blob([document.querySelector('#worker1').textContent]);
-
-    var worker = new Worker(window.URL.createObjectURL(blob));
-    worker.onmessage = function(e) {
-      log("Received: " + e.data);
-    }
-    worker.postMessage(''); // Start the worker.
-  </script>
-
 
 
 </body>

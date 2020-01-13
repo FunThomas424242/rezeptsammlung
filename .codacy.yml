@@ -1,3 +1,11 @@
+#engines:
+#    no-console:
+#        enabled: true
+#        exclude_paths:
+#            - '**/*.js'
+
 exclude_paths:
     - '.github/**'
     - '.mvn/**'
+
+
