@@ -114,7 +114,7 @@ class SuggestionInput extends HTMLElement {
     }
 
     ersetzeVorschlagslisteMit ( content ){
-        this.shadowRoot.getElementById("vorschlaege").innerHTML=content;
+        this.shadowRoot.getElementById("vorschlaege").innerHTML=`${content}`;
     }
 
     schreibeLogEintrag( text ){
