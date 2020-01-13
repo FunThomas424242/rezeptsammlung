@@ -117,24 +117,22 @@ class SuggestionInput extends HTMLElement {
         this.shadowRoot.getElementById("vorschlaege").innerHTML=content;
     }
 
+    schreibeLogEintrag( text ){
+        // Use a fragment: browser will only render/reflow once.
+        var fragment = document.createDocumentFragment();
+        fragment.appendChild(document.createTextNode(text));
+        fragment.appendChild(document.createElement("br"));
+        document.querySelector("#log").appendChild(fragment);
+    }
+
     handleMessage(e){
         var msgObject = e.data;
         if( msgObject.cmd === "log"){
-            var msg = msgObject.msg;
-            // Use a fragment: browser will only render/reflow once.
-            var fragment = document.createDocumentFragment();
-            fragment.appendChild(document.createTextNode(msg));
-            fragment.appendChild(document.createElement('br'));
-            document.querySelector("#log").appendChild(fragment);
+            this.schreibeLogEintrag(msgObject.msg);
         }else if( msgObject.cmd === "replace-taglist"){
-           this.ersetzeVorschlagslisteMit(msgObject.data);
+            this.ersetzeVorschlagslisteMit(msgObject.data);
         }else{
-            var msg = msgObject;
-            // Use a fragment: browser will only render/reflow once.
-            var fragment = document.createDocumentFragment();
-            fragment.appendChild(document.createTextNode(msg));
-            fragment.appendChild(document.createElement('br'));
-            document.querySelector("#log").appendChild(fragment);
+            this.schreibeLogEintrag(msgObject);
         }
     }
 
