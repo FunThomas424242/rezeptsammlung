@@ -2,7 +2,7 @@ engines:
     no-console:
         enabled: true
         exclude_paths:
-            - '**.*.js'
+            - '**/*.js'
 
 exclude_paths:
     - '.github/**'
