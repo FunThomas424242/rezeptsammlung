@@ -136,6 +136,12 @@ class SuggestionInput extends HTMLElement {
         }
     }
 
+    handleInput( worker, srcValue, key ){
+        var text = "";
+         text +=  srcValue?  srcValue : "";
+         text +=  key?  key : "";
+        worker.postMessage(text);
+    }
 
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
@@ -153,6 +159,23 @@ class SuggestionInput extends HTMLElement {
         };
 
 
+        this.filterPattern = this.shadowRoot.getElementById("eingabe");
+// Bei erkanntem Bedarf nutzen
+//        this.filterPattern.onkeypress = (event) => {
+//            this.handleInput( worker, event.srcElement.value, event.key );
+//        }
+//        this.filterPattern.onKeyUp = (event) => {
+//            this.handleInput( worker, event.srcElement.value, event.key );
+//        }
+//        this.filterPattern.onchange = (event) => {
+//            this.handleInput( worker, event.srcElement.value, event.key );
+//        }
+//        this.filterPattern.onpaste = (event) => {
+//            this.handleInput( worker, event.srcElement.value, event.key );
+//        }
+        this.filterPattern.oninput = (event) => {
+            this.handleInput( worker, event.srcElement.value, event.key );
+        }
 
         // onClick auf Vorschlagen Button definieren
         this.suggestButton = this.shadowRoot.getElementById("vorschlagen-button");
