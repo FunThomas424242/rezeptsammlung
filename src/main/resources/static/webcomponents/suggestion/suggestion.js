@@ -61,17 +61,6 @@ class SuggestionInput extends HTMLElement {
         document.querySelector("#log").appendChild(fragment);
     }
 
-//    handleWorkerMessage(e){
-//        var msgObject = e.data;
-//        if( msgObject.cmd === "log"){
-//            this.schreibeLogEintrag(msgObject.msg);
-//        }else if( msgObject.cmd === "replace-taglist"){
-//            this.ersetzeVorschlagslisteMit(msgObject.data);
-//        }else{
-//            this.schreibeLogEintrag(msgObject);
-//        }
-//    }
-
 
 
     handleInput( srcValue, key ){
@@ -81,14 +70,7 @@ class SuggestionInput extends HTMLElement {
         this.workerService.sendToWorker(text);
     }
 
-
-    erzeugeShadowDOMIfNotExists() {
-        if (!this.shadowRoot) {
-            Logger.logMessage("creating shadow dom");
-            this.attachShadow({mode: "open"});
-        }
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-
+    erzeugeWebWorker(){
         var scriptURL = import.meta.url;
         var workerURL = scriptURL.replace("suggestion.js", "worker.js");
         this.workerService = new WorkerService(workerURL, (event) =>{
@@ -101,7 +83,17 @@ class SuggestionInput extends HTMLElement {
                 this.schreibeLogEintrag(msgObject);
             }
         });
+    }
 
+
+    erzeugeShadowDOMIfNotExists() {
+        if (!this.shadowRoot) {
+            Logger.logMessage("creating shadow dom");
+            this.attachShadow({mode: "open"});
+        }
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+        this.erzeugeWebWorker();
 
         this.filterPattern = this.shadowRoot.getElementById("eingabe");
 // Bei erkanntem Bedarf nutzen
@@ -125,7 +117,7 @@ class SuggestionInput extends HTMLElement {
         this.suggestButton = this.shadowRoot.getElementById("vorschlagen-button");
         this.suggestButton.addEventListener("click", () => {
              var text = this.shadowRoot.getElementById("eingabe").value;
-             this.sendToWorker(text);
+             this.workerService.sendToWorker(text);
         });
     }
 
