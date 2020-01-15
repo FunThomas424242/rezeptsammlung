@@ -3,7 +3,7 @@
 import {Logger} from "./logger.js";
 
 // script of inline service worker
-import "./worker.js";
+import {WorkerService} from "./workerservice.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -31,6 +31,7 @@ class SuggestionInput extends HTMLElement {
         // for init attribut defaults
         // e.g. this.src = '';
         Logger.logMessage("constructor called");
+
     }
 
     connectedCallback() {
@@ -60,26 +61,24 @@ class SuggestionInput extends HTMLElement {
         document.querySelector("#log").appendChild(fragment);
     }
 
-    handleWorkerMessage(e){
-        var msgObject = e.data;
-        if( msgObject.cmd === "log"){
-            this.schreibeLogEintrag(msgObject.msg);
-        }else if( msgObject.cmd === "replace-taglist"){
-            this.ersetzeVorschlagslisteMit(msgObject.data);
-        }else{
-            this.schreibeLogEintrag(msgObject);
-        }
-    }
+//    handleWorkerMessage(e){
+//        var msgObject = e.data;
+//        if( msgObject.cmd === "log"){
+//            this.schreibeLogEintrag(msgObject.msg);
+//        }else if( msgObject.cmd === "replace-taglist"){
+//            this.ersetzeVorschlagslisteMit(msgObject.data);
+//        }else{
+//            this.schreibeLogEintrag(msgObject);
+//        }
+//    }
 
-    sendToWorker( message ){
-        this.serviceWorker.postMessage(message);
-    }
+
 
     handleInput( srcValue, key ){
         var text = "";
         text +=  srcValue?  srcValue : "";
         text +=  key?  key : "";
-        this.sendToWorker(text);
+        this.workerService.sendToWorker(text);
     }
 
 
@@ -90,30 +89,18 @@ class SuggestionInput extends HTMLElement {
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-
         var scriptURL = import.meta.url;
         var workerURL = scriptURL.replace("suggestion.js", "worker.js");
-        var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", (event) =>{
-
-            console.log( event.target.responseText );
-
-            // Worker erzeugen und starten
-            var blob = new Blob([event.target.responseText]);
-            var serviceWorkerBlobURL = window.URL.createObjectURL(blob);
-            var worker = new Worker(serviceWorkerBlobURL);
-            this.serviceWorker = worker;
-            // onMessage definieren
-            this.serviceWorker.onmessage = (e) => {
-              this.handleWorkerMessage(e);
-            };
-            // service worker starten
-            this.sendToWorker("");
+        this.workerService = new WorkerService(workerURL, (event) =>{
+            var msgObject = event.data;
+            if( msgObject.cmd === "log"){
+                this.schreibeLogEintrag(msgObject.msg);
+            }else if( msgObject.cmd === "replace-taglist"){
+                this.ersetzeVorschlagslisteMit(msgObject.data);
+            }else{
+                this.schreibeLogEintrag(msgObject);
+            }
         });
-        oReq.open("GET", workerURL);
-        oReq.send();
-
-
 
 
         this.filterPattern = this.shadowRoot.getElementById("eingabe");
