@@ -4,6 +4,23 @@
     <meta charset="UTF-8"/>
     <link href="css/styles.css" rel="stylesheet"/>
     <title>Spring Boot Application</title>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+          // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
+          navigator.serviceWorker.register('js/service-worker.js', {scope: '/'}).then(function(registration) {
+            document.querySelector('#log').textContent = 'succeeded';
+          }).catch(function(error) {
+            document.querySelector('#log').textContent = error;
+          });
+        } else {
+          // Der verwendete Browser unterstützt Service Worker nicht.
+          var aElement = document.createElement('a');
+          aElement.href = 'http://www.chromium.org/blink/serviceworker/service-worker-faq';
+          aElement.textContent = 'unavailable';
+          document.querySelector('#status').appendChild(aElement);
+        }
+    </script>
 </head>
 <body>
 <script src="webcomponents/suggestion/suggestion.js" type="module"> </script>
