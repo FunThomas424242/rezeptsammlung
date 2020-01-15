@@ -21,19 +21,6 @@ template.innerHTML = `
         <option value="Geben Sie eine Liste zu suchender Tags ein.">
     </datalist>
 
-//    <script id="worker" type="text/javascript">
-//        if ('serviceWorker' in navigator) {
-//          window.addEventListener('load', function() {
-//            navigator.serviceWorker.register('./worker.js').then(function(registration) {
-//              // Registration was successful
-//              console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//            }, function(err) {
-//              // registration failed :(
-//              console.log('ServiceWorker registration failed: ', err);
-//            });
-//          });
-//    </script>
-
 `;
 
 
@@ -91,16 +78,6 @@ class SuggestionInput extends HTMLElement {
         this.serviceWorker.postMessage(text);
     }
 
-//    reqListener( callback ){
-//      console.log( this.responseText );
-//
-//      // Worker erzeugen und starten
-//      var blob = new Blob([this.responseText]);
-//      var serviceWorkerBlobURL = window.URL.createObjectURL(blob);
-//      var worker = new Worker(serviceWorkerBlobURL);
-//      callback( worker );
-//
-//    }
 
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
@@ -108,19 +85,6 @@ class SuggestionInput extends HTMLElement {
             this.attachShadow({mode: "open"});
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-
-//        if ('serviceWorker' in navigator) {
-//          window.addEventListener('load', function() {
-//            navigator.serviceWorker.register('./worker.js').then(function(registration) {
-//              // Registration was successful
-//              console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//            }, function(err) {
-//              // registration failed :(
-//              console.log('ServiceWorker registration failed: ', err);
-//            });
-//          });
-//        };
 
 
         var scriptURL = import.meta.url;
