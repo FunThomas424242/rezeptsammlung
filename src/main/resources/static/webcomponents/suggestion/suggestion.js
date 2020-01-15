@@ -60,7 +60,7 @@ class SuggestionInput extends HTMLElement {
         document.querySelector("#log").appendChild(fragment);
     }
 
-    handleMessage(e){
+    handleWorkerMessage(e){
         var msgObject = e.data;
         if( msgObject.cmd === "log"){
             this.schreibeLogEintrag(msgObject.msg);
@@ -71,11 +71,15 @@ class SuggestionInput extends HTMLElement {
         }
     }
 
+    sendToWorker( message ){
+        this.serviceWorker.postMessage(message);
+    }
+
     handleInput( srcValue, key ){
         var text = "";
-         text +=  srcValue?  srcValue : "";
-         text +=  key?  key : "";
-        this.serviceWorker.postMessage(text);
+        text +=  srcValue?  srcValue : "";
+        text +=  key?  key : "";
+        this.sendToWorker(text);
     }
 
 
@@ -101,10 +105,10 @@ class SuggestionInput extends HTMLElement {
             this.serviceWorker = worker;
             // onMessage definieren
             this.serviceWorker.onmessage = (e) => {
-              this.handleMessage(e);
+              this.handleWorkerMessage(e);
             };
             // service worker starten
-            this.serviceWorker.postMessage("");
+            this.sendToWorker("");
         });
         oReq.open("GET", workerURL);
         oReq.send();
@@ -134,7 +138,7 @@ class SuggestionInput extends HTMLElement {
         this.suggestButton = this.shadowRoot.getElementById("vorschlagen-button");
         this.suggestButton.addEventListener("click", () => {
              var text = this.shadowRoot.getElementById("eingabe").value;
-             this.serviceWorker.postMessage(text);
+             this.sendToWorker(text);
         });
     }
 
