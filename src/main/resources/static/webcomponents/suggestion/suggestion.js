@@ -3,7 +3,7 @@
 import {LoggerService} from "./loggerService.js";
 
 // script of inline service worker
-import {WorkerService} from "./workerservice.js";
+import {WorkerService} from "./workerService.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
