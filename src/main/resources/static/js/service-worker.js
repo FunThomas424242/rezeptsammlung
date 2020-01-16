@@ -1,9 +1,6 @@
 "use strict";
 
-var CACHE_NAME = "rezeptsammlung-cache-v1";
-// This script won't be parsed by JS engines
-// because its type is javascript/worker.
-
+const CACHE_NAME = "rezeptsammlung-cache-v1";
 
 function sendRequest ( request ){
     return fetch( request ).then(
