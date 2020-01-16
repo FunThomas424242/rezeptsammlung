@@ -27,13 +27,15 @@ import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.search.suggest.Lookup;
 import org.apache.lucene.search.suggest.analyzing.AnalyzingInfixSuggester;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.MMapDirectory;
 import org.apache.lucene.util.BytesRef;
 import org.dizitart.no2.IndexType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +79,7 @@ public class PersistenzService {
         final Map<String, Long> ratedTagMap = TagView.ratedMap(tags);
         repository.close();
         try {
-            RAMDirectory index_dir = new RAMDirectory();
+            final Directory index_dir = new MMapDirectory(Path.of("/tmp/lucene"));
             StandardAnalyzer analyzer = new StandardAnalyzer();
             AnalyzingInfixSuggester suggester = new AnalyzingInfixSuggester(
                 index_dir, analyzer);
