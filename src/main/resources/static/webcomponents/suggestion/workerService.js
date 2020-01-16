@@ -3,7 +3,7 @@
 import {LoggerService} from "./loggerService.js";
 
 // script of inline service worker
-import "./worker.js";
+import "./webworkerScript.js";
 
 
 class WorkerService {
