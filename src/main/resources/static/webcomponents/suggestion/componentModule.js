@@ -42,7 +42,10 @@ class SuggestionInput extends HTMLElement {
         var text = "";
         text +=  srcValue?  srcValue : "";
         text +=  key?  key : "";
-        this.workerService.sendToWorker(text);
+
+        var apiurl = this.suggesterurl;
+        var apiparameter = this.suggesterparametername;
+        this.workerService.sendToWorker({"apiurl": apiurl, "apiparameter" : apiparameter, "msg": text});
     }
 
     erzeugeWebWorker(){
@@ -93,7 +96,13 @@ class SuggestionInput extends HTMLElement {
         this.suggestButton = this.shadowRoot.getElementById("vorschlagen-button");
         this.suggestButton.addEventListener("click", () => {
              var text = this.shadowRoot.getElementById("eingabe").value;
-             this.workerService.sendToWorker(text);
+             var apiurl = this.suggesterurl;
+             var apiparameter = this.suggesterparametername;
+             if (text && text !== "") {
+                this.workerService.sendToWorker({"apiurl": apiurl, "apiparameter" : apiparameter, "msg": text});
+             } else {
+                this.workerService.sendToWorker({"apiurl": apiurl});
+             }
         });
     }
 

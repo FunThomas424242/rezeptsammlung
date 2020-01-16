@@ -31,7 +31,9 @@
 
 <a th:href="@{/rezeptliste}">Rezeptliste</a>
 
-<suggestion-input></suggestion-input>
+<suggestion-input suggesterurl="http:localhost:8080/rezeptsammlung/api/rezepte/tags"
+                  suggesterparametername="taglist"
+></suggestion-input>
 
 <div id="log"></div>
 
