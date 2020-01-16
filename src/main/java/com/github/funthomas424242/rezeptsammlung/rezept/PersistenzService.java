@@ -68,8 +68,8 @@ public class PersistenzService {
     /**
      * https://stackoverflow.com/questions/24968697/how-to-implement-auto-suggest-using-lucenes-new-analyzinginfixsuggester-api
      *
-     * @param suchTags
-     * @return
+     * @param suchTags liste der Suchwörter (vom Nutzer eingegeben)
+     * @return Set der passenden Tags
      */
     public Set<String> matchingTags(final String suchTags) {
         final NitriteRepository<Rezept> repository = getRezeptRepository();

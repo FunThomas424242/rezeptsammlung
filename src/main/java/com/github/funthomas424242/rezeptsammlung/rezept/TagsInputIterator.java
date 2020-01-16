@@ -62,11 +62,10 @@ public class TagsInputIterator implements InputIterator {
      * This method needs to return the key for the record; this is the
      * text we'll be autocompleting against.
      *
-     * @return
-     * @throws IOException
+     * @return ByteRef of tag
      */
     @Override
-    public BytesRef next() throws IOException {
+    public BytesRef next() {
         if (tags.hasNext()) {
             currentTag = tags.next();
             try {
