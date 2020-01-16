@@ -1,7 +1,5 @@
 "use strict";
 
-const CACHE_NAME = "rezeptsammlung-cache-v1";
-
 function sendRequest ( request ){
     return fetch( request ).then(
         function(response) {
@@ -16,7 +14,7 @@ function sendRequest ( request ){
         // to clone it so we have two streams.
         var responseToCache = response.clone();
 
-        caches.open(CACHE_NAME)
+        caches.open("rezeptsammlung-cache-v1")
           .then(function(cache) {
             cache.put( request, responseToCache);
           });
