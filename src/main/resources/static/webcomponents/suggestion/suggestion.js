@@ -1,6 +1,6 @@
 "use strict";
 
-import {Logger} from "./logger.js";
+import {LoggerService} from "./loggerService.js";
 
 // script of inline service worker
 import {WorkerService} from "./workerservice.js";
@@ -30,23 +30,23 @@ class SuggestionInput extends HTMLElement {
         super();  // immer zuerst aufrufen
         // for init attribut defaults
         // e.g. this.src = '';
-        Logger.logMessage("constructor called");
+        LoggerService.logMessage("constructor called");
 
     }
 
     connectedCallback() {
-        Logger.logMessage("custom element in Seite eingehängt");
+        LoggerService.logMessage("custom element in Seite eingehängt");
         this.erzeugeShadowDOMIfNotExists();
-        Logger.logMessage("ShadowDom befüllt");
+        LoggerService.logMessage("ShadowDom befüllt");
     }
 
     disconnectedCallback() {
-        Logger.logMessage("element has been removed");
+        LoggerService.logMessage("element has been removed");
     }
 
     attributeChangedCallback(name, oldval, newval) {
         // do something every time the attribute changes
-        Logger.logMessage(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
+        LoggerService.logMessage(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
     }
 
     ersetzeVorschlagslisteMit ( content ){
@@ -88,7 +88,7 @@ class SuggestionInput extends HTMLElement {
 
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
-            Logger.logMessage("creating shadow dom");
+            LoggerService.logMessage("creating shadow dom");
             this.attachShadow({mode: "open"});
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));

@@ -1,6 +1,6 @@
 "use strict";
 
-class Logger {
+class LoggerService {
 
     static logMessage(message) {
         // eslint-disable-next-line no-console
@@ -24,4 +24,4 @@ class Logger {
 
 }
 
-export {Logger};
+export {LoggerService};

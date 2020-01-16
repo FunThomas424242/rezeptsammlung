@@ -1,6 +1,6 @@
 "use strict";
 
-import {Logger} from "./logger.js";
+import {LoggerService} from "./loggerService.js";
 
 // script of inline service worker
 import "./worker.js";
@@ -11,7 +11,7 @@ class WorkerService {
     constructor( workerURL, handleMessageCallback) {
         var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", (event) => {
-            Logger.logMessage( event.target.responseText );
+            LoggerService.logMessage( event.target.responseText );
             // Worker erzeugen und starten
             var blob = new Blob([event.target.responseText]);
             var serviceWorkerBlobURL = window.URL.createObjectURL(blob);
