@@ -65,6 +65,11 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
@@ -532,6 +537,10 @@
         <!--            -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
         <!--          </jvmArguments>-->
         <!--        </configuration>-->
+        <configuration>
+          <!-- true ist default aber zur Erhöhung der Lesbarkeit hier explizit -->
+          <excludeDevtools>true</excludeDevtools>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
