@@ -1,28 +1,15 @@
-"use strict"
+"use strict";
 
-var CACHE_NAME = 'rezeptsammlung-cache-v1';
+var CACHE_NAME = "rezeptsammlung-cache-v1";
 // This script won't be parsed by JS engines
 // because its type is javascript/worker.
-
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return sendRequest(event.request);
-      })
-    );
-});
 
 
 function sendRequest ( request ){
     return fetch( request ).then(
         function(response) {
         // Check if we received a valid response
-        if(!response || response.status !== 200 || response.type !== 'basic') {
+        if(!response || response.status !== 200 || response.type !== "basic") {
           return response;
         }
 
@@ -41,3 +28,21 @@ function sendRequest ( request ){
         }
     );
 }
+
+
+
+self.addEventListener("fetch", function(event) {
+  event.respondWith(
+    caches.match(event.request)
+      .then(function(response) {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+        return sendRequest(event.request);
+      })
+    );
+});
+
+
+
