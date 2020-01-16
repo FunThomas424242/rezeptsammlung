@@ -26,29 +26,6 @@ template.innerHTML = `
 
 class SuggestionInput extends HTMLElement {
 
-    constructor() {
-        super();  // immer zuerst aufrufen
-        // for init attribut defaults
-        // e.g. this.src = '';
-        LoggerService.logMessage("constructor called");
-
-    }
-
-    connectedCallback() {
-        LoggerService.logMessage("custom element in Seite eingehängt");
-        this.erzeugeShadowDOMIfNotExists();
-        LoggerService.logMessage("ShadowDom befüllt");
-    }
-
-    disconnectedCallback() {
-        LoggerService.logMessage("element has been removed");
-    }
-
-    attributeChangedCallback(name, oldval, newval) {
-        // do something every time the attribute changes
-        LoggerService.logMessage(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
-    }
-
     ersetzeVorschlagslisteMit ( content ){
         this.shadowRoot.getElementById("vorschlaege").innerHTML=`${content}`;
     }
@@ -60,8 +37,6 @@ class SuggestionInput extends HTMLElement {
         fragment.appendChild(document.createElement("br"));
         document.querySelector("#log").appendChild(fragment);
     }
-
-
 
     handleInput( srcValue, key ){
         var text = "";
@@ -86,6 +61,7 @@ class SuggestionInput extends HTMLElement {
     }
 
 
+
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
             LoggerService.logMessage("creating shadow dom");
@@ -96,19 +72,19 @@ class SuggestionInput extends HTMLElement {
         this.erzeugeWebWorker();
 
         this.filterPattern = this.shadowRoot.getElementById("eingabe");
-// Bei erkanntem Bedarf nutzen
-//        this.filterPattern.onkeypress = (event) => {
-//            this.handleInput( worker, event.srcElement.value, event.key );
-//        }
-//        this.filterPattern.onKeyUp = (event) => {
-//            this.handleInput( worker, event.srcElement.value, event.key );
-//        }
-//        this.filterPattern.onchange = (event) => {
-//            this.handleInput( worker, event.srcElement.value, event.key );
-//        }
-//        this.filterPattern.onpaste = (event) => {
-//            this.handleInput( worker, event.srcElement.value, event.key );
-//        }
+        // Bei erkanntem Bedarf nutzen
+        //        this.filterPattern.onkeypress = (event) => {
+        //            this.handleInput( worker, event.srcElement.value, event.key );
+        //        }
+        //        this.filterPattern.onKeyUp = (event) => {
+        //            this.handleInput( worker, event.srcElement.value, event.key );
+        //        }
+        //        this.filterPattern.onchange = (event) => {
+        //            this.handleInput( worker, event.srcElement.value, event.key );
+        //        }
+        //        this.filterPattern.onpaste = (event) => {
+        //            this.handleInput( worker, event.srcElement.value, event.key );
+        //        }
         this.filterPattern.oninput = (event) => {
             this.handleInput( event.srcElement.value, event.key );
         }
@@ -122,23 +98,58 @@ class SuggestionInput extends HTMLElement {
     }
 
 
-// static get observedAttributes() {
-//     return ['toggled'];
-// }
+    constructor() {
+        super();  // immer zuerst aufrufen
+        // for init attribut defaults
+        // e.g. this.src = '';
+        LoggerService.logMessage("constructor called");
+
+    }
+
+    initialisiereAttributwerte(){
+        this.suggesterurl = this.getAttribute("suggesterurl");
+        this.suggesterparametername = this.getAttribute("suggesterparametername");
+        this.onlog = this.getAttribute("onlog");
+        this.onsubmit = this.getAttribute("onsubmit");
+    }
+
+    static get observedAttributes() {
+     return ["suggesterurl","suggesterparametername","onlog","onsubmit"];
+    }
+
+    get suggesterurl() {
+        return this.getAttribute("suggesterurl");
+    }
+
+    set suggesterurl( restapiurl) {
+        this.setAttribute("suggesterurl", restapiurl );
+    }
+
+    get suggesterparametername() {
+        return this.getAttribute("suggesterparametername");
+    }
+
+    set suggesterparametername( restapiparametername) {
+        this.setAttribute("suggesterparametername", restapiparametername );
+    }
 
 
-// get toggled() {
-//     return this.getAttribute('toggled') === 'true';
-// }
-//
-// // the second argument for setAttribute is mandatory, so we’ll use an empty string
-// set toggled(val) {
-//     if (val) {
-//         this.setAttribute('toggled', true);
-//     } else {
-//         this.setAttribute('toggled', false);
-//     }
-// }
+
+    connectedCallback() {
+        LoggerService.logMessage("custom element in Seite eingehängt");
+        this.initialisiereAttributwerte();
+        this.erzeugeShadowDOMIfNotExists();
+        LoggerService.logMessage("ShadowDOM befüllt");
+    }
+
+    disconnectedCallback() {
+        LoggerService.logMessage("element has been removed");
+    }
+
+    attributeChangedCallback(name, oldval, newval) {
+        // do something every time the attribute changes
+        LoggerService.logMessage(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
+    }
 
 
 }
