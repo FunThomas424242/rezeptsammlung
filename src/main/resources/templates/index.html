@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <link href="css/styles.css" rel="stylesheet"/>
+    <link href="css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Spring Boot Application</title>
 
-    <script>
+    <script th:inline="javascript">
         if ('serviceWorker' in navigator) {
           // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
-          navigator.serviceWorker.register('js/service-worker.js', {scope: '/'}).then(function(registration) {
+          navigator.serviceWorker.register([[@{/js/service-worker.js}]], {scope: [[@{/}]]}).then(function(registration) {
             document.querySelector('#log').textContent = 'succeeded';
           }).catch(function(error) {
             document.querySelector('#log').textContent = error;
@@ -23,7 +23,9 @@
     </script>
 </head>
 <body>
-<script src="webcomponents/suggestion/componentModule.js" type="module"> </script>
+<script src="webcomponents/suggestion/componentModule.js"
+        th:src="@{/webcomponents/suggestion/componentModule.js}"
+        type="module"> </script>
 
 <h1>Welcome to Thymeleaf Spring Boot web application</h1>
 
@@ -31,7 +33,7 @@
 
 <suggestion-input></suggestion-input>
 
-
+<div id="log"></div>
 
 </body>
 </html>
