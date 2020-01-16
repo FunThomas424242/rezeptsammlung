@@ -73,7 +73,7 @@ class SuggestionInput extends HTMLElement {
     erzeugeWebWorker(){
         var scriptURL = import.meta.url;
         var workerURL = scriptURL.replace("suggestion.js", "worker.js");
-        this.workerService = new WorkerService(workerURL, (event) =>{
+        this.workerService = new WorkerService(workerURL, (event) => {
             var msgObject = event.data;
             if( msgObject.cmd === "log"){
                 this.schreibeLogEintrag(msgObject.msg);
