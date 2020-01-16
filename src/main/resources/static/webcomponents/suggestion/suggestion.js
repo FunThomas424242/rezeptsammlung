@@ -2,6 +2,9 @@
 
 import {Logger} from "./logger.js";
 
+// script of inline service worker
+import {WorkerService} from "./workerservice.js";
+
 const template = document.createElement("template");
 template.innerHTML = `
     <style>
@@ -18,74 +21,6 @@ template.innerHTML = `
         <option value="Geben Sie eine Liste zu suchender Tags ein.">
     </datalist>
 
-    <script id="worker1" type="javascript/worker">
-        var CACHE_NAME = 'my-site-cache-v1';
-        // This script won't be parsed by JS engines
-        // because its type is javascript/worker.
-        self.onmessage = function(e) {
-          self.postMessage('msg from worker '+e.data);
-          var jsonPromise;
-          if( e.data ){
-            jsonPromise = self.sendRequest('http:localhost:8080/api/rezepte/tags?taglist='+e.data);
-          }else{
-            jsonPromise = self.sendRequest('http:localhost:8080/api/rezepte/tags');
-          }
-          jsonPromise.then( (response)=>{
-            var promise = response.json();
-            promise.then( (jsonObject) =>{
-                var selectionContent = createSelectionContent(jsonObject);
-                self.postMessage({'cmd':'replace-taglist', 'data': selectionContent});
-                var text = 'Response:' + JSON.stringify( jsonObject );
-                self.postMessage({'cmd':'log','msg': text});
-            });
-          });
-        };
-        self.addEventListener('fetch', function(event) {
-          event.respondWith(
-            caches.match(event.request)
-              .then(function(response) {
-                // Cache hit - return response
-                if (response) {
-                  return response;
-                }
-                return getRequest(request);
-              })
-            );
-        });
-
-        function createSelectionContent( json ){
-            var content = '';
-            for (const key of Object.keys(json)) {
-                content += '<option value="'+key+'">';
-            }
-           return content;
-        }
-
-        function sendRequest ( request ){
-            return fetch( request ).then(
-                function(response) {
-                // Check if we received a valid response
-                if(!response || response.status !== 200 || response.type !== 'basic') {
-                  return response;
-                }
-
-                // IMPORTANT: Clone the response. A response is a stream
-                // and because we want the browser to consume the response
-                // as well as the cache consuming the response, we need
-                // to clone it so we have two streams.
-                var responseToCache = response.clone();
-
-                caches.open(CACHE_NAME)
-                  .then(function(cache) {
-                    cache.put( request, responseToCache);
-                  });
-
-                return response;
-                }
-            );
-        }
-      </script>
-
 `;
 
 
@@ -96,6 +31,7 @@ class SuggestionInput extends HTMLElement {
         // for init attribut defaults
         // e.g. this.src = '';
         Logger.logMessage("constructor called");
+
     }
 
     connectedCallback() {
@@ -125,23 +61,30 @@ class SuggestionInput extends HTMLElement {
         document.querySelector("#log").appendChild(fragment);
     }
 
-    handleMessage(e){
-        var msgObject = e.data;
-        if( msgObject.cmd === "log"){
-            this.schreibeLogEintrag(msgObject.msg);
-        }else if( msgObject.cmd === "replace-taglist"){
-            this.ersetzeVorschlagslisteMit(msgObject.data);
-        }else{
-            this.schreibeLogEintrag(msgObject);
-        }
+
+
+    handleInput( srcValue, key ){
+        var text = "";
+        text +=  srcValue?  srcValue : "";
+        text +=  key?  key : "";
+        this.workerService.sendToWorker(text);
     }
 
-    handleInput( worker, srcValue, key ){
-        var text = "";
-         text +=  srcValue?  srcValue : "";
-         text +=  key?  key : "";
-        worker.postMessage(text);
+    erzeugeWebWorker(){
+        var scriptURL = import.meta.url;
+        var workerURL = scriptURL.replace("suggestion.js", "worker.js");
+        this.workerService = new WorkerService(workerURL, (event) => {
+            var msgObject = event.data;
+            if( msgObject.cmd === "log"){
+                this.schreibeLogEintrag(msgObject.msg);
+            }else if( msgObject.cmd === "replace-taglist"){
+                this.ersetzeVorschlagslisteMit(msgObject.data);
+            }else{
+                this.schreibeLogEintrag(msgObject);
+            }
+        });
     }
+
 
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
@@ -150,14 +93,7 @@ class SuggestionInput extends HTMLElement {
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-        // Worker starten
-        var blob = new Blob([this.shadowRoot.getElementById("worker1").textContent]);
-        var worker = new Worker(window.URL.createObjectURL(blob));
-
-        worker.onmessage = (e) => {
-            this.handleMessage(e);
-        };
-
+        this.erzeugeWebWorker();
 
         this.filterPattern = this.shadowRoot.getElementById("eingabe");
 // Bei erkanntem Bedarf nutzen
@@ -174,17 +110,15 @@ class SuggestionInput extends HTMLElement {
 //            this.handleInput( worker, event.srcElement.value, event.key );
 //        }
         this.filterPattern.oninput = (event) => {
-            this.handleInput( worker, event.srcElement.value, event.key );
+            this.handleInput( event.srcElement.value, event.key );
         }
 
         // onClick auf Vorschlagen Button definieren
         this.suggestButton = this.shadowRoot.getElementById("vorschlagen-button");
         this.suggestButton.addEventListener("click", () => {
              var text = this.shadowRoot.getElementById("eingabe").value;
-             worker.postMessage(text);
+             this.workerService.sendToWorker(text);
         });
-
-        worker.postMessage(""); // Start the worker.
     }
 
 
