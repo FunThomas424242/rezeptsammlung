@@ -60,14 +60,14 @@ class SuggestionInput extends HTMLElement {
             }else{
                 this.schreibeLogEintrag(msgObject);
             }
-        });
+        }, (msg) => { this.onlog(msg); });
     }
 
 
 
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
-            LoggerService.logMessage("creating shadow dom");
+            this.onlog("creating shadow dom");
             this.attachShadow({mode: "open"});
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -111,14 +111,15 @@ class SuggestionInput extends HTMLElement {
         super();  // immer zuerst aufrufen
         // for init attribut defaults
         // e.g. this.src = '';
-        LoggerService.logMessage("constructor called");
+        this.onlog = (msg) => LoggerService.logMessage(msg);
+        this.onlog("constructor called");
 
     }
 
     initialisiereAttributwerte(){
         this.suggesterurl = this.getAttribute("suggesterurl");
         this.suggesterparametername = this.getAttribute("suggesterparametername");
-        this.onlog = this.getAttribute("onlog");
+//        this.onlog = this.getAttribute("onlog");
         this.onsubmit = this.getAttribute("onsubmit");
     }
 
@@ -145,19 +146,19 @@ class SuggestionInput extends HTMLElement {
 
 
     connectedCallback() {
-        LoggerService.logMessage("custom element in Seite eingehängt");
+        this.onlog("custom element in Seite eingehängt");
         this.initialisiereAttributwerte();
         this.erzeugeShadowDOMIfNotExists();
-        LoggerService.logMessage("ShadowDOM befüllt");
+        this.onlog("ShadowDOM befüllt");
     }
 
     disconnectedCallback() {
-        LoggerService.logMessage("element has been removed");
+        this.onlog("element has been removed");
     }
 
     attributeChangedCallback(name, oldval, newval) {
         // do something every time the attribute changes
-        LoggerService.logMessage(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
+        this.onlog(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
     }
 
 

@@ -8,10 +8,10 @@ import "./webworkerScript.js";
 
 class WorkerService {
 
-    constructor( workerURL, handleMessageCallback) {
+    constructor( workerURL, handleMessageCallback, onlogCallback) {
         var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", (event) => {
-            LoggerService.logMessage( event.target.responseText );
+            onlogCallback( event.target.responseText );
             // Worker erzeugen und starten
             var blob = new Blob([event.target.responseText]);
             var serviceWorkerBlobURL = window.URL.createObjectURL(blob);
