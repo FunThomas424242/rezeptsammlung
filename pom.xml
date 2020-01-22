@@ -289,7 +289,7 @@
                   <version>3.6.2</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>13</version>
+                  <version>11</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
