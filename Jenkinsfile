@@ -1,9 +1,10 @@
 !#groovy
 
 pipeline {
-    agent {
-        docker { image 'openjdk:13' }
-    }
+    agent any
+    //agent {
+      //  docker { image 'openjdk:13' }
+    //}
     stages {
         stage('Build') {
             steps {
