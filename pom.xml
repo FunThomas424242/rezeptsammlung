@@ -635,9 +635,10 @@
           <sourceFiles>
             <directory>${basedir}</directory>
             <includes>
-              <include>src/main/**/*.txt</include>
+              <include>src/site/plantuml/**/*.txt</include>
             </includes>
           </sourceFiles>
+          <outputDirectory>src/site/images/generated</outputDirectory>
         </configuration>
         <dependencies>
           <dependency>
