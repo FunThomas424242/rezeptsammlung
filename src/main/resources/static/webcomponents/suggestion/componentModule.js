@@ -30,14 +30,6 @@ class SuggestionInput extends HTMLElement {
         this.shadowRoot.getElementById("vorschlaege").innerHTML=`${content}`;
     }
 
-    schreibeLogEintrag( text ){
-        // Use a fragment: browser will only render/reflow once.
-        var fragment = document.createDocumentFragment();
-        fragment.appendChild(document.createTextNode(text));
-        fragment.appendChild(document.createElement("br"));
-        document.querySelector("#log").appendChild(fragment);
-    }
-
     handleInput( srcValue, key ){
         var text = "";
         text +=  srcValue?  srcValue : "";
@@ -54,11 +46,11 @@ class SuggestionInput extends HTMLElement {
         this.workerService = new WorkerService(workerURL, (event) => {
             var msgObject = event.data;
             if( msgObject.cmd === "log"){
-                this.schreibeLogEintrag(msgObject.msg);
+                this.onlog(msgObject.msg);
             }else if( msgObject.cmd === "replace-taglist"){
                 this.ersetzeVorschlagslisteMit(msgObject.data);
             }else{
-                this.schreibeLogEintrag(msgObject);
+                this.onlog(msgObject);
             }
         }, (msg) => { this.onlog(msg); });
     }
