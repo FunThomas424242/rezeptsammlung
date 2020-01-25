@@ -639,6 +639,7 @@
             </includes>
           </sourceFiles>
           <outputDirectory>src/site/images/generated</outputDirectory>
+          <format>svg</format>
         </configuration>
         <dependencies>
           <dependency>
