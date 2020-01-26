@@ -28,9 +28,9 @@
         if ('serviceWorker' in navigator) {
           // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
           navigator.serviceWorker.register([[@{/js/service-worker.js}]], {scope: [[@{/}]]}).then(function(registration) {
-            document.getElementById('logger1').onlog('Service Worker installation succeeded');
+            document.getElementById('logger1').onConsolelog('Service Worker installation succeeded');
           }).catch(function(error) {
-            document.getElementById('logger1').onlog(error);
+            document.getElementById('logger1').onConsolelog(error);
           });
         } else {
           // Der verwendete Browser unterstützt Service Worker nicht.
