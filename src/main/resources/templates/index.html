@@ -4,23 +4,6 @@
     <meta charset="UTF-8"/>
     <link href="css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" type="text/css"/>
     <title>Spring Boot Application</title>
-
-    <script th:inline="javascript">
-        if ('serviceWorker' in navigator) {
-          // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
-          navigator.serviceWorker.register([[@{/js/service-worker.js}]], {scope: [[@{/}]]}).then(function(registration) {
-            document.querySelector('#log').textContent = 'succeeded';
-          }).catch(function(error) {
-            document.querySelector('#log').textContent = error;
-          });
-        } else {
-          // Der verwendete Browser unterstützt Service Worker nicht.
-          var aElement = document.createElement('a');
-          aElement.href = 'http://www.chromium.org/blink/serviceworker/service-worker-faq';
-          aElement.textContent = 'unavailable';
-          document.querySelector('#status').appendChild(aElement);
-        }
-    </script>
 </head>
 <body>
 <script src="webcomponents/suggestion/componentModule.js"
@@ -34,11 +17,26 @@
 
 <a th:href="@{/rezeptliste}">Rezeptliste</a>
 
-<suggestion-input suggesterurl="http:localhost:8080/rezeptsammlung/api/rezepte/tags"
+<suggestion-input id="suggestion1"
+                  suggesterurl="http:localhost:8080/rezeptsammlung/api/rezepte/tags"
                   suggesterparametername="taglist"
 ></suggestion-input>
 
-<logger-component></logger-component>
+<logger-component id="logger1"></logger-component>
+
+<script th:inline="javascript">
+        if ('serviceWorker' in navigator) {
+          // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
+          navigator.serviceWorker.register([[@{/js/service-worker.js}]], {scope: [[@{/}]]}).then(function(registration) {
+            document.getElementById('logger1').onlog('Service Worker installation succeeded');
+          }).catch(function(error) {
+            document.getElementById('logger1').onlog(error);
+          });
+        } else {
+          // Der verwendete Browser unterstützt Service Worker nicht.
+          document.getElementById('logger1').onlog('Ihr Browser unterstützt keine Service Worker - tut uns sehr leid für Sie.');
+        }
+    </script>
 
 </body>
 </html>
