@@ -2,7 +2,7 @@
 
 import {LoggerService} from "./consoleLoggerService.js";
 
-// script of inline service worker
+// script of inline web worker
 import "./webworkerScript.js";
 
 
