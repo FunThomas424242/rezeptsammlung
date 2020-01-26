@@ -47,12 +47,14 @@ class SuggestionInput extends HTMLElement {
             var msgObject = event.data;
             if( msgObject.cmd === "log"){
                 this.onlog(msgObject.msg);
+            }else if( msgObject.cmd === "conlog"){
+                this.onConsolelog(msgObject.msg)
             }else if( msgObject.cmd === "replace-taglist"){
                 this.ersetzeVorschlagslisteMit(msgObject.data);
             }else{
-                this.onlog(msgObject);
+                this.onConsolelog(msgObject);
             }
-        }, (msg) => { this.onlog(msg); });
+        }, (msg) => { this.onConsolelog(msg); });
     }
 
 
@@ -99,24 +101,27 @@ class SuggestionInput extends HTMLElement {
     }
 
 
+    onlog ( message ){
+        LoggerService.logMessage("suggestion-input: " + message);
+    }
+
     constructor() {
         super();  // immer zuerst aufrufen
         // for init attribut defaults
         // e.g. this.src = '';
-        this.onlog = (msg) => LoggerService.logMessage(msg);
-        this.onlog("constructor called");
-
+        this.onConsolelog = (msg) => LoggerService.logMessage("suggestion-input: " + msg);
+        this.onConsolelog("constructor called");
     }
 
     initialisiereAttributwerte(){
         this.suggesterurl = this.getAttribute("suggesterurl");
         this.suggesterparametername = this.getAttribute("suggesterparametername");
-//        this.onlog = this.getAttribute("onlog");
         this.onsubmit = this.getAttribute("onsubmit");
     }
 
     static get observedAttributes() {
-     return ["suggesterurl","suggesterparametername","onlog","onsubmit"];
+//     return ["suggesterurl","suggesterparametername","onlog","onsubmit"];
+     return ["suggesterurl","suggesterparametername","onsubmit"];
     }
 
     get suggesterurl() {
@@ -138,19 +143,19 @@ class SuggestionInput extends HTMLElement {
 
 
     connectedCallback() {
-        this.onlog("custom element in Seite eingehängt");
+        this.onConsolelog("In Seite eingehängt");
         this.initialisiereAttributwerte();
         this.erzeugeShadowDOMIfNotExists();
-        this.onlog("ShadowDOM befüllt");
+        this.onConsolelog("ShadowDOM befüllt");
     }
 
     disconnectedCallback() {
-        this.onlog("element has been removed");
+        this.onConsolelog("element has been removed");
     }
 
     attributeChangedCallback(name, oldval, newval) {
         // do something every time the attribute changes
-        this.onlog(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
+        this.onConsolelog(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
     }
 
 

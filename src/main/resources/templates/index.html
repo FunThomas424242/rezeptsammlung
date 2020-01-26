@@ -6,6 +6,7 @@
     <title>Spring Boot Application</title>
 </head>
 <body>
+
 <script src="webcomponents/suggestion/componentModule.js"
         th:src="@{/webcomponents/suggestion/componentModule.js}"
         type="module"> </script>
@@ -25,18 +26,32 @@
 <logger-component id="logger1"></logger-component>
 
 <script th:inline="javascript">
-        if ('serviceWorker' in navigator) {
-          // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
-          navigator.serviceWorker.register([[@{/js/service-worker.js}]], {scope: [[@{/}]]}).then(function(registration) {
-            document.getElementById('logger1').onConsolelog('Service Worker installation succeeded');
-          }).catch(function(error) {
-            document.getElementById('logger1').onConsolelog(error);
-          });
-        } else {
-          // Der verwendete Browser unterstützt Service Worker nicht.
-          document.getElementById('logger1').onlog('Ihr Browser unterstützt keine Service Worker - tut uns sehr leid für Sie.');
+    const logger = document.getElementById('logger1');
+    const loggerClass =  customElements.get( 'logger-component' );
+    if ('serviceWorker' in navigator) {
+      // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
+      navigator.serviceWorker.register([[@{/js/service-worker.js}]], {scope: [[@{/}]]}).then(function(registration) {
+        if( logger && loggerClass ){
+            logger.onConsolelog('Service Worker installation succeeded');
+        }else{
+            console.log('Service Worker installation succeeded');
         }
-    </script>
+      }).catch(function(error) {
+        if( logger && loggerClass ){
+            logger.onConsolelog(error);
+        }else{
+            console.log(error);
+        }
+      });
+    } else {
+      // Der verwendete Browser unterstützt Service Worker nicht.
+      if( logger && loggerClass ){
+        logger.onlog('Ihr Browser unterstützt keine Service Worker - tut uns sehr leid für Sie.');
+      }else{
+        console.log('Ihr Browser unterstützt keine Service Worker - tut uns sehr leid für Sie.');
+      }
+    }
+</script>
 
 </body>
 </html>

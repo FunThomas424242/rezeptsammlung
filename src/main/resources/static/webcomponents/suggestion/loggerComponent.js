@@ -36,13 +36,23 @@ class LoggerComponent extends HTMLElement {
         super();  // immer zuerst aufrufen
         // for init attribut defaults
         // e.g. this.src = '';
-        this.onConsolelog = (msg) => LoggerService.logMessage(msg);
-        this.onlog = (msg) => this.schreibeLogEintrag(msg);
+        this.onConsolelog = (msg) => LoggerService.logMessage("logger-component: " + msg);
         this.onConsolelog("constructor called");
+    }
+
+    onlog( message ){
+         this.schreibeLogEintrag( message );
     }
 
     initialisiereAttributwerte(){
         // this.suggesterurl = this.getAttribute("suggesterurl");
+    }
+
+    establishLogger(){
+        const componentId = "suggestion1";
+        const onLogFunctionName = "onlog";
+        document.getElementById(componentId).onlog = (msg) => this.onlog(msg);
+        this.onConsolelog("Logger für "+ componentId + " installiert.");
     }
 
     static get observedAttributes() {
@@ -51,9 +61,10 @@ class LoggerComponent extends HTMLElement {
     }
 
     connectedCallback() {
-        this.onConsolelog("custom element in Seite eingehängt");
+        this.onConsolelog("In Seite eingehängt");
         this.initialisiereAttributwerte();
         this.erzeugeShadowDOMIfNotExists();
+        this.establishLogger();
         this.onConsolelog("ShadowDOM befüllt");
     }
 
