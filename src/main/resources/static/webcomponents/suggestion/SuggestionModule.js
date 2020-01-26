@@ -1,6 +1,6 @@
 "use strict";
 
-import {LoggerService} from "./loggerService.js";
+import {LoggerService} from "./consoleLoggerService.js";
 
 // script of inline service worker
 import {WorkerService} from "./workerService.js";
@@ -111,7 +111,7 @@ class SuggestionInput extends HTMLElement {
 
     erzeugeWebWorker(){
         var scriptURL = import.meta.url;
-        var workerURL = scriptURL.replace("componentModule.js", "webworkerScript.js");
+        var workerURL = scriptURL.replace("SuggestionModule.js", "webworkerScript.js");
         this.workerService = new WorkerService(workerURL, (event) => {
             var msgObject = event.data;
             if( msgObject.cmd === "log"){

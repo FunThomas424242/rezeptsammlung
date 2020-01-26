@@ -1,6 +1,6 @@
 "use strict";
 
-import {LoggerService} from "./loggerService.js";
+import {LoggerService} from "./consoleLoggerService.js";
 
 const template = document.createElement("template");
 template.innerHTML = `

@@ -7,11 +7,12 @@
 </head>
 <body>
 
-<script src="webcomponents/suggestion/componentModule.js"
-        th:src="@{/webcomponents/suggestion/componentModule.js}"
+<!-- Reihenfolge entsprechend der Laufzeitabhängigkeiten -->
+<script src="webcomponents/suggestion/SuggestionModule.js"
+        th:src="@{/webcomponents/suggestion/SuggestionModule.js}"
         type="module"> </script>
-<script src="webcomponents/suggestion/loggerComponent.js"
-        th:src="@{/webcomponents/logger/loggerComponent.js}"
+<script src="webcomponents/logger/LoggerModule.js"
+        th:src="@{/webcomponents/logger/LoggerModule.js}"
         type="module"> </script>
 
 <h1>Welcome to Thymeleaf Spring Boot web application</h1>
