@@ -30,6 +30,18 @@ class LoggerComponent extends HTMLElement {
         this.setAttribute("listeners", listeners );
     }
 
+    get disabled() {
+        return this.getAttribute("disabled");
+    }
+
+    set disabled( disabled) {
+        if( disabled ){
+            this.removeAttribute("disabled");
+        }else{
+            this.setAttribute("disabled", true);
+        }
+    }
+
     /* default lifecycle methods of customs elements */
 
     constructor() {
@@ -57,13 +69,14 @@ class LoggerComponent extends HTMLElement {
     }
 
      static get observedAttributes() {
-        return ["listeners"];
+        return ["listeners", "disabled"];
     }
 
     /* methods of specific components logic */
 
     initialisiereAttributwerte(){
          this.listeners = this.getAttribute("listeners");
+         this.disabled = this.getAttribute("disabled");
     }
 
     onConsolelog ( message ){
