@@ -88,10 +88,15 @@ class LoggerComponent extends HTMLElement {
     }
 
     establishLogger(){
-        const componentId = "suggestion1";
-        const onLogFunctionName = "onlog";
-        document.getElementById(componentId)[onLogFunctionName] = (msg) => this.onlog(msg);
-        this.onConsolelog("Logger für "+ componentId + " an "+ onLogFunctionName + " installiert.");
+//        const componentId = "suggestion1";
+//        const onLogFunctionName = "onlog";
+        const listeners = this.getAttribute("listeners");
+        const items = listeners.split(',');
+        items.forEach( item =>{
+            const listener = item.split(':');
+            document.getElementById(listener[0])[listener[1]] = (msg) => this.onlog(msg);
+            this.onConsolelog("Logger für "+ listener[0] + " an "+ listener[1] + " installiert.");
+        } );
     }
 
 }
