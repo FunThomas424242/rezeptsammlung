@@ -88,8 +88,6 @@ class LoggerComponent extends HTMLElement {
     }
 
     establishLogger(){
-//        const componentId = "suggestion1";
-//        const onLogFunctionName = "onlog";
         const listeners = this.getAttribute("listeners");
         const items = listeners.split(',');
         items.forEach( item =>{
