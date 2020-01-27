@@ -36,7 +36,6 @@ class LoggerComponent extends HTMLElement {
         super();  // immer zuerst aufrufen
         // for init attribut defaults
         // e.g. this.src = '';
-        this.onConsolelog = (msg) => LoggerService.logMessage("logger-component: " + msg);
         this.onConsolelog("constructor called");
     }
 
@@ -58,14 +57,17 @@ class LoggerComponent extends HTMLElement {
     }
 
      static get observedAttributes() {
-        return [];
-        // return ["suggesterurl","suggesterparametername","onlog","onsubmit"];
+        return ["listeners"];
     }
 
     /* methods of specific components logic */
 
     initialisiereAttributwerte(){
-        // this.suggesterurl = this.getAttribute("suggesterurl");
+         this.listeners = this.getAttribute("listeners");
+    }
+
+    onConsolelog ( message ){
+        LoggerService.logMessage("logger-component: " + message);
     }
 
     schreibeLogEintrag( text ){
