@@ -36,7 +36,7 @@ class SuggestionInput extends HTMLElement {
         LoggerService.logMessage("suggestion-input: " + message);
     }
 
-    /* Getter and Setter of rich data = attributes */
+    /* Getter and Setter of primitive data = attributes */
 
     get suggesterurl() {
         return this.getAttribute("suggesterurl");

@@ -14,23 +14,23 @@ template.innerHTML = `
 
 class LoggerComponent extends HTMLElement {
 
-    schreibeLogEintrag( text ){
-        // Use a fragment: browser will only render/reflow once.
-        var fragment = document.createDocumentFragment();
-        fragment.appendChild(document.createTextNode(text));
-        fragment.appendChild(document.createElement("br"));
-        this.shadowRoot.getElementById("log").appendChild(fragment);
+    /* properties = rich data */
+
+    onlog( message ){
+         this.schreibeLogEintrag( message );
     }
 
-    erzeugeShadowDOMIfNotExists() {
-        if (!this.shadowRoot) {
-            this.onConsolelog("creating shadow dom");
-            this.attachShadow({mode: "open"});
-        }
-        this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.loggerDiv = this.shadowRoot.getElementById("log");
+    /* Getter and Setter of primitive data = attributes */
+
+    get listeners() {
+        return this.getAttribute("listeners");
     }
 
+    set listeners( listeners) {
+        this.setAttribute("listeners", listeners );
+    }
+
+    /* default lifecycle methods of customs elements */
 
     constructor() {
         super();  // immer zuerst aufrufen
@@ -38,26 +38,6 @@ class LoggerComponent extends HTMLElement {
         // e.g. this.src = '';
         this.onConsolelog = (msg) => LoggerService.logMessage("logger-component: " + msg);
         this.onConsolelog("constructor called");
-    }
-
-    onlog( message ){
-         this.schreibeLogEintrag( message );
-    }
-
-    initialisiereAttributwerte(){
-        // this.suggesterurl = this.getAttribute("suggesterurl");
-    }
-
-    establishLogger(){
-        const componentId = "suggestion1";
-        const onLogFunctionName = "onlog";
-        document.getElementById(componentId)[onLogFunctionName] = (msg) => this.onlog(msg);
-        this.onConsolelog("Logger für "+ componentId + " an "+ onLogFunctionName + " installiert.");
-    }
-
-    static get observedAttributes() {
-        return [];
-        // return ["suggesterurl","suggesterparametername","onlog","onsubmit"];
     }
 
     connectedCallback() {
@@ -77,6 +57,40 @@ class LoggerComponent extends HTMLElement {
         this.onConsolelog(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
     }
 
+     static get observedAttributes() {
+        return [];
+        // return ["suggesterurl","suggesterparametername","onlog","onsubmit"];
+    }
+
+    /* methods of specific components logic */
+
+    initialisiereAttributwerte(){
+        // this.suggesterurl = this.getAttribute("suggesterurl");
+    }
+
+    schreibeLogEintrag( text ){
+        // Use a fragment: browser will only render/reflow once.
+        var fragment = document.createDocumentFragment();
+        fragment.appendChild(document.createTextNode(text));
+        fragment.appendChild(document.createElement("br"));
+        this.shadowRoot.getElementById("log").appendChild(fragment);
+    }
+
+    erzeugeShadowDOMIfNotExists() {
+        if (!this.shadowRoot) {
+            this.onConsolelog("creating shadow dom");
+            this.attachShadow({mode: "open"});
+        }
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.loggerDiv = this.shadowRoot.getElementById("log");
+    }
+
+    establishLogger(){
+        const componentId = "suggestion1";
+        const onLogFunctionName = "onlog";
+        document.getElementById(componentId)[onLogFunctionName] = (msg) => this.onlog(msg);
+        this.onConsolelog("Logger für "+ componentId + " an "+ onLogFunctionName + " installiert.");
+    }
 
 }
 
