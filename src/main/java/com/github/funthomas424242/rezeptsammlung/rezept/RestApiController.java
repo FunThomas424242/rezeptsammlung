@@ -23,8 +23,6 @@ package com.github.funthomas424242.rezeptsammlung.rezept;
  */
 
 import com.github.funthomas424242.sbstarter.nitrite.NitriteRepository;
-import com.github.funthomas424242.sbstarter.nitrite.NitriteTemplate;
-import org.dizitart.no2.IndexType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,32 +32,52 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Null;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import static org.dizitart.no2.IndexOptions.indexOptions;
 import static org.dizitart.no2.objects.filters.ObjectFilters.eq;
 
 @RestController
-@RequestMapping(path = "/rezepte")
-public class Rezeptsammlung {
+@RequestMapping(path = "/api/rezepte")
+public class RestApiController {
 
     @Autowired
-    protected NitriteTemplate nitriteTemplate;
+    protected PersistenzService persistenzService;
 
+
+    @GetMapping(path = "/tags", produces = "application/json")
+    public ResponseEntity<Map<String, String>> getAllTags(@Null @RequestParam Optional<String> taglist) {
+        final Set<String> tags;
+        if (taglist.isPresent()) {
+//            final Set<String> suchTags = Arrays
+//                .stream(taglist.orElseGet(String::new).split("\\s"))
+//                .collect(Collectors.toSet());
+//            tags = persistenzService.matchingTags(suchTags);
+            tags = persistenzService.matchingTags(taglist.orElseGet(String::new));
+        } else {
+            tags = persistenzService.allTags();
+        }
+        final Map<String, String> selectionMap = TagView.toSelectionMap(tags);
+        return new ResponseEntity<>(selectionMap, HttpStatus.OK);
+    }
 
     @GetMapping(path = "/all", produces = "application/json")
-    public ResponseEntity<List<Rezept>> getAll() {
-        final NitriteRepository<Rezept> repository = getRepository();
-        final List<Rezept> rezepte = repository.find().toList();
-        repository.close();
-        return new ResponseEntity<List<Rezept>>(rezepte, HttpStatus.OK);
+    public ResponseEntity<List<Rezept>> getAllRezepte() {
+        final List<Rezept> rezepte = persistenzService.allRezepte();
+        return new ResponseEntity<>(rezepte, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Rezept> getRezept(@PathVariable final long id) {
-        final NitriteRepository<Rezept> repository = getRepository();
+        final NitriteRepository<Rezept> repository = persistenzService.getRezeptRepository();
         final Rezept rezept = repository.find(eq("id", id)).firstOrDefault();
         repository.close();
         return new ResponseEntity<Rezept>(rezept, HttpStatus.OK);
@@ -67,7 +85,7 @@ public class Rezeptsammlung {
 
     @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Rezept> addRezept(@RequestBody final Rezept rezept) {
-        final NitriteRepository<Rezept> repository = getRepository();
+        final NitriteRepository<Rezept> repository = persistenzService.getRezeptRepository();
         repository.insert(rezept);
         repository.close();
         return new ResponseEntity<Rezept>(rezept, HttpStatus.CREATED);
@@ -75,7 +93,7 @@ public class Rezeptsammlung {
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<Rezept> deleteRezept(@PathVariable final long id) {
-        final NitriteRepository<Rezept> repository = getRepository();
+        final NitriteRepository<Rezept> repository = persistenzService.getRezeptRepository();
         final int geloeschteAnzahl = repository.remove(eq("id", id)).getAffectedCount();
         repository.close();
         if (geloeschteAnzahl == 0) {
@@ -87,23 +105,6 @@ public class Rezeptsammlung {
         } else {
             return new ResponseEntity<Rezept>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    protected NitriteRepository<Rezept> getRepository() {
-        final NitriteRepository<Rezept> repository = nitriteTemplate.getRepository(Rezept.class);
-        // Da Indizes permanent in der Datenbank gespeichert werden,
-        // dürfen diese nur 1x angelegt werden.
-        // können aber async erstellt werden, da nur mit geringen Datenmengen gerechnet wird.
-        if (!repository.hasIndex("id")) {
-            repository.createIndex("id", indexOptions(IndexType.Unique, true));
-        }
-        if (!repository.hasIndex("titel")) {
-            repository.createIndex("titel", indexOptions(IndexType.Fulltext, true));
-        }
-        if (!repository.hasIndex("tag")) {
-            repository.createIndex("tag", indexOptions(IndexType.NonUnique, true));
-        }
-        return repository;
     }
 
 }

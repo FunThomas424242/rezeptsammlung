@@ -55,6 +55,7 @@
     <maven.compiler.release>11</maven.compiler.release>
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
     <junit-excluded-groups/>
+    <lucene.version>8.4.0</lucene.version>
   </properties>
 
   <prerequisites>
@@ -64,22 +65,28 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-batch</artifactId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>org.springframework.boot</groupId>-->
-    <!--      <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
 
     <!-- nitrite db -->
     <dependency>
       <groupId>com.github.funthomas424242</groupId>
       <artifactId>nitrite-spring-boot-starter</artifactId>
       <version>0.0.2</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.dizitart</groupId>
@@ -87,6 +94,68 @@
       <version>3.3.0</version>
       <scope>compile</scope>
     </dependency>
+
+    <!-- lucene engine -->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+      <version>${lucene.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-suggest</artifactId>
+      <version>${lucene.version}</version>
+      <scope>compile</scope>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-analyzers-common</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-queryparser</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-analyzers-stempel</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-spatial</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-spatial-extras</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-join</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-highlighter</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.apache.lucene</groupId>-->
+<!--      <artifactId>lucene-analyzers-smartcn</artifactId>-->
+<!--      <version>${lucene.version}</version>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
 
 
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
@@ -468,6 +537,10 @@
         <!--            -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005-->
         <!--          </jvmArguments>-->
         <!--        </configuration>-->
+        <configuration>
+          <!-- true ist default aber zur Erhöhung der Lesbarkeit hier explizit -->
+          <excludeDevtools>true</excludeDevtools>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -562,9 +635,11 @@
           <sourceFiles>
             <directory>${basedir}</directory>
             <includes>
-              <include>src/main/**/*.txt</include>
+              <include>src/site/plantuml/**/*.txt</include>
             </includes>
           </sourceFiles>
+          <outputDirectory>src/site/images/generated</outputDirectory>
+          <format>svg</format>
         </configuration>
         <dependencies>
           <dependency>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <link href="css/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" type="text/css"/>
+    <title>Spring Boot Application</title>
+</head>
+<body>
+
+<!-- Reihenfolge entsprechend der Laufzeitabhängigkeiten -->
+<script src="webcomponents/suggestion/SuggestionModule.js"
+        th:src="@{/webcomponents/suggestion/SuggestionModule.js}"
+        type="module"> </script>
+<script src="webcomponents/logger/LoggerModule.js"
+        th:src="@{/webcomponents/logger/LoggerModule.js}"
+        type="module"> </script>
+
+<h1>Welcome to Thymeleaf Spring Boot web application</h1>
+
+<a th:href="@{/rezeptliste}">Rezeptliste</a>
+
+<suggestion-input id="suggestion1"
+                  suggesterurl="http:localhost:8080/rezeptsammlung/api/rezepte/tags"
+                  suggesterparametername="taglist"
+></suggestion-input>
+
+<logger-component id="logger1" listeners="suggestion1:onlog" disabled="disabled"></logger-component>
+
+<script th:inline="javascript">
+    const logger = document.getElementById('logger1');
+    const loggerClass =  customElements.get( 'logger-component' );
+    if ('serviceWorker' in navigator) {
+      // higher scope needed: response.setHeader("Service-Worker-Allowed", "/"); at server
+      navigator.serviceWorker.register([[@{/js/service-worker.js}]], {scope: [[@{/}]]}).then(function(registration) {
+        if( logger && loggerClass ){
+            logger.onConsolelog('Service Worker installation succeeded');
+        }else{
+            console.log('Service Worker installation succeeded');
+        }
+      }).catch(function(error) {
+        if( logger && loggerClass ){
+            logger.onConsolelog(error);
+        }else{
+            console.log(error);
+        }
+      });
+    } else {
+      // Der verwendete Browser unterstützt Service Worker nicht.
+      if( logger && loggerClass ){
+        logger.onlog('Ihr Browser unterstützt keine Service Worker - tut uns sehr leid für Sie.');
+      }else{
+        console.log('Ihr Browser unterstützt keine Service Worker - tut uns sehr leid für Sie.');
+      }
+    }
+</script>
+
+</body>
+</html>
