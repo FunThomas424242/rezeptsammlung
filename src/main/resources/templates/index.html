@@ -24,7 +24,12 @@
                   suggesterparametername="taglist"
 ></suggestion-input>
 
-<logger-component id="logger1" listeners="suggestion1:onlog" disabled="disabled"></logger-component>
+<suggestion-input id="suggestion2"
+                  suggesterurl="http:localhost:8080/rezeptsammlung/api/rezepte/tags"
+                  suggesterparametername="taglist"
+></suggestion-input>
+
+<logger-component id="logger1" listeners="suggestion1:onlog,suggestion2:onlog" ></logger-component>
 
 <script th:inline="javascript">
     const logger = document.getElementById('logger1');
