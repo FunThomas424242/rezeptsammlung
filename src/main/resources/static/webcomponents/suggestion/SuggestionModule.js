@@ -1,6 +1,6 @@
 "use strict";
 
-import {LoggerService} from "./loggerService.js";
+import {LoggerService} from "./consoleLoggerService.js";
 
 // script of inline service worker
 import {WorkerService} from "./workerService.js";
@@ -26,16 +26,77 @@ template.innerHTML = `
 
 class SuggestionInput extends HTMLElement {
 
-    ersetzeVorschlagslisteMit ( content ){
-        this.shadowRoot.getElementById("vorschlaege").innerHTML=`${content}`;
+    /* properties = rich data */
+
+    onlog ( message ){
+        LoggerService.logMessage("suggestion-input: " + message);
     }
 
-    schreibeLogEintrag( text ){
-        // Use a fragment: browser will only render/reflow once.
-        var fragment = document.createDocumentFragment();
-        fragment.appendChild(document.createTextNode(text));
-        fragment.appendChild(document.createElement("br"));
-        document.querySelector("#log").appendChild(fragment);
+    onConsolelog ( message ){
+        LoggerService.logMessage("suggestion-input: " + message);
+    }
+
+    /* Getter and Setter of primitive data = attributes */
+
+    get suggesterurl() {
+        return this.getAttribute("suggesterurl");
+    }
+
+    set suggesterurl( restapiurl) {
+        this.setAttribute("suggesterurl", restapiurl );
+    }
+
+    get suggesterparametername() {
+        return this.getAttribute("suggesterparametername");
+    }
+
+    set suggesterparametername( restapiparametername) {
+        this.setAttribute("suggesterparametername", restapiparametername );
+    }
+
+    /* default lifecycle methods of customs elements */
+
+    constructor() {
+        super();  // immer zuerst aufrufen
+        // for init attribut defaults
+        // e.g. this.src = '';
+        this.onConsolelog("constructor called");
+    }
+
+    connectedCallback() {
+        this.onConsolelog("In Seite eingehängt");
+        this.initialisiereAttributwerte();
+        this.erzeugeShadowDOMIfNotExists();
+        this.onConsolelog("ShadowDOM befüllt");
+    }
+
+    disconnectedCallback() {
+        this.onConsolelog("element has been removed");
+    }
+
+    attributeChangedCallback(name, oldval, newval) {
+        // do something every time the attribute changes
+        this.onConsolelog(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
+    }
+
+    static get observedAttributes() {
+     // Do not reflect rich data (properties)  to attributes in most cases.
+     // https://developers.google.com/web/fundamentals/web-components/best-practices
+     // Only refect primitive data to attributes
+     return ["suggesterurl","suggesterparametername","onsubmit"];
+    }
+
+
+    /* methods of specific components logic */
+
+    initialisiereAttributwerte(){
+        this.suggesterurl = this.getAttribute("suggesterurl");
+        this.suggesterparametername = this.getAttribute("suggesterparametername");
+        this.onsubmit = this.getAttribute("onsubmit");
+    }
+
+    ersetzeVorschlagslisteMit ( content ){
+        this.shadowRoot.getElementById("vorschlaege").innerHTML=`${content}`;
     }
 
     handleInput( srcValue, key ){
@@ -50,24 +111,24 @@ class SuggestionInput extends HTMLElement {
 
     erzeugeWebWorker(){
         var scriptURL = import.meta.url;
-        var workerURL = scriptURL.replace("componentModule.js", "webworkerScript.js");
+        var workerURL = scriptURL.replace("SuggestionModule.js", "webworkerScript.js");
         this.workerService = new WorkerService(workerURL, (event) => {
             var msgObject = event.data;
             if( msgObject.cmd === "log"){
-                this.schreibeLogEintrag(msgObject.msg);
+                this.onlog(msgObject.msg);
+            }else if( msgObject.cmd === "conlog"){
+                this.onConsolelog(msgObject.msg)
             }else if( msgObject.cmd === "replace-taglist"){
                 this.ersetzeVorschlagslisteMit(msgObject.data);
             }else{
-                this.schreibeLogEintrag(msgObject);
+                this.onConsolelog(msgObject);
             }
-        });
+        }, (msg) => { this.onConsolelog(msg); });
     }
-
-
 
     erzeugeShadowDOMIfNotExists() {
         if (!this.shadowRoot) {
-            LoggerService.logMessage("creating shadow dom");
+            this.onlog("creating shadow dom");
             this.attachShadow({mode: "open"});
         }
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -104,60 +165,6 @@ class SuggestionInput extends HTMLElement {
                 this.workerService.sendToWorker({"apiurl": apiurl});
              }
         });
-    }
-
-
-    constructor() {
-        super();  // immer zuerst aufrufen
-        // for init attribut defaults
-        // e.g. this.src = '';
-        LoggerService.logMessage("constructor called");
-
-    }
-
-    initialisiereAttributwerte(){
-        this.suggesterurl = this.getAttribute("suggesterurl");
-        this.suggesterparametername = this.getAttribute("suggesterparametername");
-        this.onlog = this.getAttribute("onlog");
-        this.onsubmit = this.getAttribute("onsubmit");
-    }
-
-    static get observedAttributes() {
-     return ["suggesterurl","suggesterparametername","onlog","onsubmit"];
-    }
-
-    get suggesterurl() {
-        return this.getAttribute("suggesterurl");
-    }
-
-    set suggesterurl( restapiurl) {
-        this.setAttribute("suggesterurl", restapiurl );
-    }
-
-    get suggesterparametername() {
-        return this.getAttribute("suggesterparametername");
-    }
-
-    set suggesterparametername( restapiparametername) {
-        this.setAttribute("suggesterparametername", restapiparametername );
-    }
-
-
-
-    connectedCallback() {
-        LoggerService.logMessage("custom element in Seite eingehängt");
-        this.initialisiereAttributwerte();
-        this.erzeugeShadowDOMIfNotExists();
-        LoggerService.logMessage("ShadowDOM befüllt");
-    }
-
-    disconnectedCallback() {
-        LoggerService.logMessage("element has been removed");
-    }
-
-    attributeChangedCallback(name, oldval, newval) {
-        // do something every time the attribute changes
-        LoggerService.logMessage(`the ${name} attribute has changed from ${oldval} to ${newval}!!`);
     }
 
 

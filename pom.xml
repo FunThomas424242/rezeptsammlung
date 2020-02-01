@@ -358,7 +358,7 @@
                   <version>3.6.2</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>13</version>
+                  <version>11</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
@@ -635,9 +635,11 @@
           <sourceFiles>
             <directory>${basedir}</directory>
             <includes>
-              <include>src/main/**/*.txt</include>
+              <include>src/site/plantuml/**/*.txt</include>
             </includes>
           </sourceFiles>
+          <outputDirectory>src/site/images/generated</outputDirectory>
+          <format>svg</format>
         </configuration>
         <dependencies>
           <dependency>
