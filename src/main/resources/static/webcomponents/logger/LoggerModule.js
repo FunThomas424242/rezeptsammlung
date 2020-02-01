@@ -17,7 +17,9 @@ class LoggerComponent extends HTMLElement {
     /* properties = rich data */
 
     onlog( message ){
-         this.schreibeLogEintrag( message );
+        if( ! this.disabled ){
+            this.schreibeLogEintrag( message );
+        }
     }
 
     /* Getter and Setter of primitive data = attributes */
@@ -31,14 +33,15 @@ class LoggerComponent extends HTMLElement {
     }
 
     get disabled() {
-        return this.getAttribute("disabled");
+        return this.hasAttribute('disabled');
     }
 
-    set disabled( disabled) {
-        if( disabled ){
-            this.removeAttribute("disabled");
-        }else{
-            this.setAttribute("disabled", true);
+    set disabled( disabledValue) {
+        const isDisabled = Boolean(disabledValue);
+        if (isDisabled){
+            this.setAttribute('disabled', '');
+        } else {
+            this.removeAttribute('disabled');
         }
     }
 
